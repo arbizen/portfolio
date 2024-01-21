@@ -12,8 +12,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={GeistSans.className}>
         <ThemeProvider
-          enableSystem
           defaultTheme="light"
+          enableSystem
           attribute="class"
           disableTransitionOnChange
         >

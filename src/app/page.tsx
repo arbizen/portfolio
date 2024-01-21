@@ -1,9 +1,12 @@
-import Image from "next/image";
+import Header from '@/components/header';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hello world
+    <main className="min-h-screen w-full dark:bg-zin-800">
+      <div className="flex w-full justify-center items-center">
+        <Header />
+      </div>
     </main>
   );
 }

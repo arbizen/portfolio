@@ -1,4 +1,4 @@
 export type HeaderItem = {
   name: string;
-  path: string;
+  query: string;
 };

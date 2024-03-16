@@ -8,7 +8,7 @@ export default function Card({ children, className }: CardProps) {
   return (
     <div
       className={cn(
-        'p-4 border border-blue-100 rounded-2xl flex items-center justify-between relative z-50 bg-transparent backdrop-blur-sm bg-opacity-10',
+        'p-4 border border-blue-100 rounded-2xl relative z-50 bg-transparent backdrop-blur-sm bg-opacity-10',
         className,
       )}
     >

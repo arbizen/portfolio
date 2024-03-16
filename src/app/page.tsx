@@ -1,5 +1,8 @@
+import Card from '@/components/card';
 import PageInfo from '@/components/shared/page-info';
 import SubTitle from '@/components/shared/sub-title';
+import Badge from '@/components/ui/badge';
+import { Activity } from '@/types';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -8,7 +11,16 @@ export const metadata = {
   description: 'This is the home page',
 };
 
-export default function Home() {
+export default async function Home() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`,
+    {
+      cache: 'no-cache',
+    },
+  );
+  const data = await res.json();
+  const activities: Activity[] = data.activities;
+
   return (
     <div>
       <PageInfo
@@ -29,7 +41,24 @@ export default function Home() {
           </Link>
         }
       />
-      <SubTitle title="Activities" seeMoreText="See more" />
+      <div>
+        <SubTitle title="Activities" seeMoreText="See more" />
+        <section className="pt-[75px] flex flex-col gap-4">
+          {activities.map((activity: Activity) => (
+            <Link key={activity.id} href="/">
+              <Card className="px-6 py-[20px]">
+                <h3 className="font-semibold">{activity.name}</h3>
+                <div className="flex gap-2 mt-1 items-center">
+                  <span className="text-xs">{activity.date}</span>
+                  <Badge className="bg-red-100 text-red-500">
+                    {activity.type}
+                  </Badge>
+                </div>
+              </Card>
+            </Link>
+          ))}
+        </section>
+      </div>
     </div>
   );
 }

@@ -11,12 +11,11 @@ export const metadata = {
   description: 'This is the home page',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`,
-    {
-      cache: 'no-cache',
-    },
   );
   const data = await res.json();
   const activities: Activity[] = data.activities;

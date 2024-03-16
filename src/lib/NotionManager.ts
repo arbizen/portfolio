@@ -63,8 +63,17 @@ class NotionManager {
 
         return {
           id: page.id,
+          type:
+            'multi_select' in page.properties.type
+              ? page.properties.type.multi_select.map((tag) => tag.name).join()
+              : [],
           // @ts-ignore
           name: page.properties?.name?.title[0]?.plain_text || '',
+          // @ts-ignore
+          link: page.properties?.link?.rich_text[0]?.plain_text || '',
+          description:
+            // @ts-ignore
+            page.properties?.description?.rich_text[0]?.plain_text || '',
         };
       });
     }

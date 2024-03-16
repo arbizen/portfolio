@@ -9,3 +9,10 @@ export type Activity = {
   date: string;
   type: string;
 };
+export type Bookmark = {
+  id: string;
+  name: string;
+  link: string;
+  description: string;
+  type: string;
+};

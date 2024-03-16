@@ -21,7 +21,7 @@ export default function PageInfo({
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 items-center">
           {header}
-          {itemsLength !== 0 && (
+          {itemsLength !== undefined && (
             <Badge className="bg-red-100 text-red-500">{itemsLength}</Badge>
           )}
         </div>

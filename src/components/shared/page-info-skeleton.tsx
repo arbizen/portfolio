@@ -6,9 +6,9 @@ export default function PageInfoSkeleton() {
       <Skeleton className="h-4 w-[100px] rounded-md" />
       <div className="flex flex-col gap-4">
         <Skeleton className="h-4 w-[200px] rounded-md" />
-        <p className="text-[20px] text-slate-800 leading-tight">
+        <div className="text-[20px] text-slate-800 leading-tight">
           <Skeleton className="h-4 w-[860px] rounded-md" />
-        </p>
+        </div>
       </div>
       <Skeleton className="h-4 w-[100px] rounded-md" />
     </div>

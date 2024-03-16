@@ -2,11 +2,27 @@ import { HeaderItem } from '@/types';
 
 export const headerItems: HeaderItem[] = [
   {
-    name: 'Latest',
-    query: 'latest',
+    name: 'Home',
+    route: '/',
   },
   {
-    name: 'Supabase',
-    query: 'supabase',
+    name: 'Blogs',
+    route: '/blogs',
+  },
+  {
+    name: 'Bookmarks',
+    route: '/bookmarks',
+  },
+  {
+    name: 'Poems',
+    route: '/poems',
+  },
+  {
+    name: 'Images',
+    route: '/images',
+  },
+  {
+    name: 'About',
+    route: '/about',
   },
 ];

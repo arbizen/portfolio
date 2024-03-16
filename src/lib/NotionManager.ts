@@ -7,24 +7,23 @@ class NotionManager {
       id: string;
     }[],
   ) {}
-  async getDatabase(name: string) {
+  async getNextCursorData(cursor: string, name: string) {
+    const db = await this.notion.databases.query({
+      database_id: this.databases.find((db) => db.name === name)?.id!,
+      start_cursor: cursor,
+    });
+    return this.getFormattedData(db, name);
+  }
+  async getDatabaseByName(name: string) {
     const id = this.databases.find((db) => db.name === name)?.id;
     if (!id) return null;
     const db = await this.notion.databases.query({
       database_id: id!,
     });
-    while (db.has_more && db.next_cursor) {
-      const { results, has_more, next_cursor } =
-        await this.notion.databases.query({
-          database_id: id!,
-          start_cursor: db.next_cursor,
-        });
-      db.results = [...db.results, ...results];
-      db.has_more = has_more;
-      db.next_cursor = next_cursor;
-    }
+    return this.getFormattedData(db, name);
+  }
+  getFormattedData(db: any, name: string) {
     let formatted = null;
-
     if (name === 'activities') {
       formatted = db.results.map((page: any) => {
         if (!isFullPage(page)) {
@@ -77,7 +76,11 @@ class NotionManager {
         };
       });
     }
-    return formatted;
+    return {
+      results: formatted,
+      has_more: db.has_more,
+      next_cursor: db.next_cursor,
+    };
   }
 }
 

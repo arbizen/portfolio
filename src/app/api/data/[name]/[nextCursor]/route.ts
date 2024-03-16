@@ -1,7 +1,10 @@
 import { notionManager } from '@/lib/NotionManager';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request, context: { params: { name: string } }) {
+export async function GET(
+  req: Request,
+  context: { params: { nextCursor: string; name: string } },
+) {
   try {
     const url = new URL(req.url);
     const start = url.searchParams.get('start') ?? 0;
@@ -11,9 +14,12 @@ export async function GET(req: Request, context: { params: { name: string } }) {
     const routes = context.params.name.split('+');
     let results: any = {};
     for (const route of routes) {
-      const data = await notionManager.getDatabaseByName(route);
+      const data = await notionManager.getNextCursorData(
+        context.params.nextCursor,
+        route,
+      );
       const filter = data?.results?.filter((item: any) => item.name !== '');
-      if (filter.length < 25 || Number(count) > 100) count = filter.length;
+      if (filter.length < 25) count = filter.length;
       const limited = filter.slice(start, Number(start) + Number(count));
       const pageEnd =
         Number(start) + Number(count) >= 100

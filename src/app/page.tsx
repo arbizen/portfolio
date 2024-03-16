@@ -18,7 +18,7 @@ export default async function Home() {
     `${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`,
   );
   const data = await res.json();
-  const activities: Activity[] = data.activities;
+  const activities: Activity[] = data.activities.data;
 
   return (
     <div>

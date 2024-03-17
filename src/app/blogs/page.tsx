@@ -8,6 +8,8 @@ import Link from 'next/link';
 import Subtitle from '@/components/shared/sub-title';
 import { Blog } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Blogs — New curated blogs for you',
   description: 'This is the home page',

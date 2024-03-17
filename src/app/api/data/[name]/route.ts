@@ -1,5 +1,11 @@
 import { notionManager } from '@/lib/NotionManager';
 import { NextResponse } from 'next/server';
+import { compareAsc, compareDesc } from 'date-fns';
+
+const CompareFunctionLookup = {
+  asc: compareAsc,
+  desc: compareDesc,
+};
 
 export async function GET(req: Request, context: { params: { name: string } }) {
   try {
@@ -12,9 +18,22 @@ export async function GET(req: Request, context: { params: { name: string } }) {
     let results: any = {};
     for (const route of routes) {
       const data = await notionManager.getDatabaseByName(route);
-      const filter = data?.results?.filter((item: any) => item.name !== '');
+
+      // sort order
+      const sortOrder = 'desc';
+
+      const filter = [
+        ...data?.results
+          ?.filter((item: any) => item.name !== '' || item.title !== '')
+          .sort((a: any, b: any) => {
+            return CompareFunctionLookup[sortOrder](
+              new Date(a.date),
+              new Date(b.date),
+            );
+          }),
+      ];
       if (filter.length < 25 || Number(count) > 100) count = filter.length;
-      const limited = filter.slice(start, Number(start) + Number(count));
+      const limited = filter.slice(+start, Number(start) + Number(count));
       const pageEnd =
         Number(start) + Number(count) >= 100
           ? 0

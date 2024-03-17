@@ -75,6 +75,7 @@ export default async function Blogs({
   const res = await fetch(url);
   const data = await res.json();
   let blogs: Blog[] = data.blogs?.data;
+  console.log(blogs.slice(0, 2), 'blogs');
   const recentBlogs = blogs.slice(0, 2);
   blogs = blogs.slice(2);
   const pageEnd = data.bookmarks?.end;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Client, isFullPage } from '@notionhq/client';
 class NotionManager {
   constructor(
@@ -36,9 +37,9 @@ class NotionManager {
             'multi_select' in page.properties.type
               ? page.properties.type.multi_select.map((tag) => tag.name).join()
               : [],
-          // @ts-ignore
+
           name: page.properties?.name?.title[0]?.plain_text || '',
-          // @ts-ignore
+
           date: page.properties?.date?.date?.start || '',
         };
       });
@@ -48,10 +49,32 @@ class NotionManager {
           throw new Error('Notion page is not a full page');
         }
 
+        const slug =
+          page.properties?.title?.title[0]?.plain_text
+            .toLowerCase()
+            .replace(/ /g, '-') +
+            '#' +
+            page.id || '';
+
+        // url encode
+        const encodedSlug = encodeURIComponent(slug);
+
         return {
           id: page.id,
-          // @ts-ignore
-          name: page.properties?.name?.title[0]?.plain_text || '',
+          title: page.properties?.title?.title[0]?.plain_text || '',
+          date: page.properties?.createdAt?.created_time || '',
+          category:
+            'multi_select' in page.properties.category
+              ? page.properties.category.multi_select
+                  .map((tag) => tag.name)
+                  .join(' ')
+              : [],
+          description:
+            page.properties?.description?.rich_text[0]?.plain_text || '',
+          image: page.properties?.image?.rich_text[0]?.plain_text || '',
+          readTime: page.properties?.readTime?.number || 0,
+          slug: encodedSlug,
+          decodedSlug: slug,
         };
       });
     } else if (name === 'bookmarks') {
@@ -66,12 +89,11 @@ class NotionManager {
             'multi_select' in page.properties.type
               ? page.properties.type.multi_select.map((tag) => tag.name).join()
               : [],
-          // @ts-ignore
+
           name: page.properties?.name?.title[0]?.plain_text || '',
-          // @ts-ignore
+
           link: page.properties?.link?.rich_text[0]?.plain_text || '',
           description:
-            // @ts-ignore
             page.properties?.description?.rich_text[0]?.plain_text || '',
         };
       });

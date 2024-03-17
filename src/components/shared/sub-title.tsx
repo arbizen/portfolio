@@ -12,7 +12,12 @@ export default function SubTitle({
   className?: string;
 }) {
   return (
-    <div className={cn('flex items-center justify-between', className)}>
+    <div
+      className={cn(
+        'flex items-center justify-between leading-tight',
+        className,
+      )}
+    >
       <h2 className="text-[20px] font-bold leading-tight text-slate-800">
         {title}
       </h2>

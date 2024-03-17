@@ -16,3 +16,14 @@ export type Bookmark = {
   description: string;
   type: string;
 };
+
+export type Blog = {
+  id: string;
+  title: string;
+  slug: string;
+  date?: string;
+  description?: string;
+  category?: string;
+  readTime?: string;
+  image?: string;
+};

@@ -38,7 +38,7 @@ export default function Bookmarks({ bookmarks, pageEnd }: BookmarksProps) {
               <Link2 size={15} />
               <span className="text-xs">{bookmark.link}</span>
             </div>
-            <p className="leading-tight text-slate-600 mt-2">
+            <p className="leading-tight text-slate-600 mt-2 max-w-[100px]">
               {bookmark.description}
             </p>
           </Card>

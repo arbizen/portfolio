@@ -1,19 +1,23 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
+
 export default function SubTitle({
   title,
   seeMoreText,
+  className,
 }: {
   title: string;
   seeMoreText: string;
+  className?: string;
 }) {
   return (
-    <div className="flex justify-between items-center">
-      <h2 className="text-[20px] font-bold text-slate-800 leading-tight">
+    <div className={cn('flex items-center justify-between', className)}>
+      <h2 className="text-[20px] font-bold leading-tight text-slate-800">
         {title}
       </h2>
       <Link
-        className="space-x-1 text-blue-500 font-bold text-[12px] flex items-center gap-1"
+        className="flex items-center gap-1 space-x-1 text-[12px] font-bold text-blue-500"
         href="/"
       >
         {seeMoreText}

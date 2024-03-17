@@ -62,17 +62,17 @@ export default async function BookmarksPage({
             className="flex-grow"
           >
             <Card className="px-6 py-[20px]">
-              <div className="flex gap-2 items-center">
+              <div className="flex items-center gap-2">
                 <h3 className="font-semibold">{bookmark.name}</h3>
                 <Badge className="bg-blue-100 text-blue-500">
                   {bookmark.type}
                 </Badge>
               </div>
-              <div className="flex gap-1 mt-1 items-center">
+              <div className="mt-1 flex items-center gap-1">
                 <Link2 size={15} />
                 <span className="text-xs">{bookmark.link}</span>
               </div>
-              <p className="leading-tight text-slate-600 mt-2">
+              <p className="mt-2 leading-tight text-slate-600">
                 {bookmark.description}
               </p>
             </Card>

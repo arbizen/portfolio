@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Client, isFullPage } from '@notionhq/client';
-class NotionManager {
+import { NotionToMarkdown } from 'notion-to-md';
+export class NotionManager {
   constructor(
     private readonly notion: Client,
     private readonly databases: {
@@ -14,6 +15,14 @@ class NotionManager {
       start_cursor: cursor,
     });
     return this.getFormattedData(db, name);
+  }
+  async getBlogBySlug(slug: string) {
+    const n2m = new NotionToMarkdown({ notionClient: this.notion });
+
+    const id = slug.split('#')[1];
+    const blocks = await n2m.pageToMarkdown(id);
+    const mdString = n2m.toMarkdownString(blocks);
+    return mdString.parent;
   }
   async getDatabaseByName(name: string) {
     const id = this.databases.find((db) => db.name === name)?.id;

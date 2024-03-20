@@ -12,10 +12,40 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import PageInfo from '@/components/shared/page-info';
 import PageTitle from '@/components/shared/page-title';
 import Badge from '@/components/ui/badge';
+import { Metadata, ResolvingMetadata } from 'next';
+
 // @ts-ignore
 import dateformat from 'dateformat';
 
 export const dynamic = 'force-dynamic';
+
+type Props = {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  // read route params
+  const decodedSlug = decodeURIComponent(params.slug);
+  const pageInfo = await notionManager.getPageById(decodedSlug.split('#')[1]);
+
+  // const coverUrl =
+  //   (pageInfo as any)?.cover?.external?.url ||
+  //   'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+  const title =
+    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Blog';
+  const description =
+    (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
+    'Description';
+
+  return {
+    title: `Blog — ${title}`,
+    description,
+  };
+}
 
 export default async function BlogPage({
   params,

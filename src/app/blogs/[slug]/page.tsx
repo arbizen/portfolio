@@ -1,5 +1,4 @@
 import { notionManager } from '@/lib/NotionManager';
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
@@ -9,6 +8,12 @@ import CodeBlock from '@/components/markdown/Code';
 import Pre from '@/components/markdown/Pre';
 import Image from '@/components/markdown/Image';
 import Paragraph from '@/components/markdown/Paragraph';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import PageInfo from '@/components/shared/page-info';
+import PageTitle from '@/components/shared/page-title';
+import Badge from '@/components/ui/badge';
+// @ts-ignore
+import dateformat from 'dateformat';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +24,24 @@ export default async function BlogPage({
 }) {
   const decodedSlug = decodeURIComponent(params.slug);
   const mdString = await notionManager.getBlogBySlug(decodedSlug);
+  const pageInfo = await notionManager.getPageById(decodedSlug.split('#')[1]);
+  const coverUrl =
+    (pageInfo as any)?.cover?.external?.url ||
+    'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+  const title =
+    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Blog';
+  const description =
+    (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
+    'Description';
+  const category =
+    'multi_select' in (pageInfo as any)?.properties.category
+      ? (pageInfo as any)?.properties.category.multi_select
+          .map((tag: any) => tag.name)
+          .join(' ')
+      : [];
+  const readTime = (pageInfo as any)?.properties?.readTime?.number || 0;
+  const date = (pageInfo as any)?.properties?.createdAt?.created_time || '';
+  console.log(coverUrl);
 
   const customComponents = {
     code: CodeBlock,
@@ -28,15 +51,39 @@ export default async function BlogPage({
   };
 
   return (
-    <div className="p-16 flex justify-center">
-      <Markdown
-        remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeKatex]}
-        components={customComponents}
-        className="prose"
-      >
-        {mdString}
-      </Markdown>
+    <div>
+      <PageInfo
+        header={<PageTitle title={title} />}
+        description={description}
+        footer={
+          <div className="flex gap-2">
+            <Badge className="bg-orange-100 text-orange-500">
+              {dateformat(date, 'ddS mmmm, yyyy')}
+            </Badge>
+            <Badge className="bg-blue-100 text-blue-500">
+              {readTime} min read
+            </Badge>
+            <Badge className="bg-red-100 text-red-500">{category}</Badge>
+          </div>
+        }
+      />
+      <div className="flex flex-col">
+        <Image
+          src={coverUrl}
+          alt={title}
+          className="max-h-[800px] object-cover rounded-md"
+        />
+        <article className="flex justify-center mt-16 min-w-[800px]">
+          <Markdown
+            remarkPlugins={[remarkGfm, remarkMath]}
+            rehypePlugins={[rehypeKatex, rehypeAutolinkHeadings]}
+            components={customComponents}
+            className="prose w-full min-w-[800px]"
+          >
+            {mdString}
+          </Markdown>
+        </article>
+      </div>
     </div>
   );
 }

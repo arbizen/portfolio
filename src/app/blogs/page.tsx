@@ -7,6 +7,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Subtitle from '@/components/shared/sub-title';
 import { Blog } from '@/types';
+// @ts-ignore
+import dateformat from 'dateformat';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,7 +27,7 @@ const Blog = (props: Blog) => {
             alt="blog"
             width={360}
             height={240}
-            className="rounded-md"
+            className="rounded-md max-h-[240px] object-cover"
           />
         </Link>
         <div className="flex flex-col gap-6">
@@ -38,7 +40,9 @@ const Blog = (props: Blog) => {
                 {props.category}
               </Badge>
             </div>
-            <span className="text-xs text-slate-600">{props.date}</span>
+            <span className="text-xs text-slate-600">
+              {dateformat(props.date, 'ddS mmmm, yyyy')}
+            </span>
           </div>
           <Link href={`/blogs/${props.slug}`} className="hover:underline">
             <h2 className="text-[36px] font-extrabold leading-tight">
@@ -77,9 +81,8 @@ export default async function Blogs({
   const res = await fetch(url);
   const data = await res.json();
   let blogs: Blog[] = data.blogs?.data;
-  console.log(blogs.slice(0, 2), 'blogs');
-  const recentBlogs = blogs.slice(0, 2);
-  blogs = blogs.slice(2);
+  const recentBlogs = blogs?.slice(0, 2);
+  blogs = blogs?.slice(2);
   const pageEnd = data.bookmarks?.end;
   const hasMore = data.bookmarks?.has_more;
   const nextCursor = data.bookmarks?.next_cursor;
@@ -98,7 +101,7 @@ export default async function Blogs({
         description={`These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot.`}
       />
       <div className="flex flex-col gap-4">
-        {recentBlogs.map((blog: Blog) => (
+        {recentBlogs?.map((blog: Blog) => (
           <Blog
             id={blog.id}
             slug={blog.slug}
@@ -114,7 +117,7 @@ export default async function Blogs({
       </div>
       <Subtitle className="py-8" title="NextJs" seeMoreText="See more" />
       <div className="flex flex-col gap-4">
-        {blogs.map((blog: Blog) => (
+        {blogs?.map((blog: Blog) => (
           <Blog
             id={blog.id}
             slug={blog.slug}

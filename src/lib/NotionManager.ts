@@ -24,6 +24,10 @@ export class NotionManager {
     const mdString = n2m.toMarkdownString(blocks);
     return mdString.parent;
   }
+  async getPageById(id: string) {
+    const page = await this.notion.pages.retrieve({ page_id: id });
+    return page;
+  }
   async getDatabaseByName(name: string) {
     const id = this.databases.find((db) => db.name === name)?.id;
     if (!id) return null;
@@ -80,7 +84,9 @@ export class NotionManager {
               : [],
           description:
             page.properties?.description?.rich_text[0]?.plain_text || '',
-          image: page.properties?.image?.rich_text[0]?.plain_text || '',
+          image:
+            page.cover?.external?.url ||
+            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
           readTime: page.properties?.readTime?.number || 0,
           slug: encodedSlug,
           decodedSlug: slug,

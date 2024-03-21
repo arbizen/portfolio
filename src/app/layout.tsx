@@ -5,6 +5,8 @@ import { GeistSans } from 'geist/font/sans';
 import Header from '@/components/shared/header';
 import { Inter } from 'next/font/google';
 import Blob from '@/components/blob';
+import Footer from '@/components/shared/footer';
+import { footer } from '@/data/footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -35,7 +37,8 @@ export default async function RootLayout({
               type="blob3"
               fill="#A855F7"
             />
-            {children}
+            <div className="flex-grow min-h-screen">{children}</div>
+            <Footer text={footer.text} socials={footer.socials} />
           </main>
         </ThemeProvider>
       </body>

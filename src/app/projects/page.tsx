@@ -21,7 +21,7 @@ export const metadata = {
 
 const Project = (props: Project) => {
   return (
-    <Card className="flex gap-6 flex-col p-8 flex-auto">
+    <Card className="flex gap-6 flex-col p-8">
       <div className="flex justify-between items-center">
         <Chip color="blue">{props.year}</Chip>
         <Chip color="green">
@@ -34,7 +34,7 @@ const Project = (props: Project) => {
           width={320}
           height={180}
           alt={props.name}
-          className="rounded-md w-full"
+          className="rounded-md w-full aspect-auto"
         />
         <div className="flex flex-col gap-8 flex-grow">
           <div className="flex flex-col gap-4">
@@ -135,7 +135,7 @@ export default async function Blogs({
           </>
         }
       />
-      <section className="flex flex-wrap gap-4">
+      <section className="grid grid-cols-3 gap-4">
         {projects.map((project) => (
           <Project key={project.id} {...project} />
         ))}

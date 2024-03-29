@@ -27,3 +27,17 @@ export type Blog = {
   readTime?: string;
   image?: string;
 };
+
+export type Project = {
+  id: string;
+  name: string;
+  date?: string;
+  description?: string;
+  image?: string;
+  stack: string[];
+  githubLink?: string;
+  previewLink?: string;
+  isCompleted?: boolean;
+  year: number;
+  type: string;
+};

@@ -12,6 +12,7 @@ export async function GET(req: Request, context: { params: { name: string } }) {
     const url = new URL(req.url);
     const start = url.searchParams.get('start') ?? 0;
     let count = url.searchParams.get('count') ?? 25; // default count is 25
+    const order = url.searchParams.get('order') ?? 'desc';
     if (!context?.params?.name)
       return NextResponse.json('No name provided', { status: 400 });
     const routes = context.params.name.split('+');
@@ -20,7 +21,7 @@ export async function GET(req: Request, context: { params: { name: string } }) {
       const data = await notionManager.getDatabaseByName(route);
 
       // sort order
-      const sortOrder = 'desc';
+      const sortOrder = order === 'asc' ? 'asc' : 'desc';
 
       const filter = [
         ...data?.results

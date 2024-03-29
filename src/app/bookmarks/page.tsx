@@ -48,13 +48,13 @@ export default async function BookmarksPage({
         description={`These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot.`}
         itemsLength={bookmarks.length ?? 0}
       />
-      {bookmarks?.length !== 0 && (
+      {/* {bookmarks?.length !== 0 && (
         <Link href={nextPageUrl}>
           <button>Load more</button>
         </Link>
-      )}
+      )} */}
       <section className="flex flex-wrap gap-4">
-        {bookmarks.map((bookmark: Bookmark) => (
+        {bookmarks.map((bookmark) => (
           <Link
             key={bookmark.id}
             href={bookmark.link}

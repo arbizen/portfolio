@@ -10,6 +10,10 @@ export const headerItems: HeaderItem[] = [
     route: '/blogs',
   },
   {
+    name: 'Projects',
+    route: '/projects',
+  },
+  {
     name: 'Bookmarks',
     route: '/bookmarks',
   },

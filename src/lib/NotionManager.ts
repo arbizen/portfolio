@@ -5,7 +5,7 @@ export class NotionManager {
   constructor(
     private readonly notion: Client,
     private readonly databases: {
-      name: 'blogs' | 'activities' | 'bookmarks';
+      name: 'blogs' | 'activities' | 'bookmarks' | 'projects';
       id: string;
     }[],
   ) {}
@@ -86,6 +86,7 @@ export class NotionManager {
             page.properties?.description?.rich_text[0]?.plain_text || '',
           image:
             page.cover?.external?.url ||
+            page.cover?.file?.url ||
             'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
           readTime: page.properties?.readTime?.number || 0,
           slug: encodedSlug,
@@ -112,6 +113,35 @@ export class NotionManager {
             page.properties?.description?.rich_text[0]?.plain_text || '',
         };
       });
+    } else if (name === 'projects') {
+      formatted = db.results.map((page: any) => {
+        if (!isFullPage(page)) {
+          throw new Error('Notion page is not a full page');
+        }
+
+        return {
+          id: page.id,
+          date: page.properties?.createdAt?.created_time || '',
+          type: page.properties?.type?.rich_text[0]?.plain_text || '',
+          name: page.properties?.name?.title[0]?.plain_text || '',
+          description:
+            page.properties?.description?.rich_text[0]?.plain_text || '',
+          year: page.properties?.year?.number || '',
+          image:
+            page.cover?.external?.url ||
+            page.cover?.file?.url ||
+            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          stack:
+            'multi_select' in page.properties.stack
+              ? page.properties.stack.multi_select.map((tag) => tag.name)
+              : [],
+          githubLink:
+            page.properties?.githubLink?.rich_text[0]?.plain_text || '',
+          previewLink:
+            page.properties?.previewLink?.rich_text[0]?.plain_text || '',
+          isCompleted: page.properties?.isCompleted?.checkbox || false,
+        };
+      });
     }
     return {
       results: formatted,
@@ -127,5 +157,6 @@ export const notionManager = new NotionManager(
     { name: 'blogs', id: process.env.NOTION_BLOG_DATABASE_ID! },
     { name: 'activities', id: process.env.NOTION_ACTIVITY_DATABASE_ID! },
     { name: 'bookmarks', id: process.env.NOTION_BOOKMARK_DATABASE_ID! },
+    { name: 'projects', id: process.env.NOTION_PROJECT_DATABASE_ID! },
   ],
 );

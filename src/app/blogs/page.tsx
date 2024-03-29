@@ -9,6 +9,7 @@ import Subtitle from '@/components/shared/sub-title';
 import { Blog } from '@/types';
 // @ts-ignore
 import dateformat from 'dateformat';
+import { Tag, TagContainer } from '@/components/tag';
 
 export const dynamic = 'force-dynamic';
 
@@ -99,6 +100,18 @@ export default async function Blogs({
       <PageInfo
         header={<PageTitle title="Blogs" />}
         description={`These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot.`}
+        footer={
+          <>
+            <TagContainer>
+              <Tag>React</Tag>
+              <Tag>NextJs</Tag>
+              <Tag>NodeJs</Tag>
+              <Tag>GraphQL</Tag>
+              <Tag>Typescript</Tag>
+              <Tag>9+</Tag>
+            </TagContainer>
+          </>
+        }
       />
       <div className="flex flex-col gap-4">
         {recentBlogs?.map((blog: Blog) => (

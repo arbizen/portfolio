@@ -20,8 +20,8 @@ export const metadata = {
 
 const Blog = (props: Blog) => {
   return (
-    <Card className="p-16">
-      <div className="flex gap-8">
+    <Card className="p-16 sm:p-8">
+      <div className="flex gap-8 sm:flex-col">
         <Link className="flex-none" href={`/blogs/${props.slug}`}>
           <Image
             src={props.image!}
@@ -46,7 +46,7 @@ const Blog = (props: Blog) => {
             </span>
           </div>
           <Link href={`/blogs/${props.slug}`} className="hover:underline">
-            <h2 className="text-[36px] font-extrabold leading-tight">
+            <h2 className="text-[36px] font-extrabold leading-tight sm:text-2xl sm:font-bold">
               {props.title}
             </h2>
           </Link>

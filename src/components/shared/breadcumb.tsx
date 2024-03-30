@@ -5,7 +5,6 @@ export default function Breadcumb() {
   const path = usePathname();
   const pathname = path.split('/')[1];
 
-  console.log(path);
   const capitalize = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1);
   return (

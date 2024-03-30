@@ -71,7 +71,6 @@ export default async function BlogPage({
       : [];
   const readTime = (pageInfo as any)?.properties?.readTime?.number || 0;
   const date = (pageInfo as any)?.properties?.createdAt?.created_time || '';
-  console.log(coverUrl);
 
   const customComponents = {
     code: CodeBlock,

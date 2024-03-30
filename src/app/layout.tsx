@@ -28,14 +28,17 @@ export default async function RootLayout({
           {/* Mobile header */}
           <main className="flex flex-col p-16 bg-white sm:px-4 sm:pb-4 sm:pt-0 sm:overflow-x-hidden">
             <Header className="sm:hidden" />
-            <Blob x="300px" y="80px" className="sm:hidden" />
             <Blob
-              className="right-[64px] top-[130px] sm:hidden"
+              y="80px"
+              className="left-[300px] sm:left-[50px] sm:h-[100px] sm:w-[100px]"
+            />
+            <Blob
+              className="right-[64px] top-[130px] sm:right-[32px] sm:h-[100px] sm:w-[100px]"
               type="blob2"
               fill="#22C55E"
             />
             <Blob
-              className="right-[300px] top-[440px] sm:hidden"
+              className="right-[300px] top-[440px] sm:right-[100px] sm:h-[100px] sm:w-[100px]"
               type="blob3"
               fill="#A855F7"
             />

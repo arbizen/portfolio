@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeaderItem from './header-item';
 import { cn } from '@/lib/utils';
+import MobileMenu from './mobile-menu';
 
 export default function Header({ className }: { className?: string }) {
   return (
@@ -29,6 +30,7 @@ export default function Header({ className }: { className?: string }) {
           <HeaderItem key={item.route} route={item.route} name={item.name} />
         ))}
       </menu>
+      <MobileMenu />
     </header>
   );
 }

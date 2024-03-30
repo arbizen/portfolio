@@ -24,7 +24,7 @@ export default async function RootLayout({
           attribute="class"
           disableTransitionOnChange
         >
-          <Header className="hidden sm:block rounded-none" />{' '}
+          <Header className="hidden sm:flex rounded-none" />{' '}
           {/* Mobile header */}
           <main className="flex flex-col p-16 bg-white sm:px-4 sm:pb-4 sm:pt-0 sm:overflow-x-hidden">
             <Header className="sm:hidden" />

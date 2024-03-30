@@ -30,7 +30,6 @@ export default function Header({ className }: { className?: string }) {
           <HeaderItem key={item.route} route={item.route} name={item.name} />
         ))}
       </menu>
-      <MobileMenu />
     </header>
   );
 }

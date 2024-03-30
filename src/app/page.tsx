@@ -25,7 +25,7 @@ export default async function Home() {
       <PageInfo
         header={
           <div>
-            <h1 className="font-black text-[40px]">
+            <h1 className="font-black text-[40px] sm:text-[36px]">
               I <span className="text-blue-500">code.</span>
             </h1>
           </div>
@@ -42,11 +42,11 @@ export default async function Home() {
       />
       <div>
         <SubTitle title="Activities" seeMoreText="See more" />
-        <section className="pt-[75px] flex flex-col gap-4">
+        <section className="pt-[64px] flex flex-col gap-4 sm:pt-[32px]">
           {activities.map((activity: Activity) => (
             <Link key={activity.id} href="/">
               <Card className="px-6 py-[20px]">
-                <h3 className="font-semibold">{activity.name}</h3>
+                <h3 className="font-semibold text-base">{activity.name}</h3>
                 <div className="flex gap-2 mt-1 items-center">
                   <span className="text-xs">{activity.date}</span>
                   <Badge className="bg-red-100 text-red-500">

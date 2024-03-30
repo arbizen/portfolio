@@ -103,12 +103,12 @@ export default async function BlogPage({
           alt={title}
           className="max-h-[800px] object-cover rounded-md"
         />
-        <article className="flex justify-center mt-16 min-w-[800px]">
+        <article className="flex justify-center mt-16 min-w-[800px] sm:min-w-full">
           <Markdown
             remarkPlugins={[remarkGfm, remarkMath]}
             rehypePlugins={[rehypeKatex, rehypeAutolinkHeadings]}
             components={customComponents}
-            className="prose w-full min-w-[800px]"
+            className="prose w-full min-w-[800px] sm:min-w-full"
           >
             {mdString}
           </Markdown>

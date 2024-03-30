@@ -16,7 +16,7 @@ export default function PageInfo({
   itemsLength,
 }: PageInfoProps) {
   return (
-    <div className="flex flex-col my-16 pl-[60px] gap-8 max-w-[860px]">
+    <div className="flex flex-col my-16 pl-[60px] gap-8 max-w-[860px] sm:pl-[15px]">
       <Breadcumb />
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 items-center">
@@ -25,7 +25,7 @@ export default function PageInfo({
             <Badge className="bg-red-100 text-red-500">{itemsLength}</Badge>
           )}
         </div>
-        <p className="text-[20px] text-slate-800 leading-tight">
+        <p className="text-[20px] text-slate-800 leading-tight sm:text-base">
           {description}
         </p>
       </div>

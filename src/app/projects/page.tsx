@@ -135,7 +135,7 @@ export default async function Blogs({
           </>
         }
       />
-      <section className="grid grid-cols-3 gap-4">
+      <section className="grid grid-cols-3 gap-4 sm:grid-cols-1">
         {projects.map((project) => (
           <Project key={project.id} {...project} />
         ))}

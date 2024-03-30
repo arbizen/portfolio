@@ -10,7 +10,9 @@ export default function Breadcumb() {
     str.charAt(0).toUpperCase() + str.slice(1);
   return (
     <p className="flex gap-2 font-medium text-slate-600">
-      <Link href="/">Home</Link>{' '}
+      <Link className="sm:text-base" href="/">
+        Home
+      </Link>{' '}
       {capitalize(pathname) && (
         <>
           &gt;{' '}

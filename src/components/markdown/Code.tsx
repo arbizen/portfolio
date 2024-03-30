@@ -8,7 +8,10 @@ const CodeBlock: any = async ({ ...props }) => {
     transformers: [
       {
         pre(node) {
-          this.addClassToHast(node, 'p-6 rounded-md');
+          this.addClassToHast(
+            node,
+            'p-6 rounded-md sm:w-full sm:overflow-x-scroll sm:text-sm',
+          );
         },
       },
     ],
@@ -18,7 +21,7 @@ const CodeBlock: any = async ({ ...props }) => {
       dangerouslySetInnerHTML={{
         __html: html,
       }}
-      className="not-prose rounded-md p-4"
+      className="not-prose rounded-md p-4 overflow-x-scroll w-full sm:py-4 sm:px-0"
     ></div>
   );
 };

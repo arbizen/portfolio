@@ -24,20 +24,24 @@ export default async function RootLayout({
           attribute="class"
           disableTransitionOnChange
         >
-          <main className="flex flex-col p-16 bg-white">
-            <Header />
-            <Blob x="300px" y="80px" />
+          <Header className="hidden sm:block rounded-none" />{' '}
+          {/* Mobile header */}
+          <main className="flex flex-col p-16 bg-white sm:px-4 sm:pb-4 sm:pt-0 sm:overflow-x-hidden">
+            <Header className="sm:hidden" />
+            <Blob x="300px" y="80px" className="sm:hidden" />
             <Blob
-              className="right-[64px] top-[130px]"
+              className="right-[64px] top-[130px] sm:hidden"
               type="blob2"
               fill="#22C55E"
             />
             <Blob
-              className="right-[300px] top-[440px]"
+              className="right-[300px] top-[440px] sm:hidden"
               type="blob3"
               fill="#A855F7"
             />
-            <div className="flex-grow min-h-screen">{children}</div>
+            <div className="flex-grow min-h-screen sm:overflow-x-hidden">
+              {children}
+            </div>
             <Footer text={footer.text} socials={footer.socials} />
           </main>
         </ThemeProvider>

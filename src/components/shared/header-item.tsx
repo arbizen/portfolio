@@ -11,7 +11,7 @@ export default function HeaderItem({
   const pathname = usePathname();
   if (pathname === route) {
     return (
-      <div className="flex flex-col items-center sm:flex-auto">
+      <div className="flex flex-col items-center sm:flex-none">
         <Link
           className="text-slate-900 font-medium sm:text-base leading-tight"
           href={route}
@@ -24,7 +24,7 @@ export default function HeaderItem({
   }
   return (
     <Link
-      className="text-slate-600 sm:text-base leading-tight sm:flex-auto sm:flex sm:justify-center"
+      className="text-slate-600 sm:text-base leading-tight sm:flex-none sm:flex sm:justify-center"
       href={route}
     >
       {name}

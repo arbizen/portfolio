@@ -3,6 +3,21 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeaderItem from './header-item';
 import { cn } from '@/lib/utils';
+import { Globe } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export default function Header({
   className,
@@ -34,6 +49,34 @@ export default function Header({
         {data.nav.map((item: any) => (
           <HeaderItem key={item.url} route={item.url} name={item.name} />
         ))}
+      </menu>
+      <menu className="flex gap-8">
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <div className="p-2 hover:bg-slate-100 text-slate-800 rounded cursor-pointer sm:cursor-auto">
+              <Globe size={20} />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>Languages</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <Link href="/en">
+                <DropdownMenuItem>
+                  <span>English</span>
+                  <DropdownMenuShortcut>en</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/bn">
+                <DropdownMenuItem>
+                  <span>বাংলা</span>
+                  <DropdownMenuShortcut>bn</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </Link>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+          <DropdownMenuPortal />
+        </DropdownMenu>
       </menu>
     </header>
   );

@@ -67,6 +67,12 @@ export default function Header({
                   <DropdownMenuShortcut>en</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </Link>
+              <Link href="/es">
+                <DropdownMenuItem>
+                  <span>Spanish</span>
+                  <DropdownMenuShortcut>es</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </Link>
               <Link href="/bn">
                 <DropdownMenuItem>
                   <span>বাংলা</span>

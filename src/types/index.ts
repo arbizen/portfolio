@@ -26,6 +26,7 @@ export type Blog = {
   category?: string;
   readTime?: string;
   image?: string;
+  lang: string;
 };
 
 export type Project = {

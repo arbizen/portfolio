@@ -1,11 +1,16 @@
-import { headerItems } from '@/data/header';
+import { SITE_NAME, headerItems } from '@/data/header';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderItem from './header-item';
 import { cn } from '@/lib/utils';
-import MobileMenu from './mobile-menu';
 
-export default function Header({ className }: { className?: string }) {
+export default function Header({
+  className,
+  data,
+}: {
+  className?: string;
+  data: any;
+}) {
   return (
     <header
       className={cn(
@@ -22,12 +27,12 @@ export default function Header({ className }: { className?: string }) {
           width={50}
         />
         <h1 className="font-medium text-2xl leading-tight sm:text-xl">
-          <Link href="/">Arb.</Link>
+          <Link href={data.siteName.url}>{data.siteName.text}</Link>
         </h1>
       </div>
       <menu className="flex gap-8 sm:hidden">
-        {headerItems.map((item) => (
-          <HeaderItem key={item.route} route={item.route} name={item.name} />
+        {data.nav.map((item: any) => (
+          <HeaderItem key={item.url} route={item.url} name={item.name} />
         ))}
       </menu>
     </header>

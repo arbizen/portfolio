@@ -1,0 +1,73 @@
+{
+  "header": {
+    "siteName": {
+      "text": "Arb.",
+      "url": "/en"
+    },
+    "nav": [
+      {
+        "name": "Home",
+        "url": "/en"
+      },
+      {
+        "name": "Blogs",
+        "url": "/en/blogs"
+      },
+      {
+        "name": "Projects",
+        "url": "/en/projects"
+      },
+      {
+        "name": "Bookmarks",
+        "url": "/en/bookmarks"
+      },
+      {
+        "name": "Poems",
+        "url": "/en/poems"
+      },
+      {
+        "name": "Images",
+        "url": "/en/images"
+      },
+      {
+        "name": "About",
+        "url": "/em/about"
+      }
+    ]
+  },
+  "page": {
+    "home": {
+      "name": {
+        "first": "I code,",
+        "second": "therefore I am!",
+        "third": "Home"
+      },
+      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot.",
+      "knowMoreAboutMe": "Know more about me"
+    },
+    "blogs": {
+      "name": "Blogs",
+      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+    },
+    "projects": {
+      "name": "Projects",
+      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+    },
+    "bookmarks": {
+      "name": "Bookmarks",
+      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+    },
+    "poems": {
+      "name": "Poems",
+      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+    },
+    "images": {
+      "name": "Images",
+      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+    },
+    "about": {
+      "name": "About",
+      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+    }
+  }
+}

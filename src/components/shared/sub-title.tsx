@@ -22,7 +22,7 @@ export default function SubTitle({
         {title}
       </h2>
       <Link
-        className="flex items-center gap-1 space-x-1 text-[12px] font-bold text-blue-500"
+        className="flex items-center gap-1 space-x-1 text-[14px] font-bold text-blue-500"
         href="/"
       >
         {seeMoreText}

@@ -1,0 +1,52 @@
+{
+  "header": {
+    "siteName": {
+      "text": "এআরবি.",
+      "url": "/bn"
+    },
+    "nav": [
+      { "name": "হোম", "url": "/bn" },
+      { "name": "ব্লগ", "url": "/bn/blogs" },
+      { "name": "প্রজেক্ট", "url": "/bn/projects" },
+      { "name": "বুকমার্ক", "url": "/bn/bookmarks" },
+      { "name": "কবিতা", "url": "/bn/poems" },
+      { "name": "ছবি", "url": "/bn/images" },
+      { "name": "আমার সম্পর্কে", "url": "/bn/about" }
+    ]
+  },
+  "page": {
+    "home": {
+      "name": {
+        "first": "আমি কোড করি,",
+        "second": "তাই আমি আছি!",
+        "third": "হোম"
+      },
+      "description": "আমার সাইটের হোম পেজ",
+      "knowMoreAboutMe": "আমার সম্পর্কে আরও জানুন"
+    },
+    "blogs": {
+      "name": "ব্লগ",
+      "description": "আমার সাইটের ব্লগ পেজ"
+    },
+    "projects": {
+      "name": "প্রজেক্ট",
+      "description": "আমার সাইটের প্রজেক্ট পেজ"
+    },
+    "bookmarks": {
+      "name": "বুকমার্ক",
+      "description": "আমার সাইটের বুকমার্ক পেজ"
+    },
+    "poems": {
+      "name": "কবিতা",
+      "description": "আমার সাইটের কবিতা পেজ"
+    },
+    "images": {
+      "name": "ছবি",
+      "description": "আমার সাইটের ছবি পেজ"
+    },
+    "about": {
+      "name": "আমার সম্পর্কে",
+      "description": "আমার সাইটের আমার সম্পর্কে পেজ"
+    }
+  }
+}

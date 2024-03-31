@@ -1,5 +1,7 @@
 import { HeaderItem } from '@/types';
 
+export const SITE_NAME = 'Arb.'; // showed in the header
+
 export const headerItems: HeaderItem[] = [
   {
     name: 'Home',

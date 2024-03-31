@@ -8,8 +8,10 @@ interface PageInfoProps {
   description?: string;
   footer?: React.ReactNode;
   itemsLength?: number;
+  breadcumb?: React.ReactNode;
 }
 export default function PageInfo({
+  breadcumb,
   header,
   description,
   footer,
@@ -17,7 +19,7 @@ export default function PageInfo({
 }: PageInfoProps) {
   return (
     <div className="flex flex-col my-16 pl-[60px] gap-8 max-w-[860px] sm:pl-[15px] sm:gap-4 sm:mt-8 sm:mb-8">
-      <Breadcumb />
+      {breadcumb}
       <div className="flex flex-col gap-4 sm:gap-2">
         <div className="flex gap-2 items-center">
           {header}

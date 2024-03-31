@@ -5,6 +5,8 @@ import Badge from '@/components/ui/badge';
 import { Activity } from '@/types';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { getDictionary } from './dictionaries';
+import Breadcumb from '@/components/shared/breadcumb';
 
 export const metadata = {
   title: 'Home — Find everything about me',
@@ -13,30 +15,48 @@ export const metadata = {
 
 export const dynamic = 'force-dynamic';
 
-export default async function Home() {
+export default async function Home({
+  params: { lang },
+}: {
+  params: { lang: string };
+}) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`,
   );
+  console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`);
   const data = await res.json();
   const activities: Activity[] = data.activities.data;
+
+  const dictionary = await getDictionary(lang);
 
   return (
     <div>
       <PageInfo
+        breadcumb={
+          <Breadcumb
+            firstNav={{
+              name: dictionary.page.home.name.third,
+              url: `/${lang}`,
+            }}
+          />
+        }
         header={
           <div>
             <h1 className="font-black text-[40px] sm:text-[36px]">
-              I <span className="text-blue-500">code.</span>
+              {dictionary.page.home.name.first}{' '}
+              <span className="text-blue-500">
+                {dictionary.page.home.name.second}
+              </span>
             </h1>
           </div>
         }
-        description={`These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot.`}
+        description={dictionary.page.home.description}
         footer={
           <Link
             className="flex gap-1 items-center text-blue-500 font-bold text-[14px]"
             href="/about"
           >
-            Read more on about page <ArrowRight size={16} />
+            {dictionary.page.home.knowMoreAboutMe} <ArrowRight size={16} />
           </Link>
         }
       />

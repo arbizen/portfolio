@@ -20,7 +20,7 @@ export default async function RootLayout({
   return (
     <>
       <Header data={header} className="hidden sm:flex rounded-none" />
-      <MobileMenu />
+      <MobileMenu data={header} />
 
       <main className="flex flex-col p-16 bg-white sm:px-4 sm:pb-4 sm:pt-0 sm:overflow-x-hidden">
         <Header data={header} className="sm:hidden" />

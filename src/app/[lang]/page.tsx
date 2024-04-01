@@ -9,8 +9,8 @@ import { getDictionary } from './dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
 
 export const metadata = {
-  title: 'Home — Find everything about me',
-  description: 'This is the home page',
+  title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
+  description: `Discover the portfolio of Arb Rahim Badsa (Arbizen), a talented JavaScript developer with expertise in React.js, Next.js, TypeScript, Supabase, Figma, and more. Explore a range of projects showcasing Arbizen's skills in web development, blogs, liked poems, images and more.`,
 };
 
 export const dynamic = 'force-dynamic';

@@ -9,7 +9,39 @@ import Footer from '@/components/shared/footer';
 import { footer } from '@/data/footer';
 import MobileMenu from '@/components/shared/mobile-menu';
 
-const inter = Inter({ subsets: ['latin'] });
+export const metadata: Metadata = {
+  creator: 'Arb Rahim Badsa',
+  category: 'technology',
+  applicationName: 'Arb Rahim Badsa',
+  description: `Discover the portfolio of Arb Rahim Badsa (Arbizen), a talented JavaScript developer with expertise in React.js, Next.js, TypeScript, Supabase, Figma, and more. Explore a range of projects showcasing Arbizen's skills in web development, blogs, liked poems, images and more.`,
+  keywords: [
+    'Portfolio',
+    'Arb Rahim Badsa',
+    'Arb Rahim Badsa Portfolio',
+    'Arb Rahim Badsa Blog',
+    'Arb Rahim Badsa Website',
+    'Arb Rahim Badsa Personal Website',
+    'Arb Rahim Badsa Projects',
+    'Arbizen Blog',
+    'Arbizen Website',
+    'Arbizen Portfolio',
+    'Arbizen Projects',
+    'Arb Blog',
+    'Arb Website',
+    'Arb Portfolio',
+    'Arb Projects',
+    'Arb Personal Website',
+  ],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL!),
+  alternates: {
+    canonical: '/',
+    languages: {
+      en: '/en',
+      bn: '/bn',
+      es: '/es',
+    },
+  },
+};
 
 export default async function RootLayout({
   children,

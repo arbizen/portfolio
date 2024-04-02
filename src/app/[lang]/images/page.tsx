@@ -5,6 +5,8 @@ import { getDictionary } from '../dictionaries';
 import { Tag, TagContainer } from '@/components/tag';
 import { ImageType } from '@/types';
 import Image from 'next/image';
+import { getPlaiceholder } from 'plaiceholder';
+import CustomImage from '@/components/gallery-image';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,6 +43,7 @@ export default async function Images({ params, searchParams }: pageProps) {
     nextPageUrl = `/${page}?start=${pageEnd ?? start}&count=${count}`;
   }
   const { page: dictionaryPage } = await getDictionary(params.lang);
+
   return (
     <div>
       <PageInfo
@@ -73,12 +76,13 @@ export default async function Images({ params, searchParams }: pageProps) {
       <div className="w-full">
         <div className="columns-4 gap-4 sm:columns-1 [&>img:not(:first-child)]:mt-4">
           {images.map((image) => (
-            <Image
+            <CustomImage
               src={image.src}
               alt={image.alt}
               key={image.id}
-              height={2000}
-              width={2000}
+              height={300}
+              width={500}
+              sizes="500px"
               className="h-full w-full rounded-md"
             />
           ))}

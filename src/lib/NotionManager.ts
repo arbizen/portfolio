@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Client, isFullPage } from '@notionhq/client';
 import { NotionToMarkdown } from 'notion-to-md';
+import { getPlaiceholder } from 'plaiceholder';
 export class NotionManager {
   constructor(
     private readonly notion: Client,

@@ -1,21 +1,65 @@
+import { notionManager } from '@/lib/NotionManager';
 import { NextResponse } from 'next/server';
-import { createApi } from 'unsplash-js';
+import { compareAsc, compareDesc } from 'date-fns';
+import { getPlaiceholder } from 'plaiceholder';
 
-export async function GET(req: Request) {
+const CompareFunctionLookup = {
+  asc: compareAsc,
+  desc: compareDesc,
+};
+
+export async function GET(req: Request, context: { params: { name: string } }) {
   try {
     const url = new URL(req.url);
-    const query = url.searchParams.get('query') ?? 'flower';
-    const unsplash = createApi({
-      accessKey: process.env.UNSPLASH_ACCESS_KEY!,
-    });
-    const res = await unsplash.search.getPhotos({
-      query,
-      page: 1,
-      perPage: 3,
-    });
-    const results = res.response?.results;
+    const start = url.searchParams.get('start') ?? 0;
+    let count = url.searchParams.get('count') ?? 25; // default count is 25
+    const order = url.searchParams.get('order') ?? 'desc';
+    let results: any = {};
+    const data = await notionManager.getDatabaseByName('images');
+    const transformedData = [];
+
+    // sort order
+    const sortOrder = order === 'asc' ? 'asc' : 'desc';
+
+    const filter = [
+      ...data?.results
+        ?.filter((item: any) => item.name !== '' || item.title !== '')
+        .sort((a: any, b: any) => {
+          return CompareFunctionLookup[sortOrder](
+            new Date(a.date),
+            new Date(b.date),
+          );
+        }),
+    ];
+    if (filter.length < 25 || Number(count) > 100) count = filter.length;
+    const limited = filter.slice(+start, Number(start) + Number(count));
+    for (const item of limited) {
+      const src = item.src;
+      const buffer = await fetch(src).then(async (res) =>
+        Buffer.from(await res.arrayBuffer()),
+      );
+      const { base64 } = await getPlaiceholder(buffer);
+      transformedData.push({
+        ...item,
+        blurDataURL: base64,
+      });
+    }
+    const pageEnd =
+      Number(start) + Number(count) >= 100 ? 0 : Number(start) + Number(count);
+    if (data)
+      results['images'] =
+        {
+          data: limited,
+          next_cursor: data.next_cursor,
+          has_more: data.has_more,
+          totalLength: limited.length,
+          start: pageEnd === 100 ? 0 : start,
+          end: pageEnd,
+        } || data;
+    if (!results || Object.keys(results).length === 0)
+      return NextResponse.json('Database not found', { status: 404 });
     return NextResponse.json(
-      { results },
+      { ...results },
       {
         status: 200,
         headers: {

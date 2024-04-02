@@ -16,7 +16,7 @@ export default async function RootLayout({
   params: { lang: string };
   children: React.ReactNode;
 }) {
-  const { header } = await getDictionary(lang);
+  const { header } = lang && (await getDictionary(lang));
   return (
     <>
       <Header data={header} className="hidden sm:flex rounded-none" />

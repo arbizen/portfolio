@@ -5,7 +5,7 @@ export class NotionManager {
   constructor(
     private readonly notion: Client,
     private readonly databases: {
-      name: 'blogs' | 'activities' | 'bookmarks' | 'projects';
+      name: 'blogs' | 'activities' | 'bookmarks' | 'projects' | 'images';
       id: string;
     }[],
   ) {}
@@ -142,6 +142,22 @@ export class NotionManager {
           isCompleted: page.properties?.isCompleted?.checkbox || false,
         };
       });
+    } else if (name === 'images') {
+      formatted = db.results.map((page: any) => {
+        if (!isFullPage(page)) {
+          throw new Error('Notion page is not a full page');
+        }
+
+        return {
+          id: page.id,
+          alt: page.properties?.name?.title[0]?.plain_text || '',
+          src:
+            page.cover?.external?.url ||
+            page.cover?.file?.url ||
+            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          date: page.properties?.createdAt?.created_time || '',
+        };
+      });
     }
     return {
       results: formatted,
@@ -158,5 +174,6 @@ export const notionManager = new NotionManager(
     { name: 'activities', id: process.env.NOTION_ACTIVITY_DATABASE_ID! },
     { name: 'bookmarks', id: process.env.NOTION_BOOKMARK_DATABASE_ID! },
     { name: 'projects', id: process.env.NOTION_PROJECT_DATABASE_ID! },
+    { name: 'images', id: process.env.NOTION_IMAGE_DATABASE_ID! },
   ],
 );

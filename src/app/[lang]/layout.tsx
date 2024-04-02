@@ -34,7 +34,7 @@ export default async function RootLayout({
           fill="#22C55E"
         />
         <Blob
-          className="right-[300px] top-[440px] sm:right-[100px] sm:h-[100px] sm:w-[100px] z-0 sm:opacity-40"
+          className="right-[300px] top-[440px] sm:right-[100px] sm:h-[100px] sm:w-[100px] z-0 opacity-40"
           type="blob3"
           fill="#A855F7"
         />

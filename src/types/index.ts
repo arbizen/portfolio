@@ -42,3 +42,9 @@ export type Project = {
   year: number;
   type: string;
 };
+
+export type ImageType = {
+  id: string;
+  alt: string;
+  src: string;
+};

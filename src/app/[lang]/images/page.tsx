@@ -24,8 +24,8 @@ export default async function Images({ params, searchParams }: pageProps) {
   const cursor = searchParams?.cursor || '';
   const page = `images`;
   const url = !cursor
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}?start=${start}&count=${count}&order=asc`
-    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}/${cursor}?start=${start}&count=${count}&order=asc`;
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}?start=${start}&count=${count}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}/${cursor}?start=${start}&count=${count}`;
   const res = await fetch(url);
   const data = await res.json();
   const images: ImageType[] = data[page]?.data;
@@ -36,9 +36,9 @@ export default async function Images({ params, searchParams }: pageProps) {
   if (Number(start) == 100 - Number(count) || cursor) {
     nextPageUrl = `/${page}?cursor=${nextCursor ?? cursor}&start=${
       pageEnd ?? start
-    }&count=${count}&order=asc`;
+    }&count=${count}`;
   } else {
-    nextPageUrl = `/${page}?start=${pageEnd ?? start}&count=${count}&order=asc`;
+    nextPageUrl = `/${page}?start=${pageEnd ?? start}&count=${count}`;
   }
   const { page: dictionaryPage } = await getDictionary(params.lang);
   return (

@@ -8,6 +8,7 @@ import Blob from '@/components/blob';
 import Footer from '@/components/shared/footer';
 import { footer } from '@/data/footer';
 import MobileMenu from '@/components/shared/mobile-menu';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   creator: 'Arb Rahim Badsa',
@@ -43,6 +44,14 @@ export const metadata: Metadata = {
   },
 };
 
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Arbizen',
+  alternateName: ['Arb', 'Arb Rahim Badsa'],
+  url: process.env.NEXT_PUBLIC_API_URL!,
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -57,6 +66,10 @@ export default async function RootLayout({
           attribute="class"
           disableTransitionOnChange
         >
+          <Script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+          />
           {children}
           {/* <Header className="hidden sm:flex rounded-none" />
           <MobileMenu />

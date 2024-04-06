@@ -50,7 +50,7 @@ export async function generateMetadata(
 export default async function BlogPage({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string; lang: string };
 }) {
   const decodedSlug = decodeURIComponent(params.slug);
   const mdString = await notionManager.getBlogBySlug(decodedSlug);
@@ -113,6 +113,37 @@ export default async function BlogPage({
           </Markdown>
         </article>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: title,
+            image: coverUrl,
+            datePublished: date,
+            description,
+            author: {
+              '@type': 'Person',
+              name: 'Arb Rahim Badsa',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'Arbizen',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://avatars.githubusercontent.com/u/34975329?v=4',
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id':
+                process.env.NEXT_PUBLIC_API_URL +
+                `/${params.lang}/blogs/${params.slug}`,
+            },
+          }),
+        }}
+      />
     </div>
   );
 }

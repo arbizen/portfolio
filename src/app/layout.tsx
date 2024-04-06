@@ -67,6 +67,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Script
+            id="json-ld-site"
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
           />

@@ -19,6 +19,7 @@ export default function AboutPage() {
   return (
     <div>
       <Script
+        id="json-ld-profile"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(profileJsonLd) }}
       />

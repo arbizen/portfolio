@@ -34,14 +34,6 @@ export const metadata: Metadata = {
     'Arb Personal Website',
   ],
   metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL!),
-  alternates: {
-    canonical: '/',
-    languages: {
-      en: '/en',
-      bn: '/bn',
-      es: '/es',
-    },
-  },
 };
 
 const siteJsonLd = {

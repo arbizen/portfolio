@@ -9,6 +9,17 @@ import { footer } from '@/data/footer';
 import MobileMenu from '@/components/shared/mobile-menu';
 import { getDictionary } from './dictionaries';
 
+export const metadata: Metadata = {
+  alternates: {
+    canonical: `/en`,
+    languages: {
+      en: '/en',
+      bn: '/bn',
+      es: '/es',
+    },
+  },
+};
+
 export default async function RootLayout({
   params: { lang },
   children,

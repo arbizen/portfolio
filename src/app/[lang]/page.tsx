@@ -61,7 +61,7 @@ export default async function Home({
         }
       />
       <div>
-        <SubTitle title="Activities" seeMoreText="See more" />
+        <SubTitle title="Activities" seeMoreText="All activities" />
         <section className="pt-[64px] flex flex-col gap-4 sm:pt-[32px]">
           {activities.map((activity: Activity) => (
             <Link key={activity.id} href="/">

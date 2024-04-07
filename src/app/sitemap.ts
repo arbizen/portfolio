@@ -18,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const data = await res.json();
   let blogs: Blog[] = data.blogs?.data;
   const slugPages = blogs.map((blog) => ({
-    url: `${BASE_URL}/blogs/${blog.slug}`,
+    url: `${BASE_URL}/en/blogs/${blog.slug}`,
     lastModified: blog.date,
     changeFrequency: 'weekly',
     priority: 0.8,

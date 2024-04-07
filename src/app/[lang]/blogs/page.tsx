@@ -31,6 +31,8 @@ const Blog = (props: Blog) => {
             width={360}
             height={240}
             className="rounded-md max-h-[240px] object-cover"
+            placeholder="blur"
+            blurDataURL="/blur-placeholder.png"
           />
         </Link>
         <div className="flex flex-col gap-6">

@@ -53,7 +53,7 @@ export default async function BlogPage({
   params: { slug: string };
 }) {
   const decodedSlug = decodeURIComponent(params.slug);
-  const mdString = await notionManager.getBlogBySlug(decodedSlug);
+  const mdString = await notionManager.getPageBySlug(decodedSlug);
   const pageInfo = await notionManager.getPageById(decodedSlug.split('#')[1]);
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||

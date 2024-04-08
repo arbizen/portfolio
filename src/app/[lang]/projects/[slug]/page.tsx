@@ -36,7 +36,7 @@ export async function generateMetadata(
   //   (pageInfo as any)?.cover?.external?.url ||
   //   'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
   const title =
-    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Blog';
+    (pageInfo as any)?.properties?.name?.title[0]?.plain_text || 'Project name';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
@@ -47,7 +47,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function BlogPage({
+export default async function ProjectPage({
   params,
 }: {
   params: { slug: string; lang: string };
@@ -60,17 +60,12 @@ export default async function BlogPage({
     (pageInfo as any).cover?.file?.url ||
     'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
   const title =
-    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Blog';
+    (pageInfo as any)?.properties?.name?.title[0]?.plain_text || 'Project name';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
-  const category =
-    'multi_select' in (pageInfo as any)?.properties.category
-      ? (pageInfo as any)?.properties.category.multi_select
-          .map((tag: any) => tag.name)
-          .join(' ')
-      : [];
-  const readTime = (pageInfo as any)?.properties?.readTime?.number || 0;
+  const type =
+    (pageInfo as any).properties?.type?.rich_text[0]?.plain_text || '';
   const date = (pageInfo as any)?.properties?.createdAt?.created_time || '';
 
   const customComponents = {
@@ -90,10 +85,7 @@ export default async function BlogPage({
             <Badge className="bg-orange-100 text-orange-500">
               {dateformat(date, 'ddS mmmm, yyyy')}
             </Badge>
-            <Badge className="bg-blue-100 text-blue-500">
-              {readTime} min read
-            </Badge>
-            <Badge className="bg-red-100 text-red-500">{category}</Badge>
+            <Badge className="bg-red-100 text-red-500">{type}</Badge>
           </div>
         }
       />
@@ -114,37 +106,6 @@ export default async function BlogPage({
           </Markdown>
         </article>
       </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
-            headline: title,
-            image: coverUrl,
-            datePublished: date,
-            description,
-            author: {
-              '@type': 'Person',
-              name: 'Arb Rahim Badsa',
-            },
-            publisher: {
-              '@type': 'Organization',
-              name: 'Arbizen',
-              logo: {
-                '@type': 'ImageObject',
-                url: 'https://avatars.githubusercontent.com/u/34975329?v=4',
-              },
-            },
-            mainEntityOfPage: {
-              '@type': 'WebPage',
-              '@id':
-                process.env.NEXT_PUBLIC_API_URL +
-                `/${params.lang}/blogs/${params.slug}`,
-            },
-          }),
-        }}
-      />
     </div>
   );
 }

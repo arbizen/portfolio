@@ -17,7 +17,7 @@ export class NotionManager {
     });
     return this.getFormattedData(db, name);
   }
-  async getBlogBySlug(slug: string) {
+  async getPageBySlug(slug: string) {
     const n2m = new NotionToMarkdown({ notionClient: this.notion });
 
     const id = slug.split('#')[1];
@@ -120,6 +120,16 @@ export class NotionManager {
           throw new Error('Notion page is not a full page');
         }
 
+        const slug =
+          page.properties?.name?.title[0]?.plain_text
+            .toLowerCase()
+            .replace(/ /g, '-') +
+            '#' +
+            page.id || '';
+
+        // url encode
+        const encodedSlug = encodeURIComponent(slug);
+
         return {
           id: page.id,
           date: page.properties?.createdAt?.created_time || '',
@@ -141,6 +151,7 @@ export class NotionManager {
           previewLink:
             page.properties?.previewLink?.rich_text[0]?.plain_text || '',
           isCompleted: page.properties?.isCompleted?.checkbox || false,
+          slug: encodedSlug,
         };
       });
     } else if (name === 'images') {

@@ -41,6 +41,8 @@ export type Project = {
   isCompleted?: boolean;
   year: number;
   type: string;
+  slug?: string;
+  lang?: string;
 };
 
 export type ImageType = {

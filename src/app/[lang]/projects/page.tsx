@@ -31,20 +31,30 @@ const Project = (props: Project) => {
         </Chip>
       </div>
       <div className="flex flex-col gap-4 flex-grow">
-        <Image
-          src={props.image!}
-          width={320}
-          height={180}
-          alt={props.name}
-          className="rounded-md w-full aspect-auto"
-        />
+        <Link
+          className="hover:underline"
+          href={`/${props.lang}/projects/${props.slug}`}
+        >
+          <Image
+            src={props.image!}
+            width={320}
+            height={180}
+            alt={props.name}
+            className="rounded-md w-full aspect-auto"
+          />
+        </Link>
         <div className="flex flex-col gap-8 flex-grow">
           <div className="flex flex-col gap-4 mt-4">
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
-                <h3 className="leading-tight font-bold text-2xl">
-                  {props.name}
-                </h3>
+                <Link
+                  className="hover:underline"
+                  href={`/${props.lang}/projects/${props.slug}`}
+                >
+                  <h3 className="leading-tight font-bold text-2xl">
+                    {props.name}
+                  </h3>
+                </Link>
                 <Badge className="bg-red-100 text-red-600">{props.type}</Badge>
               </div>
               <p className="text-base leading-tight font-medium text-slate-600 w-full">
@@ -61,8 +71,8 @@ const Project = (props: Project) => {
           </div>
           <div className="flex justify-between items-end flex-grow">
             <Link
-              href="/"
-              className="flex gap-1 items-center text-sm font-medium text-blue-500"
+              href={`/${props.lang}/projects/${props.slug}`}
+              className="flex gap-1 items-center text-sm font-medium text-blue-500 hover:underline"
             >
               See details
               <ArrowRight size={15} />
@@ -70,14 +80,14 @@ const Project = (props: Project) => {
             <div className="flex gap-4">
               <Link
                 href={props.previewLink!}
-                className="text-sm font-medium text-blue-500"
+                className="text-sm font-medium text-blue-500 hover:underline"
                 target="_blank"
               >
                 Preview
               </Link>
               <Link
                 href={props.githubLink!}
-                className="text-sm font-medium text-blue-500"
+                className="text-sm font-medium text-blue-500 hover:underline"
                 target="_blank"
               >
                 Github
@@ -154,7 +164,7 @@ export default async function Blogs({
       />
       <section className="grid grid-cols-3 gap-4 sm:grid-cols-1">
         {projects.map((project) => (
-          <Project key={project.id} {...project} />
+          <Project key={project.id} {...project} lang={params.lang} />
         ))}
       </section>
     </div>

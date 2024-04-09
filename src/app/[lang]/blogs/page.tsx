@@ -41,9 +41,11 @@ const Blog = (props: Blog) => {
               <Badge className="bg-blue-100 text-blue-600">
                 {props.readTime} min read
               </Badge>
-              <Badge className="bg-red-100 text-red-600">
-                {props.category}
-              </Badge>
+              {props?.categories?.map((category: string) => (
+                <Badge key={category} className="bg-red-100 text-red-500">
+                  {category}
+                </Badge>
+              ))}
             </div>
             <span className="text-xs text-slate-600">
               {dateformat(props.date, 'ddS mmmm, yyyy')}
@@ -83,14 +85,13 @@ export default async function Blogs({
   const start = searchParams?.start || 0;
   const count = searchParams?.count || 25;
   const cursor = searchParams?.cursor || '';
+  const category = searchParams?.category || '';
   const url = !cursor
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/blogs?start=${start}&count=${count}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/blogs/${cursor}?start=${start}&count=${count}`;
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/blogs?start=${start}&count=${count}&category=${category}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/blogs/${cursor}?start=${start}&count=${count}&category=${category}`;
   const res = await fetch(url);
   const data = await res.json();
   let blogs: Blog[] = data.blogs?.data;
-  const recentBlogs = blogs?.slice(0, 2);
-  blogs = blogs?.slice(2);
   const pageEnd = data.bookmarks?.end;
   const hasMore = data.bookmarks?.has_more;
   const nextCursor = data.bookmarks?.next_cursor;
@@ -98,12 +99,31 @@ export default async function Blogs({
   if (Number(start) == 100 - Number(count) || cursor) {
     nextPageUrl = `/blogs?cursor=${nextCursor ?? cursor}&start=${
       pageEnd ?? start
-    }&count=${count}`;
+    }&count=${count}&category=${category}`;
   } else {
-    nextPageUrl = `/blogs?start=${pageEnd ?? start}&count=${count}`;
+    nextPageUrl = `/blogs?start=${
+      pageEnd ?? start
+    }&count=${count}&category=${category}`;
   }
 
   const { page } = await getDictionary(params.lang);
+
+  const tagsWithLink = [
+    { name: 'All', path: 'All' },
+    { name: 'NextJs', path: 'NextJs' },
+    { name: 'ReactJs', path: 'ReactJs' },
+    { name: 'Frontend', path: 'Frontend' },
+    { name: 'Backend', path: 'Backend' },
+    { name: 'Supabase', path: 'Supabase' },
+    { name: 'Story', path: 'Story' },
+    { name: 'Textile', path: 'Textile' },
+    { name: 'Uncategorized', path: 'Uncategorized' },
+    { name: 'GraphQL', path: 'GraphQL' },
+    { name: 'Typescript', path: 'Typescript' },
+    { name: 'Popular', path: 'Popular' },
+    { name: 'More', path: 'More' },
+    { name: 'Test', path: 'Test' },
+  ];
 
   return (
     <div>
@@ -125,40 +145,34 @@ export default async function Blogs({
         footer={
           <>
             <TagContainer>
-              <Tag>React</Tag>
-              <Tag>NextJs</Tag>
-              <Tag>NodeJs</Tag>
-              <Tag>GraphQL</Tag>
-              <Tag>Typescript</Tag>
-              <Tag>9+</Tag>
+              {tagsWithLink.map((tag) => (
+                <Link
+                  href={`/${params.lang}/blogs?category=${tag.path}`}
+                  key={tag.name}
+                >
+                  <Tag
+                    className={
+                      category === tag.name
+                        ? 'border-slate-800'
+                        : 'border-slate-200'
+                    }
+                  >
+                    {tag.name}
+                  </Tag>
+                </Link>
+              ))}
             </TagContainer>
           </>
         }
       />
-      <div className="flex flex-col gap-4">
-        {recentBlogs?.map((blog: Blog) => (
-          <Blog
-            id={blog.id}
-            slug={blog.slug}
-            title={blog.title}
-            category={blog.category}
-            date={blog.date}
-            description={blog.description}
-            image={blog.image}
-            key={blog.id}
-            readTime={blog.readTime}
-            lang={params.lang}
-          />
-        ))}
-      </div>
-      <Subtitle className="py-8" title="NextJs" seeMoreText="See more" />
+
       <div className="flex flex-col gap-4">
         {blogs?.map((blog: Blog) => (
           <Blog
             id={blog.id}
             slug={blog.slug}
             title={blog.title}
-            category={blog.category}
+            categories={blog.categories}
             date={blog.date}
             description={blog.description}
             image={blog.image}
@@ -168,6 +182,14 @@ export default async function Blogs({
           />
         ))}
       </div>
+
+      {blogs.length === 0 && (
+        <div>
+          <p className="text-slate-500 text-sm">
+            Looks like it&apos;s too empty here!
+          </p>
+        </div>
+      )}
     </div>
   );
 }

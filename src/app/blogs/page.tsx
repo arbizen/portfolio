@@ -37,9 +37,11 @@ const Blog = (props: Blog) => {
               <Badge className="bg-blue-100 text-blue-600">
                 {props.readTime} min read
               </Badge>
-              <Badge className="bg-red-100 text-red-600">
-                {props.category}
-              </Badge>
+              {props.categories?.map((category) => (
+                <Badge className="bg-red-100 text-red-600" key={category}>
+                  {JSON.stringify(props.categories)}
+                </Badge>
+              ))}
             </div>
             <span className="text-xs text-slate-600">
               {dateformat(props.date, 'ddS mmmm, yyyy')}
@@ -95,6 +97,7 @@ export default async function Blogs({
   } else {
     nextPageUrl = `/blogs?start=${pageEnd ?? start}&count=${count}`;
   }
+  console.log(blogs);
   return (
     <div>
       <PageInfo
@@ -119,7 +122,7 @@ export default async function Blogs({
             id={blog.id}
             slug={blog.slug}
             title={blog.title}
-            category={blog.category}
+            categories={blog.categories}
             date={blog.date}
             description={blog.description}
             image={blog.image}
@@ -135,7 +138,7 @@ export default async function Blogs({
             id={blog.id}
             slug={blog.slug}
             title={blog.title}
-            category={blog.category}
+            categories={blog.categories}
             date={blog.date}
             description={blog.description}
             image={blog.image}

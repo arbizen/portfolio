@@ -77,11 +77,9 @@ export class NotionManager {
           id: page.id,
           title: page.properties?.title?.title[0]?.plain_text || '',
           date: page.properties?.createdAt?.created_time || '',
-          category:
+          categories:
             'multi_select' in page.properties.category
-              ? page.properties.category.multi_select
-                  .map((tag) => tag.name)
-                  .join(' ')
+              ? page.properties.category.multi_select.map((tag) => tag.name)
               : [],
           description:
             page.properties?.description?.rich_text[0]?.plain_text || '',

@@ -64,11 +64,11 @@ export default async function BlogPage({
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
-  const category =
+  const categories =
     'multi_select' in (pageInfo as any)?.properties.category
-      ? (pageInfo as any)?.properties.category.multi_select
-          .map((tag: any) => tag.name)
-          .join(' ')
+      ? (pageInfo as any)?.properties.category.multi_select.map(
+          (tag: any) => tag.name,
+        )
       : [];
   const readTime = (pageInfo as any)?.properties?.readTime?.number || 0;
   const date = (pageInfo as any)?.properties?.createdAt?.created_time || '';
@@ -93,7 +93,11 @@ export default async function BlogPage({
             <Badge className="bg-blue-100 text-blue-500">
               {readTime} min read
             </Badge>
-            <Badge className="bg-red-100 text-red-500">{category}</Badge>
+            {categories.map((category: string) => (
+              <Badge key={category} className="bg-red-100 text-red-500">
+                {category}
+              </Badge>
+            ))}
           </div>
         }
       />

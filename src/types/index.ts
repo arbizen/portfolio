@@ -23,7 +23,7 @@ export type Blog = {
   slug: string;
   date?: string;
   description?: string;
-  category?: string;
+  categories?: string[];
   readTime?: string;
   image?: string;
   lang?: string;

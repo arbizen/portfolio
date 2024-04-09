@@ -15,6 +15,7 @@ export async function GET(
     const url = new URL(req.url);
     const start = url.searchParams.get('start') ?? 0;
     let count = url.searchParams.get('count') ?? 25; // default count is 25
+    const category = url.searchParams.get('category') || '';
     if (!context?.params?.name)
       return NextResponse.json('No name provided', { status: 400 });
     const routes = context.params.name.split('+');
@@ -44,10 +45,19 @@ export async function GET(
         Number(start) + Number(count) >= 100
           ? 0
           : Number(start) + Number(count);
+      const categoryFiltered = filter.filter((item: any) => {
+        if (category === '') return true;
+        return item.categories.includes(category);
+      });
       if (data)
         results[route] =
           {
-            data: limited,
+            data:
+              category === 'All'
+                ? limited
+                : category
+                ? categoryFiltered
+                : limited,
             next_cursor: data.next_cursor,
             has_more: data.has_more,
             totalLength: limited.length,

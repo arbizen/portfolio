@@ -189,6 +189,13 @@ export default async function Blogs({
         {projects.map((project) => (
           <Project key={project.id} {...project} lang={params.lang} />
         ))}
+        {projects.length === 0 && (
+          <div>
+            <p className="text-slate-500 text-sm">
+              Looks like it&apos;s too empty here!
+            </p>
+          </div>
+        )}
       </section>
     </div>
   );

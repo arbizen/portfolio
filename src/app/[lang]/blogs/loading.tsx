@@ -5,7 +5,7 @@ const BlogSkeleton = () => {
   return (
     <div className="p-16 sm:p-8 border border-blue-100 rounded-md">
       <div className="flex gap-8 sm:flex-col">
-        <Skeleton className="w-[360px] h-[240px] rounded-md" />
+        <Skeleton className="w-full h-[240px] rounded-md" />
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">

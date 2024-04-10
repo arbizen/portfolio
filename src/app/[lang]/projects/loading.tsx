@@ -9,7 +9,7 @@ const ProjectSkeleton = () => {
         <Skeleton className="w-20 h-6" />
       </div>
       <div className="flex flex-col gap-4 flex-grow">
-        <Skeleton className="w-[320px] h-[180px] rounded-md" />
+        <Skeleton className="w-full h-[180px] rounded-md aspect-auto" />
 
         <div className="flex flex-col gap-8 flex-grow">
           <div className="flex flex-col gap-4 mt-4">

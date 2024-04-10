@@ -61,7 +61,10 @@ export default async function Home({
         }
       />
       <div>
-        <SubTitle title="Activities" seeMoreText="All activities" />
+        <SubTitle
+          title={dictionary.page.home.activities}
+          seeMoreText={dictionary.page.home.allActivities}
+        />
         <section className="pt-[64px] flex flex-col gap-4 sm:pt-[32px]">
           {activities.map((activity: Activity) => (
             <Link key={activity.id} href="/">

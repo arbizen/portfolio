@@ -39,7 +39,7 @@ const Blog = (props: Blog) => {
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">
               <Badge className="bg-blue-100 text-blue-600">
-                {props.readTime} min read
+                {props.readTime} {props.page.blogs.minRead}
               </Badge>
               {props?.categories?.map((category: string) => (
                 <Badge key={category} className="bg-red-100 text-red-500">
@@ -65,7 +65,7 @@ const Blog = (props: Blog) => {
               href={`/${props.lang}/blogs/${props.slug}`}
               className="flex items-center gap-1 text-xs font-bold leading-tight text-blue-500 hover:underline"
             >
-              Read more
+              {props.page.blogs.readMore}
               <ArrowRight size={15} />
             </Link>
           </div>
@@ -178,6 +178,7 @@ export default async function Blogs({
             key={blog.id}
             readTime={blog.readTime}
             lang={params.lang}
+            page={page}
           />
         ))}
       </div>

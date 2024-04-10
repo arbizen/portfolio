@@ -22,11 +22,15 @@
         "third": "হোম"
       },
       "description": "আমার সাইটের হোম পেজ",
-      "knowMoreAboutMe": "আমার সম্পর্কে আরও জানুন"
+      "knowMoreAboutMe": "আমার সম্পর্কে আরও জানুন",
+      "activities": "কাজবাজ",
+      "allActivities": "সব কাজবাজ"
     },
     "blogs": {
       "name": "ব্লগ",
-      "description": "আমার সাইটের ব্লগ পেজ"
+      "description": "আমার সাইটের ব্লগ পেজ",
+      "minRead": "মিনিটের পড়া",
+      "readMore": "আরও পড়ুন"
     },
     "projects": {
       "name": "প্রজেক্ট",

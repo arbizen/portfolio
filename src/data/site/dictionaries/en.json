@@ -43,11 +43,15 @@
         "third": "Home"
       },
       "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot.",
-      "knowMoreAboutMe": "Know more about me"
+      "knowMoreAboutMe": "Know more about me",
+      "activities": "Activities",
+      "allActivities": "All Activities"
     },
     "blogs": {
       "name": "Blogs",
-      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot.",
+      "minRead": "min read",
+      "readMore": "Read more"
     },
     "projects": {
       "name": "Projects",

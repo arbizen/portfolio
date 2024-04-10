@@ -43,11 +43,15 @@
         "third": "Inicio"
       },
       "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas.",
-      "knowMoreAboutMe": "Conocer más sobre mí"
+      "knowMoreAboutMe": "Conocer más sobre mí",
+      "activities": "Actividades",
+      "allActivities": "Todas las actividades"
     },
     "blogs": {
       "name": "Blogs",
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas."
+      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas.",
+      "minRead": "min de lectura",
+      "readMore": "Leer más"
     },
     "projects": {
       "name": "Proyectos",

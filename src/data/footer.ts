@@ -11,7 +11,7 @@ export const footer = {
     },
     {
       name: 'LinkedIn',
-      link: 'https://linkedin.com/in/arbizzen',
+      link: 'https://linkedin.com/in/arbizen',
     },
   ],
 };

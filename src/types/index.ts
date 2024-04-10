@@ -27,6 +27,7 @@ export type Blog = {
   readTime?: string;
   image?: string;
   lang?: string;
+  page?: any;
 };
 
 export type Project = {

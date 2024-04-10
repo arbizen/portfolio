@@ -29,12 +29,6 @@ export default function Loading() {
   return (
     <div>
       <PageInfoSkeleton />
-      <div className="flex flex-col gap-4">
-        <BlogSkeleton />
-        <BlogSkeleton />
-        <BlogSkeleton />
-        <BlogSkeleton />
-      </div>
     </div>
   );
 }

@@ -121,8 +121,6 @@ export default async function Blogs({
     { name: 'GraphQL', path: 'GraphQL' },
     { name: 'Typescript', path: 'Typescript' },
     { name: 'Popular', path: 'Popular' },
-    { name: 'More', path: 'More' },
-    { name: 'Test', path: 'Test' },
   ];
 
   return (
@@ -140,6 +138,7 @@ export default async function Blogs({
             }}
           />
         }
+        itemsLength={blogs.length}
         header={<PageTitle title={page.blogs.name} />}
         description={page.blogs.description}
         footer={

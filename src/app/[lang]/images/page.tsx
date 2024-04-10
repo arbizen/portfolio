@@ -59,6 +59,7 @@ export default async function Images({ params, searchParams }: pageProps) {
             }}
           />
         }
+        itemsLength={images.length}
         header={<PageTitle title={dictionaryPage.images.name} />}
         description={dictionaryPage.images.description}
         footer={

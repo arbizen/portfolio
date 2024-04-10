@@ -110,10 +110,11 @@ export default async function Blogs({
   const start = searchParams?.start || 0;
   const count = searchParams?.count || 25;
   const cursor = searchParams?.cursor || '';
+  const category = searchParams?.category || '';
   const page = `projects`;
   const url = !cursor
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}?start=${start}&count=${count}&order=asc`
-    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}/${cursor}?start=${start}&count=${count}&order=asc`;
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}?start=${start}&count=${count}&order=asc&category=${category}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}/${cursor}?start=${start}&count=${count}&order=asc&category=${category}`;
   const res = await fetch(url);
   const data = await res.json();
   const projects: Project[] = data[page]?.data;
@@ -124,12 +125,24 @@ export default async function Blogs({
   if (Number(start) == 100 - Number(count) || cursor) {
     nextPageUrl = `/${page}?cursor=${nextCursor ?? cursor}&start=${
       pageEnd ?? start
-    }&count=${count}&order=asc`;
+    }&count=${count}&order=asc&category=${category}`;
   } else {
-    nextPageUrl = `/${page}?start=${pageEnd ?? start}&count=${count}&order=asc`;
+    nextPageUrl = `/${page}?start=${
+      pageEnd ?? start
+    }&count=${count}&order=asc&category=${category}`;
   }
 
   const { page: dictionaryPage } = await getDictionary(params.lang);
+
+  const tagsWithLink = [
+    { name: 'All', path: 'All' },
+    { name: 'Next.js', path: 'Next.js' },
+    { name: 'React.js', path: 'React.js' },
+    { name: 'TailwindCSS', path: 'TailwindCSS' },
+    { name: 'CSS', path: 'CSS' },
+    { name: 'Supabase', path: 'Supabase' },
+    { name: 'Firebase', path: 'Firebase' },
+  ];
 
   return (
     <div>
@@ -152,12 +165,22 @@ export default async function Blogs({
         footer={
           <>
             <TagContainer>
-              <Tag>React</Tag>
-              <Tag>NextJs</Tag>
-              <Tag>NodeJs</Tag>
-              <Tag>GraphQL</Tag>
-              <Tag>Typescript</Tag>
-              <Tag>9+</Tag>
+              {tagsWithLink.map((tag) => (
+                <Link
+                  href={`/${params.lang}/${page}?category=${tag.path}`}
+                  key={tag.name}
+                >
+                  <Tag
+                    className={
+                      category === tag.name
+                        ? 'border-slate-800'
+                        : 'border-slate-200'
+                    }
+                  >
+                    {tag.name}
+                  </Tag>
+                </Link>
+              ))}
             </TagContainer>
           </>
         }

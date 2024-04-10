@@ -47,7 +47,13 @@ export async function GET(
           : Number(start) + Number(count);
       const categoryFiltered = filter.filter((item: any) => {
         if (category === '') return true;
-        return item.categories.includes(category);
+        if (item.categories) {
+          return item.categories.includes(category); // filter by category - blogs
+        } else {
+          if (item.stack) {
+            return item.stack.includes(category); // filter by category - projects
+          }
+        }
       });
       if (data)
         results[route] =

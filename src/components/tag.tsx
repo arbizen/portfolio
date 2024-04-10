@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 export function TagContainer({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="flex gap-5 flex-wrap sm:overflow-x-scroll hide-scrollbar sm:gap-3">
+    <div className="flex gap-5 flex-wrap sm:flex-nowrap sm:overflow-x-scroll hide-scrollbar sm:gap-3">
       {children}
     </div>
   );

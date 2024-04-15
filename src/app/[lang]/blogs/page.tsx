@@ -12,6 +12,8 @@ import dateformat from 'dateformat';
 import { Tag, TagContainer } from '@/components/tag';
 import { getDictionary } from '../dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
+import { useMemo } from 'react';
+import Pagination from '@/lib/Pagination';
 
 export const dynamic = 'force-dynamic';
 
@@ -82,29 +84,17 @@ export default async function Blogs({
   params: { slug: string; lang: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const start = searchParams?.start || 0;
-  const count = searchParams?.count || 25;
-  const cursor = searchParams?.cursor || '';
   const category = searchParams?.category || '';
-  const url = !cursor
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/blogs?start=${start}&count=${count}&category=${category}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/blogs/${cursor}?start=${start}&count=${count}&category=${category}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  let blogs: Blog[] = data.blogs?.data;
-  const pageEnd = data.bookmarks?.end;
-  const hasMore = data.bookmarks?.has_more;
-  const nextCursor = data.bookmarks?.next_cursor;
-  let nextPageUrl;
-  if (Number(start) == 100 - Number(count) || cursor) {
-    nextPageUrl = `/blogs?cursor=${nextCursor ?? cursor}&start=${
-      pageEnd ?? start
-    }&count=${count}&category=${category}`;
-  } else {
-    nextPageUrl = `/blogs?start=${
-      pageEnd ?? start
-    }&count=${count}&category=${category}`;
-  }
+  const pageNumber = searchParams?.page || 1;
+
+  const pageName = `blogs`;
+  const pagination = new Pagination(searchParams, pageName);
+  const data = await pagination.getCurrentPageData();
+
+  const blogs: Blog[] = data[pageName]?.data;
+  const nextPageUrl = pagination.getPaginationUrl(data);
+
+  // TODO: get dynamic category url with all the necessary query
 
   const { page } = await getDictionary(params.lang);
 
@@ -146,7 +136,9 @@ export default async function Blogs({
             <TagContainer>
               {tagsWithLink.map((tag) => (
                 <Link
-                  href={`/${params.lang}/blogs?category=${tag.path}`}
+                  href={`/${params.lang}/blogs?${
+                    pageNumber ? `page=${pageNumber}` : ''
+                  }&category=${tag.path}`}
                   key={tag.name}
                 >
                   <Tag
@@ -183,9 +175,11 @@ export default async function Blogs({
         ))}
       </div>
 
+      {blogs.length > 0 && <Link href={nextPageUrl!}>Load more</Link>}
+
       {blogs.length === 0 && (
-        <div>
-          <p className="text-slate-500 text-sm">
+        <div className="w-full h-[200px] flex items-center justify-center">
+          <p className="text-slate-500 text-base">
             Looks like it&apos;s too empty here!
           </p>
         </div>

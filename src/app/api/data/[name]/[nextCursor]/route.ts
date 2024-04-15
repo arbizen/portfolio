@@ -13,9 +13,13 @@ export async function GET(
 ) {
   try {
     const url = new URL(req.url);
-    const start = url.searchParams.get('start') ?? 0;
-    let count = url.searchParams.get('count') ?? 25; // default count is 25
     const category = url.searchParams.get('category') || '';
+
+    const page = url.searchParams.get('page') ?? 1;
+    let limit = url.searchParams.get('limit') ?? 1;
+    const startIndex = (+page - 1) * +limit;
+    const endIndex = startIndex + +limit;
+
     if (!context?.params?.name)
       return NextResponse.json('No name provided', { status: 400 });
     const routes = context.params.name.split('+');
@@ -39,12 +43,10 @@ export async function GET(
             );
           }),
       ];
-      if (filter.length < 25) count = filter.length;
-      const limited = filter.slice(+start, Number(start) + Number(count));
-      const pageEnd =
-        Number(start) + Number(count) >= 100
-          ? 0
-          : Number(start) + Number(count);
+      if (filter.length < 25) limit = filter.length;
+      //const limited = filter.slice(+start, Number(start) + Number(count));
+      const limited = filter.slice(startIndex, endIndex);
+
       const categoryFiltered = filter.filter((item: any) => {
         if (category === '') return true;
         if (item.categories) {
@@ -67,8 +69,6 @@ export async function GET(
             next_cursor: data.next_cursor,
             has_more: data.has_more,
             totalLength: limited.length,
-            start: pageEnd === 100 ? 0 : start,
-            end: pageEnd,
           } || data;
     }
     if (!results || Object.keys(results).length === 0)

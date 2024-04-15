@@ -10,9 +10,13 @@ const CompareFunctionLookup = {
 export async function GET(req: Request, context: { params: { name: string } }) {
   try {
     const url = new URL(req.url);
-    const start = url.searchParams.get('start') ?? 0;
-    let count = url.searchParams.get('count') ?? 25; // default count is 25
     const order = url.searchParams.get('order') ?? 'desc';
+
+    const page = url.searchParams.get('page') ?? 1;
+    let limit = url.searchParams.get('limit') ?? 25; // default count is 25
+    const startIndex = (+page - 1) * +limit;
+    const endIndex = startIndex + +limit;
+
     const category = url.searchParams.get('category') ?? '';
     if (!context?.params?.name)
       return NextResponse.json('No name provided', { status: 400 });
@@ -34,12 +38,9 @@ export async function GET(req: Request, context: { params: { name: string } }) {
             );
           }),
       ];
-      if (filter.length < 25 || Number(count) > 100) count = filter.length;
-      const limited = filter.slice(+start, Number(start) + Number(count));
-      const pageEnd =
-        Number(start) + Number(count) >= 100
-          ? 0
-          : Number(start) + Number(count);
+      if (filter.length < 25 || Number(limit) > 100) limit = filter.length;
+      //const limited = filter.slice(+start, Number(start) + Number(count));
+      const limited = filter.slice(startIndex, endIndex);
       const categoryFiltered = filter.filter((item: any) => {
         if (category === '') return true;
         if (item.categories) {
@@ -62,8 +63,6 @@ export async function GET(req: Request, context: { params: { name: string } }) {
             next_cursor: data.next_cursor,
             has_more: data.has_more,
             totalLength: limited.length,
-            start: pageEnd === 100 ? 0 : start,
-            end: pageEnd,
           } || data;
     }
     if (!results || Object.keys(results).length === 0)

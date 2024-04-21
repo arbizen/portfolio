@@ -21,7 +21,7 @@ export default class Pagination {
     const data = await res.json();
     return data;
   }
-  getPaginationUrl(data: any) {
+  nextPageUrl(data: any) {
     const defaultLimit = 25;
     let currentPage = this.params?.page || 1;
     const currentLimit = this.params?.limit || defaultLimit;

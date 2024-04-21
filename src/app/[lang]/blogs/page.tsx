@@ -14,6 +14,7 @@ import { getDictionary } from '../dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
 import { useMemo } from 'react';
 import Pagination from '@/lib/Pagination';
+import PaginationNavigation from '@/components/shared/pagination-navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -92,7 +93,7 @@ export default async function Blogs({
   const data = await pagination.getCurrentPageData();
 
   const blogs: Blog[] = data[pageName]?.data;
-  const nextPageUrl = pagination.getPaginationUrl(data);
+  const nextPageUrl = pagination.nextPageUrl(data);
 
   // TODO: get dynamic category url with all the necessary query
 
@@ -136,7 +137,7 @@ export default async function Blogs({
             <TagContainer>
               {tagsWithLink.map((tag) => (
                 <Link
-                  href={`/${params.lang}/blogs?${
+                  href={`/${params.lang}/${pageName}?${
                     pageNumber ? `page=${pageNumber}` : ''
                   }&category=${tag.path}`}
                   key={tag.name}
@@ -175,7 +176,7 @@ export default async function Blogs({
         ))}
       </div>
 
-      {blogs.length > 0 && <Link href={nextPageUrl!}>Load more</Link>}
+      {blogs.length > 24 && <PaginationNavigation nextPageLink={nextPageUrl} />}
 
       {blogs.length === 0 && (
         <div className="w-full h-[200px] flex items-center justify-center">

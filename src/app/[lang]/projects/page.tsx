@@ -13,6 +13,8 @@ import { Tag, TagContainer } from '@/components/tag';
 import Chip from '@/components/chip';
 import { getDictionary } from '../dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
+import Pagination from '@/lib/Pagination';
+import PaginationNavigation from '@/components/shared/pagination-navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -107,30 +109,15 @@ export default async function Blogs({
   params: { slug: string; lang: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const start = searchParams?.start || 0;
-  const count = searchParams?.count || 25;
-  const cursor = searchParams?.cursor || '';
   const category = searchParams?.category || '';
-  const page = `projects`;
-  const url = !cursor
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}?start=${start}&count=${count}&order=asc&category=${category}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}/${cursor}?start=${start}&count=${count}&order=asc&category=${category}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const projects: Project[] = data[page]?.data;
-  const pageEnd = data[page]?.end;
-  const hasMore = data[page]?.has_more;
-  const nextCursor = data[page]?.next_cursor;
-  let nextPageUrl;
-  if (Number(start) == 100 - Number(count) || cursor) {
-    nextPageUrl = `/${page}?cursor=${nextCursor ?? cursor}&start=${
-      pageEnd ?? start
-    }&count=${count}&order=asc&category=${category}`;
-  } else {
-    nextPageUrl = `/${page}?start=${
-      pageEnd ?? start
-    }&count=${count}&order=asc&category=${category}`;
-  }
+  const pageNumber = searchParams?.page || 1;
+
+  const pageName = `projects`;
+  const pagination = new Pagination(searchParams, pageName);
+  const data = await pagination.getCurrentPageData();
+
+  const projects: Project[] = data[pageName]?.data;
+  const nextPageUrl = pagination.nextPageUrl(data);
 
   const { page: dictionaryPage } = await getDictionary(params.lang);
 
@@ -167,7 +154,9 @@ export default async function Blogs({
             <TagContainer>
               {tagsWithLink.map((tag) => (
                 <Link
-                  href={`/${params.lang}/${page}?category=${tag.path}`}
+                  href={`/${params.lang}/${pageName}?${
+                    pageNumber ? `page=${pageNumber}` : ''
+                  }&category=${tag.path}`}
                   key={tag.name}
                 >
                   <Tag
@@ -189,9 +178,14 @@ export default async function Blogs({
         {projects.map((project) => (
           <Project key={project.id} {...project} lang={params.lang} />
         ))}
+
+        {projects.length > 24 && (
+          <PaginationNavigation nextPageLink={nextPageUrl} />
+        )}
+
         {projects.length === 0 && (
-          <div>
-            <p className="text-slate-500 text-sm">
+          <div className="w-full h-[200px] flex items-center justify-center">
+            <p className="text-slate-500 text-base">
               Looks like it&apos;s too empty here!
             </p>
           </div>

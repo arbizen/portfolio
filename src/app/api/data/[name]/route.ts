@@ -45,9 +45,13 @@ export async function GET(req: Request, context: { params: { name: string } }) {
         if (category === '') return true;
         if (item.categories) {
           return item.categories.includes(category); // filter by category - blogs
-        } else {
+        } else if (item.stack) {
           if (item.stack) {
             return item.stack.includes(category); // filter by category - projects
+          }
+        } else {
+          if (item.type) {
+            return item.type.includes(category); // filter by category - bookmarks
           }
         }
       });

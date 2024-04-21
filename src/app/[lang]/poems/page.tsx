@@ -35,6 +35,11 @@ export default async function Poems({ params, searchParams }: pageProps) {
         header={<PageTitle title={page.poems.name} />}
         description={page.poems.description}
       />
+      <div className="w-full h-[200px] flex items-center justify-center">
+        <p className="text-slate-500 text-base">
+          This page is under construction. Please check back later!
+        </p>
+      </div>
     </div>
   );
 }

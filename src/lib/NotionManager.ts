@@ -102,7 +102,7 @@ export class NotionManager {
           id: page.id,
           type:
             'multi_select' in page.properties.type
-              ? page.properties.type.multi_select.map((tag) => tag.name).join()
+              ? page.properties.type.multi_select.map((tag) => tag.name)
               : [],
 
           name: page.properties?.name?.title[0]?.plain_text || '',

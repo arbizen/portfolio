@@ -7,6 +7,9 @@ import { Link2 } from 'lucide-react';
 import { Bookmark } from '@/types';
 import { getDictionary } from '../dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
+import Pagination from '@/lib/Pagination';
+import PaginationNavigation from '@/components/shared/pagination-navigation';
+import { Tag, TagContainer } from '@/components/tag';
 
 export const metadata = {
   title: 'Bookmarks — Some of the best links I adore',
@@ -22,28 +25,23 @@ export default async function BookmarksPage({
   params: { slug: string; lang: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const start = searchParams?.start || 0;
-  const count = searchParams?.count || 25;
-  const cursor = searchParams?.cursor || '';
-  const url = !cursor
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/bookmarks?start=${start}&count=${count}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/bookmarks/${cursor}?start=${start}&count=${count}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const bookmarks: Bookmark[] = data.bookmarks?.data;
-  const pageEnd = data.bookmarks?.end;
-  const hasMore = data.bookmarks?.has_more;
-  const nextCursor = data.bookmarks?.next_cursor;
-  let nextPageUrl;
-  if (Number(start) == 100 - Number(count) || cursor) {
-    nextPageUrl = `/bookmarks?cursor=${nextCursor ?? cursor}&start=${
-      pageEnd ?? start
-    }&count=${count}`;
-  } else {
-    nextPageUrl = `/bookmarks?start=${pageEnd ?? start}&count=${count}`;
-  }
+  const category = searchParams?.category || '';
+  const pageNumber = searchParams?.page || 1;
+
+  const pageName = `bookmarks`;
+  const pagination = new Pagination(searchParams, pageName);
+  const data = await pagination.getCurrentPageData();
+
+  const bookmarks: Bookmark[] = data[pageName]?.data;
+  const nextPageUrl = pagination.nextPageUrl(data);
 
   const { page } = await getDictionary(params.lang);
+
+  const tagsWithLink = [
+    { name: 'All', path: 'All' },
+    { name: 'Website', path: 'Website' },
+    { name: 'Game', path: 'Game' },
+  ];
 
   return (
     <div>
@@ -63,19 +61,38 @@ export default async function BookmarksPage({
         header={<PageTitle title={page.bookmarks.name} />}
         description={page.bookmarks.description}
         itemsLength={bookmarks.length ?? 0}
+        footer={
+          <>
+            <TagContainer>
+              {tagsWithLink.map((tag) => (
+                <Link
+                  href={`/${params.lang}/${pageName}?${
+                    pageNumber ? `page=${pageNumber}` : ''
+                  }&category=${tag.path}`}
+                  key={tag.name}
+                >
+                  <Tag
+                    className={
+                      category === tag.name
+                        ? 'border-slate-800'
+                        : 'border-slate-200'
+                    }
+                  >
+                    {tag.name}
+                  </Tag>
+                </Link>
+              ))}
+            </TagContainer>
+          </>
+        }
       />
-      {/* {bookmarks?.length !== 0 && (
-        <Link href={nextPageUrl}>
-          <button>Load more</button>
-        </Link>
-      )} */}
       <section className="flex flex-wrap gap-4">
         {bookmarks.map((bookmark) => (
           <Link
             key={bookmark.id}
             href={bookmark.link}
             target="_blank"
-            className="flex-grow"
+            className="flex-grow max-w-[400px]"
           >
             <Card className="px-6 py-[20px]">
               <div className="flex items-center gap-2">
@@ -94,6 +111,16 @@ export default async function BookmarksPage({
             </Card>
           </Link>
         ))}
+        {bookmarks.length > 24 && (
+          <PaginationNavigation nextPageLink={nextPageUrl} />
+        )}
+        {bookmarks.length === 0 && (
+          <div className="w-full h-[200px] flex items-center justify-center">
+            <p className="text-slate-500 text-base">
+              Looks like it&apos;s too empty here!
+            </p>
+          </div>
+        )}
       </section>
     </div>
   );

@@ -32,11 +32,12 @@ export async function generateMetadata(
   const decodedSlug = decodeURIComponent(params.slug);
   const pageInfo = await notionManager.getPageById(decodedSlug.split('#')[1]);
 
-  // const coverUrl =
-  //   (pageInfo as any)?.cover?.external?.url ||
-  //   'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+  const coverUrl =
+    (pageInfo as any)?.cover?.external?.url ||
+    (pageInfo as any).cover?.file?.url ||
+    'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
   const title =
-    (pageInfo as any)?.properties?.name?.title[0]?.plain_text || 'Project name';
+    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Project';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
@@ -44,6 +45,18 @@ export async function generateMetadata(
   return {
     title,
     description,
+    openGraph: {
+      title,
+      description,
+      images: [coverUrl],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      creator: '@arbizzen',
+      images: [coverUrl], // Must be an absolute URL
+    },
   };
 }
 

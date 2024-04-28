@@ -3,7 +3,7 @@ export default class Pagination {
     private readonly params: any,
     private readonly pageName: string,
   ) {}
-  async getCurrentPageData() {
+  async getCurrentPageData(order: string = 'desc') {
     const defaultPage = 1;
     const defaultLimit = 25;
 
@@ -13,9 +13,9 @@ export default class Pagination {
     const category = this.params?.category || '';
     let url;
     if (!cursor) {
-      url = `${process.env.NEXT_PUBLIC_API_URL}/api/data/${this.pageName}?page=${page}&limit=${limit}&category=${category}`;
+      url = `${process.env.NEXT_PUBLIC_API_URL}/api/data/${this.pageName}?page=${page}&limit=${limit}&category=${category}&order=${order}`;
     } else {
-      url = `${process.env.NEXT_PUBLIC_API_URL}/api/data/${this.pageName}/${cursor}?page=${page}&limit=${limit}&category=${category}`;
+      url = `${process.env.NEXT_PUBLIC_API_URL}/api/data/${this.pageName}/${cursor}?page=${page}&limit=${limit}&category=${category}&order=${order}`;
     }
     const res = await fetch(url);
     const data = await res.json();

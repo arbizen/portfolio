@@ -4,9 +4,10 @@ import Breadcumb from '@/components/shared/breadcumb';
 import { getDictionary } from '../dictionaries';
 import { Tag, TagContainer } from '@/components/tag';
 import { ImageType } from '@/types';
-import Image from 'next/image';
-import { getPlaiceholder } from 'plaiceholder';
 import CustomImage from '@/components/gallery-image';
+import Pagination from '@/lib/Pagination';
+import Link from 'next/link';
+import PaginationNavigation from '@/components/shared/pagination-navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,27 +22,23 @@ export const metadata = {
 };
 
 export default async function Images({ params, searchParams }: pageProps) {
-  const start = searchParams?.start || 0;
-  const count = searchParams?.count || 25;
-  const cursor = searchParams?.cursor || '';
-  const page = `images`;
-  const url = !cursor
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}?start=${start}&count=${count}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/api/data/${page}/${cursor}?start=${start}&count=${count}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const images: ImageType[] = data[page]?.data;
-  const pageEnd = data[page]?.end;
-  const hasMore = data[page]?.has_more;
-  const nextCursor = data[page]?.next_cursor;
-  let nextPageUrl;
-  if (Number(start) == 100 - Number(count) || cursor) {
-    nextPageUrl = `/${page}?cursor=${nextCursor ?? cursor}&start=${
-      pageEnd ?? start
-    }&count=${count}`;
-  } else {
-    nextPageUrl = `/${page}?start=${pageEnd ?? start}&count=${count}`;
-  }
+  const category = searchParams?.category || '';
+  const pageNumber = searchParams?.page || 1;
+
+  const pageName = `images`;
+  const pagination = new Pagination(searchParams, pageName);
+  const data = await pagination.getCurrentPageData('desc');
+
+  const images: ImageType[] = data[pageName]?.data;
+  const nextPageUrl = pagination.nextPageUrl(data);
+
+  const tagsWithLink = [
+    { name: 'All', path: 'All' },
+    { name: 'Nature', path: 'Nature' },
+    { name: 'City', path: 'City' },
+    { name: 'Village', path: 'Village' },
+    { name: 'Archaic', path: 'Archaic' },
+  ];
   const { page: dictionaryPage } = await getDictionary(params.lang);
 
   return (
@@ -65,11 +62,24 @@ export default async function Images({ params, searchParams }: pageProps) {
         footer={
           <>
             <TagContainer>
-              <Tag>Sun</Tag>
-              <Tag>Clouds</Tag>
-              <Tag>Mountains</Tag>
-              <Tag>Water</Tag>
-              <Tag>Greenery</Tag>
+              {tagsWithLink.map((tag) => (
+                <Link
+                  href={`/${params.lang}/${pageName}?${
+                    pageNumber ? `page=${pageNumber}` : ''
+                  }&category=${tag.path}`}
+                  key={tag.name}
+                >
+                  <Tag
+                    className={
+                      category === tag.name
+                        ? 'border-slate-800'
+                        : 'border-slate-200'
+                    }
+                  >
+                    {tag.name}
+                  </Tag>
+                </Link>
+              ))}
             </TagContainer>
           </>
         }
@@ -88,6 +98,9 @@ export default async function Images({ params, searchParams }: pageProps) {
             />
           ))}
         </div>
+        {images.length > 24 && (
+          <PaginationNavigation nextPageLink={nextPageUrl} />
+        )}
       </div>
     </div>
   );

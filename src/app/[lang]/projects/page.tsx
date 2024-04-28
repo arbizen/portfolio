@@ -114,7 +114,7 @@ export default async function Blogs({
 
   const pageName = `projects`;
   const pagination = new Pagination(searchParams, pageName);
-  const data = await pagination.getCurrentPageData();
+  const data = await pagination.getCurrentPageData('asc');
 
   const projects: Project[] = data[pageName]?.data;
   const nextPageUrl = pagination.nextPageUrl(data);

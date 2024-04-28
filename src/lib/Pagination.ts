@@ -3,7 +3,7 @@ export default class Pagination {
     private readonly params: any,
     private readonly pageName: string,
   ) {}
-  async getCurrentPageData(order: string = 'desc') {
+  async getCurrentPageData(order: 'asc' | 'desc' = 'desc') {
     const defaultPage = 1;
     const defaultLimit = 25;
 

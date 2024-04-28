@@ -54,7 +54,8 @@ export class NotionManager {
 
           name: page.properties?.name?.title[0]?.plain_text || '',
 
-          date: page.properties?.date?.date?.start || '',
+          date: page.properties?.createdAt?.created_time || '',
+          link: page.properties?.link?.rich_text[0]?.plain_text || '/',
         };
       });
     } else if (name === 'blogs') {

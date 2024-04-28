@@ -8,6 +8,7 @@ export type Activity = {
   name: string;
   date: string;
   type: string;
+  link?: string;
 };
 export type Bookmark = {
   id: string;

@@ -7,6 +7,9 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { getDictionary } from './dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
+import Pagination from '@/lib/Pagination';
+// @ts-ignore
+import dateformat from 'dateformat';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -20,12 +23,18 @@ export default async function Home({
 }: {
   params: { lang: string };
 }) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`,
-  );
-  console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`);
-  const data = await res.json();
-  const activities: Activity[] = data.activities.data;
+  // const res = await fetch(
+  //   `${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`,
+  // );
+  // console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`);
+  // const data = await res.json();
+  // const activities: Activity[] = data.activities.data;
+
+  const pageName = `activities`;
+  const pagination = new Pagination({ limit: 10 }, pageName);
+  const data = await pagination.getCurrentPageData('desc');
+
+  const activities: Activity[] = data[pageName]?.data;
 
   const dictionary = await getDictionary(lang);
 
@@ -67,11 +76,14 @@ export default async function Home({
         />
         <section className="pt-[64px] flex flex-col gap-4 sm:pt-[32px]">
           {activities.map((activity: Activity) => (
-            <Link key={activity.id} href="/">
+            <Link key={activity.id} href={activity.link!} target="_blank">
               <Card className="px-6 py-[20px]">
                 <h3 className="font-semibold text-base">{activity.name}</h3>
                 <div className="flex gap-2 mt-1 items-center">
-                  <span className="text-xs">{activity.date}</span>
+                  <span className="text-xs text-slate-600">
+                    {dateformat(activity.date, 'ddS mmm, yyyy')} at{' '}
+                    {dateformat(activity.date, 'h:MM TT')}
+                  </span>
                   <Badge className="bg-red-100 text-red-500">
                     {activity.type}
                   </Badge>

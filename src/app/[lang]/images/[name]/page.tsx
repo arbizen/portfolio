@@ -3,6 +3,8 @@ import { Metadata, ResolvingMetadata } from 'next';
 import Pagination from '@/lib/Pagination';
 import { ImageType } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };

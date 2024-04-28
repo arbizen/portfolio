@@ -1,6 +1,7 @@
 import { headerItems } from '@/data/header';
-import { Blog } from '@/types';
+import { Blog, Project } from '@/types';
 import { MetadataRoute } from 'next';
+import Pagination from '@/lib/Pagination';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,18 +14,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       item.name === 'Home' || item.name === 'About' ? 'yearly' : 'monthly',
     priority: 1,
   }));
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/data/blogs?count=100`;
-  const res = await fetch(url);
-  const data = await res.json();
-  let blogs: Blog[] = data.blogs?.data;
+  const blogsPagination = new Pagination({ limit: 100 }, 'blogs');
+  const blogsData = await blogsPagination.getCurrentPageData('desc');
+  const blogs: Blog[] = blogsData['blogs']?.data;
   const slugPages = blogs.map((blog) => ({
     url: `${BASE_URL}/en/blogs/${blog.slug}`,
     lastModified: blog.date,
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
+
+  const projectsPagination = new Pagination({ limit: 100 }, 'projects');
+  const projectsData = await projectsPagination.getCurrentPageData('desc');
+  const projects: Project[] = projectsData['projects']?.data;
+  const projectsSlug = projects.map((project) => ({
+    url: `${BASE_URL}/en/projects/${project.slug}`,
+    lastModified: project.date,
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
   return [
     ...(HEADER_PAGES as MetadataRoute.Sitemap),
     ...(slugPages as MetadataRoute.Sitemap),
+    ...(projectsSlug as MetadataRoute.Sitemap),
   ];
 }

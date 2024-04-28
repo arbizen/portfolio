@@ -59,7 +59,7 @@
     },
     "bookmarks": {
       "name": "Bookmarks",
-      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+      "description": "Links and websites that I found useful. I bookmark them here so that I can find them easily when I need them."
     },
     "poems": {
       "name": "Poems",
@@ -67,11 +67,11 @@
     },
     "images": {
       "name": "Images",
-      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+      "description": "Scenes that attracted my sould and pinned my eyes to them. I love to capture the moments that I find beautiful."
     },
     "about": {
       "name": "About",
-      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+      "description": "A friendly about page under construction."
     }
   }
 }

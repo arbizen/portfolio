@@ -159,21 +159,24 @@ export default async function Blogs({
       />
 
       <div className="flex flex-col gap-4">
-        {blogs?.map((blog: Blog) => (
-          <Blog
-            id={blog.id}
-            slug={blog.slug}
-            title={blog.title}
-            categories={blog.categories}
-            date={blog.date}
-            description={blog.description}
-            image={blog.image}
-            key={blog.id}
-            readTime={blog.readTime}
-            lang={params.lang}
-            page={page}
-          />
-        ))}
+        {blogs?.map((blog: Blog) => {
+          if (blog.isPublished === false) return null;
+          return (
+            <Blog
+              id={blog.id}
+              slug={blog.slug}
+              title={blog.title}
+              categories={blog.categories}
+              date={blog.date}
+              description={blog.description}
+              image={blog.image}
+              key={blog.id}
+              readTime={blog.readTime}
+              lang={params.lang}
+              page={page}
+            />
+          );
+        })}
       </div>
 
       {blogs.length > 24 && <PaginationNavigation nextPageLink={nextPageUrl} />}

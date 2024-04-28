@@ -91,6 +91,7 @@ export class NotionManager {
           readTime: page.properties?.readTime?.number || 0,
           slug: encodedSlug,
           decodedSlug: slug,
+          isPublished: page.properties?.isPublished?.checkbox || false,
         };
       });
     } else if (name === 'bookmarks') {

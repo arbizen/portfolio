@@ -29,6 +29,7 @@ export type Blog = {
   image?: string;
   lang?: string;
   page?: any;
+  isPublished?: boolean;
 };
 
 export type Project = {

@@ -29,6 +29,12 @@ export class NotionManager {
     const page = await this.notion.pages.retrieve({ page_id: id });
     return page;
   }
+  async getMdStringById(id: string) {
+    const n2m = new NotionToMarkdown({ notionClient: this.notion });
+    const blocks = await n2m.pageToMarkdown(id);
+    const mdString = n2m.toMarkdownString(blocks);
+    return mdString.parent;
+  }
   async getDatabaseByName(name: string) {
     const id = this.databases.find((db) => db.name === name)?.id;
     if (!id) return null;

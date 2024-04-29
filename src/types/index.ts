@@ -52,4 +52,5 @@ export type ImageType = {
   id: string;
   alt: string;
   src: string;
+  date: string;
 };

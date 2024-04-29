@@ -1,5 +1,5 @@
 import { headerItems } from '@/data/header';
-import { Blog, Project } from '@/types';
+import { Blog, ImageType, Project } from '@/types';
 import { MetadataRoute } from 'next';
 import Pagination from '@/lib/Pagination';
 
@@ -34,9 +34,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const imagesPagination = new Pagination({ limit: 100 }, 'images');
+  const imagesData = await projectsPagination.getCurrentPageData('desc');
+  const images: ImageType[] = imagesData['images']?.data;
+  const imagesSlug = images.map((image) => ({
+    url: `${BASE_URL}/en/images/${image.alt}`,
+    lastModified: image.date,
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
   return [
     ...(HEADER_PAGES as MetadataRoute.Sitemap),
     ...(slugPages as MetadataRoute.Sitemap),
     ...(projectsSlug as MetadataRoute.Sitemap),
+    ...(imagesSlug as MetadataRoute.Sitemap),
   ];
 }

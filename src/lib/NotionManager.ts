@@ -35,6 +35,37 @@ export class NotionManager {
     const mdString = n2m.toMarkdownString(blocks);
     return mdString.parent;
   }
+  async searchNotionPageWithName(name: string) {
+    const res = await this.notion.search({
+      query: name,
+      filter: {
+        property: 'object',
+        value: 'page',
+      },
+    });
+    return res.results
+      .map((page: any) => {
+        if (!isFullPage(page)) {
+          throw new Error('Notion page is not a full page');
+        }
+
+        return {
+          id: page.id,
+          alt: page.properties?.name?.title[0]?.plain_text || '',
+          src:
+            page.cover?.external?.url ||
+            page.cover?.file?.url ||
+            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          date: page.properties?.createdAt?.created_time || '',
+          categories: page.properties.category
+            ? page.properties.category.multi_select.map((tag) => tag.name)
+            : [],
+          description:
+            page.properties?.description?.rich_text[0]?.plain_text || '',
+        };
+      })
+      .filter((item) => item.alt === name)?.[0];
+  }
   async getDatabaseByName(name: string) {
     const id = this.databases.find((db) => db.name === name)?.id;
     if (!id) return null;

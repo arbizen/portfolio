@@ -35,10 +35,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const imagesPagination = new Pagination({ limit: 100 }, 'images');
-  const imagesData = await projectsPagination.getCurrentPageData('desc');
+  const imagesData = await imagesPagination.getCurrentPageData('desc');
   const images: ImageType[] = imagesData['images']?.data;
   const imagesSlug = images.map((image) => ({
-    url: `${BASE_URL}/en/images/${image.alt}`,
+    url: `${BASE_URL}/en/images/${image.id}`,
     lastModified: image.date,
     changeFrequency: 'weekly',
     priority: 0.8,

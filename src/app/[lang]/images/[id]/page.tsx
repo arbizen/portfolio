@@ -13,7 +13,7 @@ import Image from 'next/image';
 export const dynamic = 'force-dynamic';
 
 type Props = {
-  params: { name: string };
+  params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
@@ -21,10 +21,22 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const name = params.name;
-  const removeDash = decodeURIComponent(name);
-  console.log(removeDash);
-  const firstImage = await notionManager.searchNotionPageWithName(removeDash);
+  const id = params.id;
+  const page = (await notionManager.getPageById(id)) as any;
+  const firstImage = {
+    id: page.id,
+    alt: page.properties?.name?.title[0]?.plain_text || '',
+    src:
+      page.cover?.external?.url ||
+      page.cover?.file?.url ||
+      'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+    date: page.properties?.createdAt?.created_time || '',
+    categories: page.properties.category
+      ? // @ts-ignore
+        page.properties.category.multi_select.map((tag: string) => tag.name)
+      : [],
+    description: page.properties?.description?.rich_text[0]?.plain_text || '',
+  };
   const src = firstImage.src;
   return {
     title: firstImage.alt || 'Images — Scenes that I stumbled upon',
@@ -48,9 +60,23 @@ export async function generateMetadata(
 }
 
 export default async function Share({ params, searchParams }: Props) {
-  const name = params.name;
-  const removeDash = decodeURIComponent(name);
-  const image = await notionManager.searchNotionPageWithName(removeDash);
+  const id = params.id;
+  const page = (await notionManager.getPageById(id)) as any;
+  const image = {
+    id: page.id,
+    alt: page.properties?.name?.title[0]?.plain_text || '',
+    src:
+      page.cover?.external?.url ||
+      page.cover?.file?.url ||
+      'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+    date: page.properties?.createdAt?.created_time || '',
+    categories: page.properties.category
+      ? // @ts-ignore
+        page.properties.category.multi_select.map((tag: string) => tag.name)
+      : [],
+    description: page.properties?.description?.rich_text[0]?.plain_text || '',
+  };
+
   return (
     <section>
       <PageInfo

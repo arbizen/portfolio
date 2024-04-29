@@ -95,7 +95,7 @@ export default async function Images({ params, searchParams }: pageProps) {
               width={500}
               sizes="500px"
               className="h-full w-full rounded-md"
-              link={`/${params.lang}/images/${encodeURIComponent(image.alt)}`}
+              link={`/${params.lang}/images/${image.id}`}
             />
           ))}
         </div>

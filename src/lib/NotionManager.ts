@@ -35,7 +35,7 @@ export class NotionManager {
     const mdString = n2m.toMarkdownString(blocks);
     return mdString.parent;
   }
-  async searchNotionPageWithName(name: string) {
+  async getFormatted(name: string) {
     const res = await this.notion.search({
       query: name,
       filter: {

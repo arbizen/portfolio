@@ -38,4 +38,4 @@
 
 ## License
 
-Hire Me is open-source under the GNU Affero General Public License Version 3 (AGPLv3) or any later version. You can [find it here](https://github.com/arbizen/portfolio/blob/main/LICENSE).
+This portfolio is open-source under the GNU Affero General Public License Version 3 (AGPLv3) or any later version. You can [find it here](https://github.com/arbizen/portfolio/blob/main/LICENSE).

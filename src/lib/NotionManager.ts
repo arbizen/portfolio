@@ -104,6 +104,8 @@ export class NotionManager {
         const slug =
           page.properties?.title?.title[0]?.plain_text
             .toLowerCase()
+            .replace(/-/g, ' ')
+            .replace(/\s\s+/g, ' ')
             .replace(/ /g, '-') +
             '#' +
             page.id || '';
@@ -160,6 +162,8 @@ export class NotionManager {
         const slug =
           page.properties?.name?.title[0]?.plain_text
             .toLowerCase()
+            .replace(/-/g, ' ')
+            .replace(/\s\s+/g, ' ')
             .replace(/ /g, '-') +
             '#' +
             page.id || '';

@@ -30,7 +30,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const decodedSlug = decodeURIComponent(params.slug);
-  const pageInfo = await notionManager.getPageById(decodedSlug.split('#')[1]);
+  const pageInfo = await notionManager.getPageById(decodedSlug.split('#')?.[1]);
 
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
@@ -67,7 +67,7 @@ export default async function BlogPage({
 }) {
   const decodedSlug = decodeURIComponent(params.slug);
   const mdString = await notionManager.getPageBySlug(decodedSlug);
-  const pageInfo = await notionManager.getPageById(decodedSlug.split('#')[1]);
+  const pageInfo = await notionManager.getPageById(decodedSlug.split('#')?.[1]);
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||

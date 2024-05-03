@@ -13,6 +13,7 @@ import PageInfo from '@/components/shared/page-info';
 import PageTitle from '@/components/shared/page-title';
 import Badge from '@/components/ui/badge';
 import { Metadata, ResolvingMetadata } from 'next';
+import { notFound } from 'next/navigation';
 
 // @ts-ignore
 import dateformat from 'dateformat';
@@ -67,7 +68,14 @@ export default async function ProjectPage({
 }) {
   const decodedSlug = decodeURIComponent(params.slug);
   const mdString = await notionManager.getPageBySlug(decodedSlug);
-  const pageInfo = await notionManager.getPageById(decodedSlug.split('#')?.[1]);
+
+  const id = decodedSlug.split('#')?.[1];
+
+  if (!id) {
+    notFound();
+  }
+
+  const pageInfo = await notionManager.getPageById(id);
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||

@@ -16,6 +16,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 
 // @ts-ignore
 import dateformat from 'dateformat';
+import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,7 +31,13 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const decodedSlug = decodeURIComponent(params.slug);
-  const pageInfo = await notionManager.getPageById(decodedSlug.split('#')?.[1]);
+  const id = decodedSlug.split('#')?.[1];
+
+  if (!id) {
+    notFound();
+  }
+
+  const pageInfo = await notionManager.getPageById(id);
 
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||

@@ -18,12 +18,20 @@ export class NotionManager {
     return this.getFormattedData(db, name);
   }
   async getPageBySlug(slug: string) {
-    const n2m = new NotionToMarkdown({ notionClient: this.notion });
+    try {
+      const n2m = new NotionToMarkdown({ notionClient: this.notion });
 
-    const id = slug.split('#')?.[1];
-    const blocks = await n2m.pageToMarkdown(id);
-    const mdString = n2m.toMarkdownString(blocks);
-    return mdString.parent;
+      const id = slug.split('#')?.[1];
+      const blocks = await n2m.pageToMarkdown(id);
+      const mdString = n2m.toMarkdownString(blocks);
+      return mdString.parent;
+    } catch (error) {
+      console.error(
+        'From the class: NotionManager, method: getPageBySlug',
+        error,
+      );
+      return '';
+    }
   }
   async getPageById(id: string) {
     const page = await this.notion.pages.retrieve({ page_id: id });

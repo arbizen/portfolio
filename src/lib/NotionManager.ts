@@ -21,7 +21,7 @@ export class NotionManager {
     try {
       const n2m = new NotionToMarkdown({ notionClient: this.notion });
 
-      const id = slug.split('#')?.[1];
+      const id = slug.split('#')?.[1] || '';
       const blocks = await n2m.pageToMarkdown(id);
       const mdString = n2m.toMarkdownString(blocks);
       return mdString.parent;

@@ -31,11 +31,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const decodedSlug = decodeURIComponent(params.slug);
-  const id = decodedSlug.split('#')?.[1];
-
-  if (!id) {
-    notFound();
-  }
+  const id = decodedSlug.split('#')?.[1] || '';
 
   const pageInfo = await notionManager.getPageById(id);
 

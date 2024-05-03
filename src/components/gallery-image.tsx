@@ -10,6 +10,7 @@ export default async function CustomImage(props: Props) {
   return (
     <Link href={props.link} className="flex flex-col">
       <Image
+        unoptimized
         blurDataURL="/blur-placeholder.png"
         placeholder="blur"
         {...props}

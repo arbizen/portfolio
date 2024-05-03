@@ -38,6 +38,7 @@ const Project = (props: Project) => {
           href={`/${props.lang}/projects/${props.slug}`}
         >
           <Image
+            unoptimized
             src={props.image!}
             width={320}
             height={180}

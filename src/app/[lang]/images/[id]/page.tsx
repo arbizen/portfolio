@@ -98,6 +98,7 @@ export default async function Share({ params, searchParams }: Props) {
       />
       <div className="mt-8 flex justify-center">
         <Image
+          unoptimized
           src={image.src}
           alt={image.alt}
           width={500}

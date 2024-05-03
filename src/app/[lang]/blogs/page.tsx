@@ -29,6 +29,7 @@ const Blog = (props: Blog) => {
       <div className="flex gap-8 sm:flex-col">
         <Link className="flex-none" href={`/${props.lang}/blogs/${props.slug}`}>
           <Image
+            unoptimized
             src={props.image!}
             alt="blog"
             width={360}

@@ -10,6 +10,7 @@ import Breadcumb from '@/components/shared/breadcumb';
 import Pagination from '@/lib/Pagination';
 // @ts-ignore
 import dateformat from 'dateformat';
+import PageAnimation from '@/components/page-animation';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -39,7 +40,7 @@ export default async function Home({
   const dictionary = await getDictionary(lang);
 
   return (
-    <div>
+    <PageAnimation>
       <PageInfo
         breadcumb={
           <Breadcumb
@@ -93,6 +94,6 @@ export default async function Home({
           ))}
         </section>
       </div>
-    </div>
+    </PageAnimation>
   );
 }

@@ -18,6 +18,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import ClientAnimatePresence from '../client-animate-presence';
 
 export default function Header({
   className,
@@ -46,9 +47,11 @@ export default function Header({
         </h1>
       </div>
       <menu className="flex gap-8 sm:hidden">
-        {data.nav.map((item: any) => (
-          <HeaderItem key={item.url} route={item.url} name={item.name} />
-        ))}
+        <ClientAnimatePresence>
+          {data.nav.map((item: any) => (
+            <HeaderItem key={item.url} route={item.url} name={item.name} />
+          ))}
+        </ClientAnimatePresence>
       </menu>
       <menu className="flex gap-8">
         <DropdownMenu>

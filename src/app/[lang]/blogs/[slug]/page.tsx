@@ -13,10 +13,14 @@ import PageInfo from '@/components/shared/page-info';
 import PageTitle from '@/components/shared/page-title';
 import Badge from '@/components/ui/badge';
 import { Metadata, ResolvingMetadata } from 'next';
+import { motion } from 'framer-motion';
 
 // @ts-ignore
 import dateformat from 'dateformat';
 import { notFound } from 'next/navigation';
+import ClientAnimatePresence from '@/components/client-animate-presence';
+import ClientMotionDiv from '@/components/client-motion-div';
+import PageAnimation from '@/components/page-animation';
 
 export const dynamic = 'force-dynamic';
 
@@ -129,8 +133,15 @@ export default async function BlogPage({
     p: Paragraph,
   };
 
+  const animation = {
+    transition: { duration: 0.2 },
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
+
   return (
-    <div>
+    <PageAnimation>
       <PageInfo
         header={<PageTitle title={title} />}
         description={description}
@@ -198,6 +209,6 @@ export default async function BlogPage({
           }),
         }}
       />
-    </div>
+    </PageAnimation>
   );
 }

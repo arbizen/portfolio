@@ -8,6 +8,7 @@ import CustomImage from '@/components/gallery-image';
 import Pagination from '@/lib/Pagination';
 import Link from 'next/link';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
+import PageAnimation from '@/components/page-animation';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,7 +43,7 @@ export default async function Images({ params, searchParams }: pageProps) {
   const { page: dictionaryPage } = await getDictionary(params.lang);
 
   return (
-    <div>
+    <PageAnimation>
       <PageInfo
         breadcumb={
           <Breadcumb
@@ -103,6 +104,6 @@ export default async function Images({ params, searchParams }: pageProps) {
           <PaginationNavigation nextPageLink={nextPageUrl} />
         )}
       </div>
-    </div>
+    </PageAnimation>
   );
 }

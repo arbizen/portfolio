@@ -17,6 +17,7 @@ import { notFound } from 'next/navigation';
 
 // @ts-ignore
 import dateformat from 'dateformat';
+import PageAnimation from '@/components/page-animation';
 
 export const dynamic = 'force-dynamic';
 
@@ -127,7 +128,7 @@ export default async function ProjectPage({
   };
 
   return (
-    <div>
+    <PageAnimation>
       <PageInfo
         header={<PageTitle title={title} />}
         description={description}
@@ -157,6 +158,6 @@ export default async function ProjectPage({
           </Markdown>
         </article>
       </div>
-    </div>
+    </PageAnimation>
   );
 }

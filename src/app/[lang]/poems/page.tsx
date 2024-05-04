@@ -2,6 +2,7 @@ import PageInfo from '@/components/shared/page-info';
 import PageTitle from '@/components/shared/page-title';
 import { getDictionary } from '../dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
+import PageAnimation from '@/components/page-animation';
 
 export const metadata = {
   title: 'Poems — Lines that I read and loved',
@@ -18,7 +19,7 @@ type pageProps = {
 export default async function Poems({ params, searchParams }: pageProps) {
   const { page } = await getDictionary(params.lang);
   return (
-    <div>
+    <PageAnimation>
       <PageInfo
         breadcumb={
           <Breadcumb
@@ -40,6 +41,6 @@ export default async function Poems({ params, searchParams }: pageProps) {
           This page is under construction. Please check back later!
         </p>
       </div>
-    </div>
+    </PageAnimation>
   );
 }

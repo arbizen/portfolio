@@ -15,6 +15,7 @@ import { getDictionary } from '../dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
 import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
+import PageAnimation from '@/components/page-animation';
 
 export const dynamic = 'force-dynamic';
 
@@ -133,7 +134,7 @@ export default async function Blogs({
   ];
 
   return (
-    <div>
+    <PageAnimation>
       <PageInfo
         breadcumb={
           <Breadcumb
@@ -192,6 +193,6 @@ export default async function Blogs({
           </div>
         )}
       </section>
-    </div>
+    </PageAnimation>
   );
 }

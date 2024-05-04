@@ -10,6 +10,7 @@ import Breadcumb from '@/components/shared/breadcumb';
 import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import { Tag, TagContainer } from '@/components/tag';
+import PageAnimation from '@/components/page-animation';
 
 export const metadata = {
   title: 'Bookmarks — Some of the best links I adore',
@@ -44,7 +45,7 @@ export default async function BookmarksPage({
   ];
 
   return (
-    <div>
+    <PageAnimation>
       <PageInfo
         breadcumb={
           <Breadcumb
@@ -122,6 +123,6 @@ export default async function BookmarksPage({
           </div>
         )}
       </section>
-    </div>
+    </PageAnimation>
   );
 }

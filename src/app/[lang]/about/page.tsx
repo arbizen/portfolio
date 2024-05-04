@@ -21,6 +21,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import Badge from '@/components/ui/badge';
 import { Metadata, ResolvingMetadata } from 'next';
 import Card from '@/components/card';
+import PageAnimation from '@/components/page-animation';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,7 +51,7 @@ export default async function About({ params, searchParams }: pageProps) {
     p: Paragraph,
   };
   return (
-    <div>
+    <PageAnimation>
       <PageInfo
         breadcumb={
           <Breadcumb
@@ -104,6 +105,6 @@ export default async function About({ params, searchParams }: pageProps) {
           </Markdown>
         </Card>
       </article>
-    </div>
+    </PageAnimation>
   );
 }

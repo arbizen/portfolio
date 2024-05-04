@@ -10,7 +10,7 @@ const CodeBlock: any = async ({ ...props }) => {
         pre(node) {
           this.addClassToHast(
             node,
-            'p-6 rounded-md sm:w-full sm:overflow-x-scroll sm:text-sm',
+            'p-6 rounded-md sm:w-full overflow-x-scroll sm:text-sm',
           );
         },
       },

@@ -109,17 +109,15 @@ export class NotionManager {
           throw new Error('Notion page is not a full page');
         }
 
-        const slug =
-          page.properties?.title?.title[0]?.plain_text
-            .toLowerCase()
-            .replace(/-/g, ' ')
-            .replace(/\s\s+/g, ' ')
-            .replace(/ /g, '-') +
-            '#' +
-            page.id || '';
+        const slug = page.properties?.title?.title[0]?.plain_text
+          .trim()
+          .toLowerCase()
+          .replace(/-/g, ' ')
+          .replace(/\s\s+/g, ' ')
+          .replace(/ /g, '-');
 
         // url encode
-        const encodedSlug = encodeURIComponent(slug);
+        const encodedSlug = encodeURIComponent(slug) + `?id=${page.id}`;
 
         return {
           id: page.id,
@@ -167,17 +165,15 @@ export class NotionManager {
           throw new Error('Notion page is not a full page');
         }
 
-        const slug =
-          page.properties?.name?.title[0]?.plain_text
-            .toLowerCase()
-            .replace(/-/g, ' ')
-            .replace(/\s\s+/g, ' ')
-            .replace(/ /g, '-') +
-            '#' +
-            page.id || '';
+        const slug = page.properties?.name?.title[0]?.plain_text
+          .trim()
+          .toLowerCase()
+          .replace(/-/g, ' ')
+          .replace(/\s\s+/g, ' ')
+          .replace(/ /g, '-');
 
         // url encode
-        const encodedSlug = encodeURIComponent(slug);
+        const encodedSlug = encodeURIComponent(slug) + `?id=${page.id}`;
 
         return {
           id: page.id,

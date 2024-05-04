@@ -31,7 +31,30 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const decodedSlug = decodeURIComponent(params.slug);
-  const id = decodedSlug.split('#')?.[1] || '';
+  const id = decodedSlug.split('#')?.[1] || (searchParams?.id as string);
+
+  if (!id) {
+    return {
+      title: 'Blog',
+      description: 'Description',
+      openGraph: {
+        title: 'Blog',
+        description: 'Description',
+        images: [
+          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'Blog',
+        description: 'Description',
+        creator: '@arbizzen',
+        images: [
+          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+        ], // Must be an absolute URL
+      },
+    };
+  }
 
   const pageInfo = await notionManager.getPageById(id);
 
@@ -65,15 +88,22 @@ export async function generateMetadata(
 
 export default async function BlogPage({
   params,
+  searchParams,
 }: {
   params: { slug: string; lang: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const id = searchParams?.id as string;
   const decodedSlug = decodeURIComponent(params.slug);
-  console.log('Log from blog page: ', decodedSlug.split('#')?.[1], params.slug);
-  const mdString = await notionManager.getPageBySlug(decodedSlug);
-  const pageInfo = await notionManager.getPageById(
-    decodedSlug.split('#')?.[1] || '',
-  );
+
+  const extractedId = decodedSlug.split('#')?.[1];
+
+  if (!extractedId && !id) {
+    return notFound();
+  }
+
+  const mdString = await notionManager.getMdStringById(id || extractedId);
+  const pageInfo = await notionManager.getPageById(id || extractedId);
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||

@@ -30,10 +30,35 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   // read route params
+  const id = searchParams?.id as string;
   const decodedSlug = decodeURIComponent(params.slug);
-  const pageInfo = await notionManager.getPageById(
-    decodedSlug.split('#')?.[1] || '',
-  );
+
+  const extractedId = decodedSlug.split('#')?.[1];
+
+  if (!extractedId && !id) {
+    return {
+      title: 'Project',
+      description: 'Description',
+      openGraph: {
+        title: 'Project',
+        description: 'Description',
+        images: [
+          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'Project',
+        description: 'Description',
+        creator: '@arbizzen',
+        images: [
+          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+        ], // Must be an absolute URL
+      },
+    };
+  }
+
+  const pageInfo = await notionManager.getPageById(id || extractedId);
 
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
@@ -65,15 +90,22 @@ export async function generateMetadata(
 
 export default async function ProjectPage({
   params,
+  searchParams,
 }: {
   params: { slug: string; lang: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const id = searchParams?.id as string;
   const decodedSlug = decodeURIComponent(params.slug);
-  const mdString = await notionManager.getPageBySlug(decodedSlug);
 
-  const id = decodedSlug.split('#')?.[1] || '';
+  const extractedId = decodedSlug.split('#')?.[1];
 
-  const pageInfo = await notionManager.getPageById(id);
+  if (!extractedId && !id) {
+    return notFound();
+  }
+  const mdString = await notionManager.getMdStringById(id || extractedId);
+
+  const pageInfo = await notionManager.getPageById(id || extractedId);
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||

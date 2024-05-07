@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^2.13.10",
+    "@codesandbox/sandpack-themes": "^2.0.21",
     "@notionhq/client": "^2.2.14",
     "@plaiceholder/next": "^3.0.0",
     "@radix-ui/react-dialog": "^1.0.5",

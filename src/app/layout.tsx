@@ -31,14 +31,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL!),
 };
 
-const siteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Arbizen',
-  alternateName: ['Arb', 'Arb Rahim Badsa'],
-  url: process.env.NEXT_PUBLIC_API_URL!,
-};
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -53,11 +45,6 @@ export default async function RootLayout({
           attribute="class"
           disableTransitionOnChange
         >
-          <Script
-            id="json-ld-site"
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
-          />
           {children}
         </ThemeProvider>
         <Analytics />

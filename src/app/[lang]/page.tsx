@@ -11,10 +11,27 @@ import Pagination from '@/lib/Pagination';
 // @ts-ignore
 import dateformat from 'dateformat';
 import PageAnimation from '@/components/page-animation';
+import Script from 'next/script';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
   description: `Discover the portfolio of Arb Rahim Badsa (Arbizen), a talented JavaScript developer with expertise in React.js, Next.js, TypeScript, Supabase, Figma, and more. Explore a range of projects showcasing Arbizen's skills in web development, blogs, liked poems, images and more.`,
+};
+
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Arbizen',
+  alternateName: ['Arb', 'Arb Rahim Badsa'],
+  url: process.env.NEXT_PUBLIC_API_URL!,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${process.env.NEXT_PUBLIC_API_URL}/en/blogs?category={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
 };
 
 export const dynamic = 'force-dynamic';
@@ -94,6 +111,11 @@ export default async function Home({
           ))}
         </section>
       </div>
+      <Script
+        id="json-ld-site"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+      />
     </PageAnimation>
   );
 }

@@ -13,7 +13,7 @@ import Image from 'next/image';
 export const dynamic = 'force-dynamic';
 
 type Props = {
-  params: { id: string };
+  params: { id: string; lang: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
@@ -41,18 +41,20 @@ export async function generateMetadata(
   return {
     title: firstImage.alt || 'Images — Scenes that I stumbled upon',
     description:
-      'Scenes that attracted my sould and pinned my eyes to them. I love to capture the moments that I find beautiful.',
+      'Scenes that attracted my soul and pinned my eyes to them. I love to capture the moments that I find beautiful.',
     openGraph: {
       title: firstImage.alt || 'Images — Scenes that I stumbled upon',
       description:
         'Scenes that attracted my sould and pinned my eyes to them. I love to capture the moments that I find beautiful.',
       images: [src],
+      url: process.env.NEXT_PUBLIC_API_URL + `/${params.lang}/images/${id}`,
+      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
       title: firstImage.alt || 'Images — Scenes that I stumbled upon',
       description:
-        'Scenes that attracted my sould and pinned my eyes to them. I love to capture the moments that I find beautiful.',
+        'Scenes that attracted my soul and pinned my eyes to them. I love to capture the moments that I find beautiful.',
       creator: '@arbizzen',
       images: [src], // Must be an absolute URL
     },

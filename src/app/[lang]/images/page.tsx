@@ -19,7 +19,8 @@ type pageProps = {
 
 export const metadata = {
   title: 'Images — Scenes that I stumbled upon',
-  description: 'This is the home page',
+  description:
+    'I like to walk around and take pictures of things that I find interesting.',
 };
 
 export default async function Images({ params, searchParams }: pageProps) {

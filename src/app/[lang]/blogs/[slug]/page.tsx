@@ -25,7 +25,7 @@ import PageAnimation from '@/components/page-animation';
 export const dynamic = 'force-dynamic';
 
 type Props = {
-  params: { slug: string };
+  params: { slug: string; lang: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
@@ -79,6 +79,10 @@ export async function generateMetadata(
       title,
       description,
       images: [coverUrl],
+      url:
+        process.env.NEXT_PUBLIC_API_URL +
+        `/${params.lang}/blogs/${params.slug}?id=${id}`,
+      type: 'article',
     },
     twitter: {
       card: 'summary_large_image',

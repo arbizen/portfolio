@@ -10,12 +10,15 @@ export function middleware(request: NextRequest) {
     // add cookie if not exists
     res.cookies.set('lang', langInUrl, {
       path: '/',
+      // set expiry date to 1 year
+      expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
     });
   } else {
     if (langInUrl !== langFromCookie && supportedLocales.includes(langInUrl)) {
       // update cookie if different
       res.cookies.set('lang', langInUrl, {
         path: '/',
+        expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
       });
     }
   }
@@ -24,28 +27,21 @@ export function middleware(request: NextRequest) {
   );
   if (pathnameHasLocale) return res;
   const locale = langFromCookie ?? 'en'; // default locale
-  if (pathname === '/') {
+  // pages to be redirected
+  const pages = [
+    '/',
+    '/blogs',
+    '/images',
+    '/poems',
+    '/projects',
+    '/bookmarks',
+    '/about',
+  ];
+  if (pages.includes(pathname)) {
     request.nextUrl.pathname = `/${locale}${pathname}`;
     return NextResponse.redirect(request.nextUrl);
-  } else if (pathname === '/blogs') {
-    request.nextUrl.pathname = `/${locale}/blogs`;
-    return NextResponse.redirect(request.nextUrl);
-  } else if (pathname === '/images') {
-    request.nextUrl.pathname = `/${locale}/images`;
-    return NextResponse.redirect(request.nextUrl);
-  } else if (pathname === '/poems') {
-    request.nextUrl.pathname = `/${locale}/poems`;
-    return NextResponse.redirect(request.nextUrl);
-  } else if (pathname === '/projects') {
-    request.nextUrl.pathname = `/${locale}/projects`;
-    return NextResponse.redirect(request.nextUrl);
-  } else if (pathname === '/bookmarks') {
-    request.nextUrl.pathname = `/${locale}/bookmarks`;
-    return NextResponse.redirect(request.nextUrl);
-  } else if (pathname === '/about') {
-    request.nextUrl.pathname = `/${locale}/about`;
-    return NextResponse.redirect(request.nextUrl);
   }
+  return res;
 }
 
 export const config = {

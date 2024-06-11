@@ -12,6 +12,8 @@ import Pagination from '@/lib/Pagination';
 import dateformat from 'dateformat';
 import PageAnimation from '@/components/page-animation';
 import Script from 'next/script';
+import { supportedLocales } from '@/data/site/supportedLocales';
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -54,7 +56,11 @@ export default async function Home({
 
   const activities: Activity[] = data[pageName]?.data;
 
-  const dictionary = await getDictionary(lang);
+  const supportedLang = supportedLocales.includes(lang)
+    ? lang
+    : cookies().get('lang')?.value ?? 'en';
+
+  const dictionary = await getDictionary(supportedLang);
 
   return (
     <PageAnimation>

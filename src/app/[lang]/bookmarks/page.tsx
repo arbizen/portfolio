@@ -11,6 +11,8 @@ import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import { Tag, TagContainer } from '@/components/tag';
 import PageAnimation from '@/components/page-animation';
+import { cookies } from 'next/headers';
+import { supportedLocales } from '@/data/site/supportedLocales';
 
 export const metadata = {
   title: 'Bookmarks — Some of the best links I adore',
@@ -36,7 +38,11 @@ export default async function BookmarksPage({
   const bookmarks: Bookmark[] = data[pageName]?.data;
   const nextPageUrl = pagination.nextPageUrl(data);
 
-  const { page } = await getDictionary(params.lang);
+  const supportedLang = supportedLocales.includes(params.lang)
+    ? params.lang
+    : cookies().get('lang')?.value ?? 'en';
+
+  const { page } = await getDictionary(supportedLang);
 
   const tagsWithLink = [
     { name: 'All', path: 'All' },

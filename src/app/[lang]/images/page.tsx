@@ -9,6 +9,8 @@ import Pagination from '@/lib/Pagination';
 import Link from 'next/link';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import PageAnimation from '@/components/page-animation';
+import { supportedLocales } from '@/data/site/supportedLocales';
+import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,7 +43,12 @@ export default async function Images({ params, searchParams }: pageProps) {
     { name: 'Village', path: 'Village' },
     { name: 'Archaic', path: 'Archaic' },
   ];
-  const { page: dictionaryPage } = await getDictionary(params.lang);
+
+  const supportedLang = supportedLocales.includes(params.lang)
+    ? params.lang
+    : cookies().get('lang')?.value ?? 'en';
+
+  const { page: dictionaryPage } = await getDictionary(supportedLang);
 
   return (
     <PageAnimation>

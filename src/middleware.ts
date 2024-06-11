@@ -3,11 +3,27 @@ import { supportedLocales } from './data/site/supportedLocales';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const langInUrl = pathname.split('/')[1];
+  const langFromCookie = request.cookies.get('lang')?.value;
+  const res = NextResponse.next();
+  if (!langFromCookie && supportedLocales.includes(langInUrl)) {
+    // add cookie if not exists
+    res.cookies.set('lang', langInUrl, {
+      path: '/',
+    });
+  } else {
+    if (langInUrl !== langFromCookie && supportedLocales.includes(langInUrl)) {
+      // update cookie if different
+      res.cookies.set('lang', langInUrl, {
+        path: '/',
+      });
+    }
+  }
   const pathnameHasLocale = supportedLocales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
-  if (pathnameHasLocale) return;
-  const locale = 'en'; // default locale
+  if (pathnameHasLocale) return res;
+  const locale = langFromCookie ?? 'en'; // default locale
   if (pathname === '/') {
     request.nextUrl.pathname = `/${locale}${pathname}`;
     return NextResponse.redirect(request.nextUrl);
@@ -33,17 +49,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    // Skip all internal paths (_next)
-    '/((?!_next).*)',
-    '/',
-    '/blogs',
-    '/images',
-    '/poems',
-    '/projects',
-    '/bookmarks',
-    '/about',
-    // Optional: only run on root (/) URL
-    // '/'
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

@@ -16,6 +16,8 @@ import { useMemo } from 'react';
 import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import PageAnimation from '@/components/page-animation';
+import { supportedLocales } from '@/data/site/supportedLocales';
+import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -99,7 +101,11 @@ export default async function Blogs({
 
   // TODO: get dynamic category url with all the necessary query
 
-  const { page } = await getDictionary(params.lang);
+  const supportedLang = supportedLocales.includes(params.lang)
+    ? params.lang
+    : cookies().get('lang')?.value ?? 'en';
+
+  const { page } = await getDictionary(supportedLang);
 
   const tagsWithLink = [
     { name: 'All', path: 'All' },

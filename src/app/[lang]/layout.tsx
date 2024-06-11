@@ -8,6 +8,8 @@ import Footer from '@/components/shared/footer';
 import { footer } from '@/data/footer';
 import MobileMenu from '@/components/shared/mobile-menu';
 import { getDictionary } from './dictionaries';
+import { supportedLocales } from '@/data/site/supportedLocales';
+import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
   alternates: {
@@ -27,7 +29,10 @@ export default async function RootLayout({
   params: { lang: string };
   children: React.ReactNode;
 }) {
-  const { header } = lang && (await getDictionary(lang));
+  const supportedLang = supportedLocales.includes(lang)
+    ? lang
+    : cookies().get('lang')?.value ?? 'en';
+  const { header } = supportedLang && (await getDictionary(supportedLang));
   return (
     <>
       <Header data={header} className="hidden sm:flex rounded-none" />

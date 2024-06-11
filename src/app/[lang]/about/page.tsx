@@ -22,6 +22,8 @@ import Badge from '@/components/ui/badge';
 import { Metadata, ResolvingMetadata } from 'next';
 import Card from '@/components/card';
 import PageAnimation from '@/components/page-animation';
+import { supportedLocales } from '@/data/site/supportedLocales';
+import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,7 +38,10 @@ export const metadata = {
 };
 
 export default async function About({ params, searchParams }: pageProps) {
-  const { page } = await getDictionary(params.lang);
+  const supportedLang = supportedLocales.includes(params.lang)
+    ? params.lang
+    : cookies().get('lang')?.value ?? 'en';
+  const { page } = await getDictionary(supportedLang);
   const currentTime = new Date();
   const utcTime =
     currentTime.getTime() + currentTime.getTimezoneOffset() * 60000;

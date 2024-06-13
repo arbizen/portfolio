@@ -4,21 +4,9 @@ import Link from 'next/link';
 import HeaderItem from './header-item';
 import { cn } from '@/lib/utils';
 import { Globe } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+
 import ClientAnimatePresence from '../client-animate-presence';
+import LanguageSelector from './language-selector';
 
 export default function Header({
   className,
@@ -54,38 +42,7 @@ export default function Header({
         </ClientAnimatePresence>
       </menu>
       <menu className="flex gap-8">
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <div className="p-2 hover:bg-slate-100 text-slate-800 rounded cursor-pointer sm:cursor-auto">
-              <Globe size={20} />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Languages</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <Link href="/en">
-                <DropdownMenuItem>
-                  <span>English</span>
-                  <DropdownMenuShortcut>en</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </Link>
-              <Link href="/es">
-                <DropdownMenuItem>
-                  <span>Spanish</span>
-                  <DropdownMenuShortcut>es</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </Link>
-              <Link href="/bn">
-                <DropdownMenuItem>
-                  <span>বাংলা</span>
-                  <DropdownMenuShortcut>bn</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-          <DropdownMenuPortal />
-        </DropdownMenu>
+        <LanguageSelector />
       </menu>
     </header>
   );

@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Subtitle from '@/components/shared/sub-title';
-import { Blog } from '@/types';
+import { Blog as BlogType } from '@/types';
 // @ts-ignore
 import dateformat from 'dateformat';
 import { Tag, TagContainer } from '@/components/tag';
@@ -26,7 +26,7 @@ export const metadata = {
   description: 'This is the home page',
 };
 
-const Blog = (props: Blog) => {
+export const Blog = (props: BlogType) => {
   return (
     <Card className="p-16 sm:p-8">
       <div className="flex gap-8 sm:flex-col">
@@ -96,7 +96,7 @@ export default async function Blogs({
   const pagination = new Pagination(searchParams, pageName);
   const data = await pagination.getCurrentPageData();
 
-  const blogs: Blog[] = data[pageName]?.data;
+  const blogs: BlogType[] = data[pageName]?.data;
   const nextPageUrl = pagination.nextPageUrl(data);
 
   // TODO: get dynamic category url with all the necessary query
@@ -167,7 +167,7 @@ export default async function Blogs({
       />
 
       <div className="flex flex-col gap-4">
-        {blogs?.map((blog: Blog) => {
+        {blogs?.map((blog: BlogType) => {
           if (blog.isPublished === false) return null;
           return (
             <Blog

@@ -6,10 +6,12 @@ export default function SubTitle({
   title,
   seeMoreText,
   className,
+  seeMoreLink,
 }: {
   title: string;
   seeMoreText: string;
   className?: string;
+  seeMoreLink?: string;
 }) {
   return (
     <div
@@ -23,7 +25,7 @@ export default function SubTitle({
       </h2>
       <Link
         className="flex items-center gap-1 space-x-1 text-[14px] font-bold text-blue-500"
-        href="/"
+        href={seeMoreLink || '/'}
       >
         {seeMoreText}
         <ArrowRight size={16} />

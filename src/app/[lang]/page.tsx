@@ -2,8 +2,8 @@ import Card from '@/components/card';
 import PageInfo from '@/components/shared/page-info';
 import SubTitle from '@/components/shared/sub-title';
 import Badge from '@/components/ui/badge';
-import { Activity } from '@/types';
-import { ArrowRight } from 'lucide-react';
+import { Activity, Blog as BlogType } from '@/types';
+import { ArrowRight, Subtitles } from 'lucide-react';
 import Link from 'next/link';
 import { getDictionary } from './dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
@@ -14,6 +14,7 @@ import PageAnimation from '@/components/page-animation';
 import Script from 'next/script';
 import { supportedLocales } from '@/data/site/supportedLocales';
 import { cookies } from 'next/headers';
+import { Blog } from './blogs/page';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -55,6 +56,14 @@ export default async function Home({
   const data = await pagination.getCurrentPageData('desc');
 
   const activities: Activity[] = data[pageName]?.data;
+
+  const blogs = 'blogs';
+
+  const paginationBlogs = new Pagination({ limit: 2 }, blogs);
+
+  const dataBlogs = await paginationBlogs.getCurrentPageData('desc');
+
+  const blogsData: BlogType[] = dataBlogs[blogs]?.data;
 
   const supportedLang = supportedLocales.includes(lang)
     ? lang
@@ -116,6 +125,33 @@ export default async function Home({
             </Link>
           ))}
         </section>
+      </div>
+      <div className="mt-8">
+        <SubTitle
+          title={dictionary.page.home.recentBlogs}
+          seeMoreText={dictionary.page.home.allBlogs}
+          seeMoreLink={`/${lang}/blogs`}
+        />
+      </div>
+      <div className="flex flex-col gap-4 mt-8">
+        {blogsData?.map((blog: BlogType) => {
+          if (blog.isPublished === false) return null;
+          return (
+            <Blog
+              id={blog.id}
+              slug={blog.slug}
+              title={blog.title}
+              categories={blog.categories}
+              date={blog.date}
+              description={blog.description}
+              image={blog.image}
+              key={blog.id}
+              readTime={blog.readTime}
+              lang={lang}
+              page={dictionary.page}
+            />
+          );
+        })}
       </div>
       <Script
         id="json-ld-site"

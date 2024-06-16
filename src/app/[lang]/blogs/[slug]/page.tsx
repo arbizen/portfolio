@@ -150,7 +150,7 @@ export default async function BlogPage({
         header={<PageTitle title={title} />}
         description={description}
         footer={
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <Badge className="bg-orange-100 text-orange-500">
               {dateformat(date, 'ddS mmmm, yyyy')}
             </Badge>

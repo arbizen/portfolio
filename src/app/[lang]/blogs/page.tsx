@@ -44,7 +44,7 @@ export const Blog = (props: BlogType) => {
         </Link>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Badge className="bg-blue-100 text-blue-600">
                 {props.readTime} {props.page.blogs.minRead}
               </Badge>

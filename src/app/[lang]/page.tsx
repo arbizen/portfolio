@@ -15,6 +15,8 @@ import Script from 'next/script';
 import { supportedLocales } from '@/data/site/supportedLocales';
 import { cookies } from 'next/headers';
 import { Blog } from './blogs/page';
+import Image from 'next/image';
+import Circles from '@/components/circles';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -94,12 +96,15 @@ export default async function Home({
         }
         description={dictionary.page.home.description}
         footer={
-          <Link
-            className="flex gap-1 items-center text-blue-500 font-bold text-[14px]"
-            href="/about"
-          >
-            {dictionary.page.home.knowMoreAboutMe} <ArrowRight size={16} />
-          </Link>
+          <div className="flex flex-col gap-2">
+            <Image alt="stack" src={'/stack.png'} height={15} width={150} />
+            <Link
+              className="flex gap-1 items-center text-blue-500 font-bold text-[14px]"
+              href="/about"
+            >
+              {dictionary.page.home.knowMoreAboutMe} <ArrowRight size={16} />
+            </Link>
+          </div>
         }
       />
       <div>

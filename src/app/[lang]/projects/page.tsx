@@ -49,7 +49,7 @@ const Project = (props: Project) => {
             className="rounded-md w-full aspect-auto"
           />
         </Link>
-        <div className="flex flex-col gap-8 flex-grow">
+        <div className="flex flex-col gap-8 flex-grow relative z-50">
           <div className="flex flex-col gap-4 mt-4">
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">

@@ -93,7 +93,7 @@ export default async function BookmarksPage({
           </>
         }
       />
-      <section className="flex flex-wrap gap-4">
+      <section className="flex flex-wrap gap-4 relative z-50">
         {bookmarks.map((bookmark) => (
           <Link
             key={bookmark.id}

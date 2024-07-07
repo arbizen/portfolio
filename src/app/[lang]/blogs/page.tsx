@@ -166,7 +166,7 @@ export default async function Blogs({
         }
       />
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 relative z-50">
         {blogs?.map((blog: BlogType) => {
           if (blog.isPublished === false) return null;
           return (

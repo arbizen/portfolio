@@ -16,7 +16,7 @@ export default function SubTitle({
   return (
     <div
       className={cn(
-        'flex items-center justify-between leading-tight',
+        'flex items-center justify-between leading-tight relative z-50',
         className,
       )}
     >

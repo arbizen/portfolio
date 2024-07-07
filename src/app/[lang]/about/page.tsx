@@ -71,7 +71,7 @@ export default async function About({ params, searchParams }: pageProps) {
           />
         }
       />
-      <div className="flex items-center flex-col gap-8 sm:gap-4">
+      <div className="flex items-center flex-col gap-8 sm:gap-4 relative z-50">
         <Image
           src={'/arb.png'}
           alt="Arb Rahim Badsa"

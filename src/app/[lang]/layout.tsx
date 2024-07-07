@@ -10,6 +10,7 @@ import MobileMenu from '@/components/shared/mobile-menu';
 import { getDictionary } from './dictionaries';
 import { supportedLocales } from '@/data/site/supportedLocales';
 import { cookies } from 'next/headers';
+import Circles from '@/components/circles';
 
 export const metadata: Metadata = {
   alternates: {
@@ -54,6 +55,7 @@ export default async function RootLayout({
           type="blob3"
           fill="#A855F7"
         />
+        <Circles />
         <div className="flex-grow min-h-screen sm:overflow-x-hidden">
           {children}
         </div>

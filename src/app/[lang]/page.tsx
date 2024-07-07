@@ -17,6 +17,7 @@ import { cookies } from 'next/headers';
 import { Blog } from './blogs/page';
 import Image from 'next/image';
 import Circles from '@/components/circles';
+import { SkillBeam } from '@/components/skill-beam';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -75,38 +76,42 @@ export default async function Home({
 
   return (
     <PageAnimation>
-      <PageInfo
-        breadcumb={
-          <Breadcumb
-            firstNav={{
-              name: dictionary.page.home.name.third,
-              url: `/${lang}`,
-            }}
-          />
-        }
-        header={
-          <div>
-            <h1 className="font-black text-[40px] sm:text-[36px]">
-              {dictionary.page.home.name.first}{' '}
-              <span className="text-blue-500">
-                {dictionary.page.home.name.second}
-              </span>
-            </h1>
-          </div>
-        }
-        description={dictionary.page.home.description}
-        footer={
-          <div className="flex flex-col gap-2">
-            <Image alt="stack" src={'/stack.png'} height={15} width={150} />
-            <Link
-              className="flex gap-1 items-center text-blue-500 font-bold text-[14px]"
-              href="/about"
-            >
-              {dictionary.page.home.knowMoreAboutMe} <ArrowRight size={16} />
-            </Link>
-          </div>
-        }
-      />
+      <div className="flex items-start w-full sm:flex-wrap">
+        <PageInfo
+          breadcumb={
+            <Breadcumb
+              firstNav={{
+                name: dictionary.page.home.name.third,
+                url: `/${lang}`,
+              }}
+            />
+          }
+          header={
+            <div>
+              <h1 className="font-black text-[40px] sm:text-[36px]">
+                {dictionary.page.home.name.first}{' '}
+                <span className="text-blue-500">
+                  {dictionary.page.home.name.second}
+                </span>
+              </h1>
+            </div>
+          }
+          description={dictionary.page.home.description}
+          footer={
+            <div className="flex flex-col gap-2">
+              <Link
+                className="flex gap-1 items-center text-blue-500 font-bold text-[14px]"
+                href="/about"
+              >
+                {dictionary.page.home.knowMoreAboutMe} <ArrowRight size={16} />
+              </Link>
+            </div>
+          }
+        />
+        <div className="w-full">
+          <SkillBeam />
+        </div>
+      </div>
       <div>
         <SubTitle
           title={dictionary.page.home.activities}

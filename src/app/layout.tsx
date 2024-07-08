@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { GeistSans } from 'geist/font/sans';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/react';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
   creator: 'Arb Rahim Badsa',
@@ -38,7 +39,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={GeistSans.className}>
+      <body className={cn(GeistSans.className, 'sm:overflow-x-hidden')}>
         <ThemeProvider
           defaultTheme="light"
           enableSystem

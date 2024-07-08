@@ -165,7 +165,7 @@ export default async function BlogPage({
           </div>
         }
       />
-      <div className="flex flex-col px-[15px]">
+      <div className="flex flex-col px-[15px] relative z-50">
         <Image
           src={coverUrl}
           alt={title}

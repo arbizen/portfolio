@@ -141,7 +141,7 @@ export default async function ProjectPage({
           </div>
         }
       />
-      <div className="flex flex-col">
+      <div className="flex flex-col relative z-50">
         <Image
           src={coverUrl}
           alt={title}

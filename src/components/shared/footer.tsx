@@ -9,7 +9,7 @@ export default function Footer({
   socials: { name: string; link: string }[];
 }) {
   return (
-    <footer className="flex mt-16 justify-between">
+    <footer className="flex mt-16 justify-between relative z-50">
       <p className=" italic text-slate-800">{text}</p>
       <div className="flex gap-4 text-slate-800">
         {socials.map((social, i) => (

@@ -98,7 +98,7 @@ export default async function Share({ params, searchParams }: Props) {
           </div>
         }
       />
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 flex justify-center relative z-50">
         <Image
           unoptimized
           src={image.src}

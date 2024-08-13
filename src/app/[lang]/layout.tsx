@@ -55,7 +55,7 @@ export default async function RootLayout({
           type="blob3"
           fill="#A855F7"
         />
-        <Circles />
+        {/* <Circles /> */}
         <div className="flex-grow min-h-screen sm:overflow-x-hidden">
           {children}
         </div>

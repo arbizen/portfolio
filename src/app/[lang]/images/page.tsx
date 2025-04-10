@@ -94,7 +94,7 @@ export default async function Images({ params, searchParams }: pageProps) {
         }
       />
       <div className="w-full relative z-50">
-        <div className="columns-4 gap-4 sm:columns-1 [&>img:not(:first-child)]:mt-4">
+        <div className="columns-4 gap-4 sm:columns-1">
           {images.map((image) => (
             <CustomImage
               src={image.src}
@@ -103,8 +103,9 @@ export default async function Images({ params, searchParams }: pageProps) {
               height={300}
               width={500}
               sizes="500px"
-              className="h-full w-full rounded-md"
+              className="h-full w-full"
               link={`/${params.lang}/images/${image.id}`}
+              date={image.date}
             />
           ))}
         </div>

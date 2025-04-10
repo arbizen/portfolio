@@ -10,3 +10,35 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Image placeholder styles */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.img-placeholder {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #f1f5f9;
+  background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+  background-size: 800px 104px;
+  border-radius: 0.375rem;
+  z-index: 1;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.img-placeholder img {
+  position: relative;
+  z-index: 2;
+}

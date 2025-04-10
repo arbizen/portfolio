@@ -99,18 +99,26 @@ export default async function Share({ params, searchParams }: Props) {
         }
       />
       <div className="mt-8 flex justify-center relative z-50">
-        <Image
-          unoptimized
-          src={image.src}
-          alt={image.alt}
-          width={500}
-          height={500}
-          className="h-auto w-auto rounded-md"
-        />
+        <div className="img-placeholder">
+          <Image
+            unoptimized
+            src={image.src}
+            alt={image.alt}
+            width={500}
+            height={500}
+            className="h-auto w-auto rounded-md"
+            loading="lazy"
+          />
+        </div>
       </div>
-      <p className="my-4 mt-2 block text-sm italic text-slate-500 text-center">
-        {image.alt}
-      </p>
+      <div className="my-4 mt-2 flex justify-center items-center gap-2">
+        <p className="text-sm italic text-slate-500">
+          {image.alt}
+        </p>
+        <span className="text-xs text-slate-400">
+          ({dateformat(image.date, 'dd/mm/yyyy')})
+        </span>
+      </div>
     </section>
   );
 }

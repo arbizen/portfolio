@@ -25,7 +25,7 @@ export const metadata = {
   description: 'This is the poems page',
 };
 
-export const Poem = (props: PoemType) => {
+const Poem = (props: PoemType) => {
   return (
     <Card className="p-16 sm:p-8">
       <div className="flex gap-8 sm:flex-col">
@@ -81,12 +81,13 @@ export const Poem = (props: PoemType) => {
   );
 };
 
-type pageProps = {
+export default async function Poems({
+  params,
+  searchParams,
+}: {
   params: { slug: string; lang: string };
   searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-export default async function Poems({ params, searchParams }: pageProps) {
+}) {
   const category = searchParams?.category || '';
   const pageNumber = searchParams?.page || 1;
 

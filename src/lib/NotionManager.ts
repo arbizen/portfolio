@@ -212,8 +212,6 @@ export class NotionManager {
           .replace(/\s\s+/g, ' ')
           .replace(/ /g, '-');
 
-        console.log(page.properties)
-
         // url encode
         const encodedSlug = encodeURIComponent(slug) + `?id=${page.id}`;
 

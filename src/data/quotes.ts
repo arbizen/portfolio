@@ -1,0 +1,22 @@
+export const quotes = [
+  "Thou shall rise.",
+  "Design is intelligence made visible.",
+  "Simplicity is the ultimate sophistication.",
+  "Code is poetry in motion.",
+  "Create with purpose, design with passion.",
+  "Build bridges, not walls.",
+  "Less is more, more or less.",
+  "Make it simple, but significant.",
+  "Innovation distinguishes between a leader and a follower.",
+  "Details make perfection, and perfection is not a detail.",
+  "Dream big, start small, but most of all, start.",
+  "Quality over quantity always wins the long game.",
+  "Be the change you wish to see in your code.",
+  "Stay hungry, stay foolish.",
+  "Good design is obvious. Great design is transparent.",
+  "Think outside the box, but don't forget the box exists.",
+  "Creativity is intelligence having fun.",
+  "The best way to predict the future is to create it.",
+  "Everything should be made as simple as possible, but not simpler.",
+  "Design is not just what it looks like. Design is how it works."
+]; 

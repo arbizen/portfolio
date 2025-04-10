@@ -6,7 +6,7 @@ import { ArrowRight, BadgeEuro } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Subtitle from '@/components/shared/sub-title';
-import { Blog, Project } from '@/types';
+import { Blog, Project as ProjectType } from '@/types';
 // @ts-ignore
 import dateformat from 'dateformat';
 import { Tag, TagContainer } from '@/components/tag';
@@ -26,7 +26,7 @@ export const metadata = {
   description: 'This is the project page',
 };
 
-const Project = (props: Project) => {
+const Project = (props: ProjectType) => {
   return (
     <Card className="flex gap-6 flex-col p-8">
       <div className="flex justify-between items-center">
@@ -120,7 +120,7 @@ export default async function Blogs({
   const pagination = new Pagination(searchParams, pageName);
   const data = await pagination.getCurrentPageData('asc');
 
-  const projects: Project[] = data[pageName]?.data;
+  const projects: ProjectType[] = data[pageName]?.data;
   const nextPageUrl = pagination.nextPageUrl(data);
 
   const supportedLang = supportedLocales.includes(params.lang)

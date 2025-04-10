@@ -14,6 +14,9 @@ import PageTitle from '@/components/shared/page-title';
 import Badge from '@/components/ui/badge';
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Github, ExternalLink } from 'lucide-react';
 
 // @ts-ignore
 import dateformat from 'dateformat';
@@ -119,6 +122,8 @@ export default async function ProjectPage({
   const type =
     (pageInfo as any).properties?.type?.rich_text[0]?.plain_text || '';
   const date = (pageInfo as any)?.properties?.createdAt?.created_time || '';
+  const githubLink = (pageInfo as any)?.properties?.githubLink?.rich_text[0]?.plain_text || '';
+  const previewLink = (pageInfo as any)?.properties?.previewLink?.rich_text[0]?.plain_text || '';
 
   const customComponents = {
     code: CodeBlock,
@@ -133,11 +138,31 @@ export default async function ProjectPage({
         header={<PageTitle title={title} />}
         description={description}
         footer={
-          <div className="flex gap-2">
-            <Badge className="bg-orange-100 text-orange-500">
-              {dateformat(date, 'ddS mmmm, yyyy')}
-            </Badge>
-            <Badge className="bg-red-100 text-red-500">{type}</Badge>
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
+            <div className="flex gap-2">
+              <Badge className="bg-orange-100 text-orange-500">
+                {dateformat(date, 'ddS mmmm, yyyy')}
+              </Badge>
+              <Badge className="bg-red-100 text-red-500">{type}</Badge>
+            </div>
+            <div className="flex gap-2 sm:ml-auto">
+              {githubLink && (
+                <Button variant="outline" size="sm" asChild>
+                  <Link href={githubLink} target="_blank" className="flex items-center gap-2">
+                    <Github size={16} />
+                    GitHub
+                  </Link>
+                </Button>
+              )}
+              {previewLink && (
+                <Button variant="outline" size="sm" asChild>
+                  <Link href={previewLink} target="_blank" className="flex items-center gap-2">
+                    <ExternalLink size={16} />
+                    Preview
+                  </Link>
+                </Button>
+              )}
+            </div>
           </div>
         }
       />

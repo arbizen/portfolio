@@ -65,7 +65,8 @@
     },
     "poems": {
       "name": "Poemas",
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas."
+      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas.",
+      "readMore": "Leer más"
     },
     "images": {
       "name": "Imágenes",

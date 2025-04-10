@@ -32,6 +32,20 @@ export type Blog = {
   isPublished?: boolean;
 };
 
+export type Poem = {
+  id: string;
+  title: string;
+  slug: string;
+  date?: string;
+  description?: string;
+  categories?: string[];
+  author?: string;
+  image?: string;
+  lang?: string;
+  page?: any;
+  isPublished?: boolean;
+};
+
 export type Project = {
   id: string;
   name: string;

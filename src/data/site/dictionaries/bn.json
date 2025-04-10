@@ -44,7 +44,8 @@
     },
     "poems": {
       "name": "কবিতা",
-      "description": "আমার সাইটের কবিতা পেজ"
+      "description": "আমার সাইটের কবিতা পেজ",
+      "readMore": "আরও পড়ুন"
     },
     "images": {
       "name": "ছবি",

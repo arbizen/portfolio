@@ -55,19 +55,19 @@ export async function GET(req: Request, context: { params: { name: string } }) {
           }
         }
       });
-      if (data)
-        results[route] =
-          {
-            data:
-              category === 'All'
-                ? limited
-                : category
-                ? categoryFiltered
-                : limited,
-            next_cursor: data.next_cursor,
-            has_more: data.has_more,
-            totalLength: limited.length,
-          } || data;
+      if (data) {
+        results[route] = {
+          data:
+            category === 'All'
+              ? limited
+              : category
+              ? categoryFiltered
+              : limited,
+          next_cursor: data.next_cursor,
+          has_more: data.has_more,
+          totalLength: limited.length,
+        };
+      }
     }
     if (!results || Object.keys(results).length === 0)
       return NextResponse.json('Database not found', { status: 404 });

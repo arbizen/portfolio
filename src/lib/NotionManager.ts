@@ -6,7 +6,7 @@ export class NotionManager {
   constructor(
     private readonly notion: Client,
     private readonly databases: {
-      name: 'blogs' | 'activities' | 'bookmarks' | 'projects' | 'images';
+      name: 'blogs' | 'activities' | 'bookmarks' | 'projects' | 'images' | 'poems';
       id: string;
     }[],
   ) {}
@@ -199,6 +199,44 @@ export class NotionManager {
           slug: encodedSlug,
         };
       });
+    } else if (name === 'poems') {
+      formatted = db.results.map((page: any) => {
+        if (!isFullPage(page)) {
+          throw new Error('Notion page is not a full page');
+        }
+
+        const slug = page.properties?.title?.title[0]?.plain_text
+          .trim()
+          .toLowerCase()
+          .replace(/-/g, ' ')
+          .replace(/\s\s+/g, ' ')
+          .replace(/ /g, '-');
+
+        console.log(page.properties)
+
+        // url encode
+        const encodedSlug = encodeURIComponent(slug) + `?id=${page.id}`;
+
+        return {
+          id: page.id,
+          title: page.properties?.title?.title[0]?.plain_text || '',
+          date: page.properties?.createdAt?.created_time || '',
+          categories:
+            'multi_select' in page.properties.category
+              ? page.properties.category.multi_select.map((tag) => tag.name)
+              : [],
+          description:
+            page.properties?.description?.rich_text[0]?.plain_text || '',
+          image:
+            page.cover?.external?.url ||
+            page.cover?.file?.url ||
+            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          author: page.properties?.author?.rich_text[0]?.plain_text || '',
+          slug: encodedSlug,
+          decodedSlug: slug,
+          isPublished: page.properties?.isPublished?.checkbox || false,
+        };
+      });
     } else if (name === 'images') {
       formatted = db.results.map((page: any) => {
         if (!isFullPage(page)) {
@@ -236,5 +274,6 @@ export const notionManager = new NotionManager(
     { name: 'bookmarks', id: process.env.NOTION_BOOKMARK_DATABASE_ID! },
     { name: 'projects', id: process.env.NOTION_PROJECT_DATABASE_ID! },
     { name: 'images', id: process.env.NOTION_IMAGE_DATABASE_ID! },
+    { name: 'poems', id: process.env.NOTION_POEM_DATABASE_ID! },
   ],
 );

@@ -65,7 +65,8 @@
     },
     "poems": {
       "name": "Poems",
-      "description": "These are some of the best poems I’ve read so far. The list updates really frequently as I love reading poems a lot."
+      "description": "These are some of the best poems I've read so far. The list updates really frequently as I love reading poems a lot.",
+      "readMore": "Read more"
     },
     "images": {
       "name": "Images",

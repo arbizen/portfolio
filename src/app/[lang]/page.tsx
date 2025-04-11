@@ -2,7 +2,7 @@ import Card from '@/components/card';
 import PageInfo from '@/components/shared/page-info';
 import SubTitle from '@/components/shared/sub-title';
 import Badge from '@/components/ui/badge';
-import { Activity, Blog as BlogType } from '@/types';
+import { Activity, Blog as BlogType, ImageType } from '@/types';
 import { ArrowRight, Subtitles } from 'lucide-react';
 import Link from 'next/link';
 import { getDictionary } from './dictionaries';
@@ -18,6 +18,7 @@ import { Blog } from './blogs/page';
 import Image from 'next/image';
 import Circles from '@/components/circles';
 import { SkillBeam } from '@/components/skill-beam';
+import CustomImage from '@/components/gallery-image';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -67,6 +68,12 @@ export default async function Home({
   const dataBlogs = await paginationBlogs.getCurrentPageData('desc');
 
   const blogsData: BlogType[] = dataBlogs[blogs]?.data;
+  
+  // Fetch recent images
+  const images = 'images';
+  const paginationImages = new Pagination({ limit: 3 }, images);
+  const dataImages = await paginationImages.getCurrentPageData('desc');
+  const imagesData: ImageType[] = dataImages[images]?.data;
 
   const supportedLang = supportedLocales.includes(lang)
     ? lang
@@ -163,6 +170,32 @@ export default async function Home({
           );
         })}
       </div>
+      
+      <div className="mt-8">
+        <SubTitle
+          title={dictionary.page.images.name}
+          seeMoreText="All Images"
+          seeMoreLink={`/${lang}/images`}
+        />
+      </div>
+      <div className="mt-8 w-full">
+        <div className="grid grid-cols-3 gap-4 sm:grid-cols-1">
+          {imagesData?.map((image: ImageType) => (
+            <CustomImage
+              src={image.src}
+              alt={image.alt}
+              key={image.id}
+              height={300}
+              width={500}
+              sizes="500px"
+              className="h-full w-full"
+              link={`/${lang}/images/${image.id}`}
+              date={image.date}
+            />
+          ))}
+        </div>
+      </div>
+      
       <Script
         id="json-ld-site"
         type="application/ld+json"

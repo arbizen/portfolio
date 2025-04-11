@@ -187,7 +187,6 @@ export default async function Home({
               key={image.id}
               height={300}
               width={500}
-              sizes="500px"
               className="h-full w-full"
               link={`/${lang}/images/${image.id}`}
               date={image.date}

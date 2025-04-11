@@ -102,7 +102,6 @@ export default async function Images({ params, searchParams }: pageProps) {
               key={image.id}
               height={300}
               width={500}
-              //sizes="500px"
               className="h-full w-full"
               link={`/${params.lang}/images/${image.id}`}
               date={image.date}

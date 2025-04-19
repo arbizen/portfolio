@@ -187,7 +187,7 @@ export default async function Home({
           <div>
             <h2 className="text-xl font-bold text-blue-700 mb-1">Want to ask a question or give feedback?</h2>
             <p className="text-slate-700">
-              I'm always here to help you or answer your questions.
+              I&apos;m always here to help you or answer your questions.
             </p>
           </div>
           <Link 

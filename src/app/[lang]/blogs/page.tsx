@@ -26,7 +26,7 @@ export const metadata = {
   description: 'This is the home page',
 };
 
-export const Blog = (props: BlogType) => {
+const Blog = (props: BlogType) => {
   return (
     <Card className="p-16 sm:p-8">
       <div className="flex gap-8 sm:flex-col">

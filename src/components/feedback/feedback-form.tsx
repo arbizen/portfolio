@@ -46,9 +46,12 @@ export default function FeedbackForm({ onSuccess, inDialog = false }: FeedbackFo
           type: 'feedback'
         });
         
-        // Call onSuccess if provided (for dialog mode)
+        // Call onSuccess if provided
         if (onSuccess) {
-          onSuccess();
+          // Wait a moment to show the success message before hiding the form
+          setTimeout(() => {
+            onSuccess();
+          }, 1500);
         }
       } else {
         // Handle error

@@ -5,12 +5,10 @@ import PageAnimation from '@/components/page-animation';
 import { getDictionary } from '../dictionaries';
 import { supportedLocales } from '@/data/site/supportedLocales';
 import { cookies } from 'next/headers';
-import FeedbackForm from '@/components/feedback/feedback-form';
 import { Client } from '@notionhq/client';
 import { Feedback } from '@/types';
 import PublicFeedbackList from '@/components/feedback/public-feedback-list';
-import { Button } from '@/components/ui/button';
-import FeedbackFormDialog from '@/components/feedback/feedback-form-dialog';
+import FeedbackSection from '@/components/feedback/feedback-section';
 
 export const metadata = {
   title: 'Feedback & AMA',
@@ -101,7 +99,7 @@ export default async function FeedbackPage({
           description="Share your thoughts or ask me anything. I appreciate your feedback and will respond to your questions when possible." 
           footer={
             <div className="mt-8">
-              <FeedbackFormDialog />
+              <FeedbackSection />
             </div>
           }
         />

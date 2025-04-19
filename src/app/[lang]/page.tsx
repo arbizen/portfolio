@@ -2,7 +2,7 @@ import Card from '@/components/card';
 import PageInfo from '@/components/shared/page-info';
 import SubTitle from '@/components/shared/sub-title';
 import Badge from '@/components/ui/badge';
-import { Activity, Blog as BlogType, ImageType } from '@/types';
+import { Activity, Blog as BlogType, ImageType, Feedback } from '@/types';
 import { ArrowRight, Subtitles } from 'lucide-react';
 import Link from 'next/link';
 import { getDictionary } from './dictionaries';
@@ -19,6 +19,8 @@ import Image from 'next/image';
 import Circles from '@/components/circles';
 import { SkillBeam } from '@/components/skill-beam';
 import CustomImage from '@/components/gallery-image';
+import { Client } from '@notionhq/client';
+import PublicFeedbackList from '@/components/feedback/public-feedback-list';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -75,6 +77,64 @@ export default async function Home({
   const dataImages = await paginationImages.getCurrentPageData('desc');
   const imagesData: ImageType[] = dataImages[images]?.data;
 
+  // Fetch recent answered feedback/questions
+  const FEEDBACK_DATABASE_ID = process.env.NOTION_FEEDBACK_DATABASE_ID;
+  let recentFeedbacks: Feedback[] = [];
+  
+  try {
+    if (FEEDBACK_DATABASE_ID) {
+      const notion = new Client({ auth: process.env.NOTION_TOKEN! });
+      const response = await notion.databases.query({
+        database_id: FEEDBACK_DATABASE_ID,
+        filter: {
+          and: [
+            {
+              property: 'response',
+              rich_text: {
+                is_not_empty: true,
+              },
+            },
+            {
+              property: 'isResolved',
+              checkbox: {
+                equals: true,
+              },
+            },
+            {
+              property: 'publishResponse',
+              checkbox: {
+                equals: true,
+              },
+            },
+          ],
+        },
+        sorts: [
+          {
+            property: 'createdAt',
+            direction: 'descending',
+          },
+        ],
+        page_size: 3, // Limit to 3 recent feedbacks
+      });
+      
+      recentFeedbacks = response.results.map((page: any) => {
+        const properties = page.properties;
+        return {
+          id: page.id,
+          name: properties.name?.title[0]?.plain_text || '',
+          email: properties.email?.rich_text[0]?.plain_text || '',
+          message: properties.message?.rich_text[0]?.plain_text || '',
+          date: properties.createdAt?.date?.start || new Date().toISOString(),
+          type: properties.type?.select?.name === 'Question' ? 'question' : 'feedback',
+          isResolved: properties.isResolved?.checkbox || false,
+          response: properties.response?.rich_text[0]?.plain_text || '',
+        };
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching feedbacks:', error);
+  }
+
   const supportedLang = supportedLocales.includes(lang)
     ? lang
     : cookies().get('lang')?.value ?? 'en';
@@ -83,6 +143,8 @@ export default async function Home({
 
   return (
     <PageAnimation>
+      
+
       <div className="flex items-start w-full sm:flex-wrap">
         <PageInfo
           breadcumb={
@@ -119,6 +181,38 @@ export default async function Home({
           <SkillBeam />
         </div>
       </div>
+
+      <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-100 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-bold text-blue-700 mb-1">Want to ask a question or give feedback?</h2>
+            <p className="text-slate-700">
+              I'm always here to help you or answer your questions.
+            </p>
+          </div>
+          <Link 
+            href={`/${lang}/feedback`}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium flex items-center gap-2 transition-colors"
+          >
+            Give Feedback <ArrowRight size={16} />
+          </Link>
+        </div>
+      </div>
+
+      {/* Recent answered feedback/questions section */}
+      {recentFeedbacks.length > 0 && (
+        <div className="mb-8">
+          <SubTitle
+            title="Recently Answered Questions"
+            seeMoreText="View All"
+            seeMoreLink={`/${lang}/feedback`}
+          />
+          <div className="mt-6">
+            <PublicFeedbackList feedbacks={recentFeedbacks} />
+          </div>
+        </div>
+      )}
+
       <div>
         <SubTitle
           title={dictionary.page.home.activities}

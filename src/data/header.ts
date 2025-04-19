@@ -31,4 +31,8 @@ export const headerItems: HeaderItem[] = [
     name: 'About',
     route: '/about',
   },
+  {
+    name: 'Feedback',
+    route: '/feedback',
+  },
 ];

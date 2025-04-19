@@ -68,3 +68,15 @@ export type ImageType = {
   src: string;
   date: string;
 };
+
+export type Feedback = {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  date: string;
+  type: 'feedback' | 'question';
+  isResolved: boolean;
+  response?: string;
+  publishResponse?: boolean;
+};

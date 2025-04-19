@@ -11,7 +11,9 @@
       { "name": "বুকমার্ক", "url": "/bn/bookmarks" },
       { "name": "কবিতা", "url": "/bn/poems" },
       { "name": "ছবি", "url": "/bn/images" },
-      { "name": "আমার সম্পর্কে", "url": "/bn/about" }
+      { "name": "আমার সম্পর্কে", "url": "/bn/about" },
+      { "name": "মতামত", "url": "/bn/feedback" },
+      { "name": "অ্যাডমিন", "url": "/bn/admin/feedback" }
     ]
   },
   "page": {

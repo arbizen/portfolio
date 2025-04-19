@@ -36,6 +36,8 @@ export function middleware(request: NextRequest) {
     '/projects',
     '/bookmarks',
     '/about',
+    '/feedback',
+    '/admin/feedback',
   ];
   if (pages.includes(pathname)) {
     request.nextUrl.pathname = `/${locale}${pathname}`;

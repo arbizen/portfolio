@@ -32,6 +32,14 @@
       {
         "name": "Sobre",
         "url": "/es/about"
+      },
+      {
+        "name": "Feedback",
+        "url": "/es/feedback"
+      },
+      {
+        "name": "Admin",
+        "url": "/es/admin/feedback"
       }
     ]
   },

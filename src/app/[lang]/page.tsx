@@ -14,7 +14,7 @@ import PageAnimation from '@/components/page-animation';
 import Script from 'next/script';
 import { supportedLocales } from '@/data/site/supportedLocales';
 import { cookies } from 'next/headers';
-import { Blog } from './blogs/page';
+import Blog from '@/components/blogs/blog';
 import Image from 'next/image';
 import Circles from '@/components/circles';
 import { SkillBeam } from '@/components/skill-beam';

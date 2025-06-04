@@ -23,16 +23,16 @@ export default async function AdminFeedbackPage({
 }) {
   const supportedLang = supportedLocales.includes(lang)
     ? lang
-    : cookies().get('lang')?.value ?? 'en';
-    
+    : (cookies().get('lang')?.value ?? 'en');
+
   const dictionary = await getDictionary(supportedLang);
-  
+
   // Fetch feedbacks from Notion
   // You need to create a Feedback database in Notion first
   const FEEDBACK_DATABASE_ID = process.env.NOTION_FEEDBACK_DATABASE_ID;
-  
+
   let feedbacks: Feedback[] = [];
-  
+
   try {
     if (FEEDBACK_DATABASE_ID) {
       const notion = new Client({ auth: process.env.NOTION_TOKEN! });
@@ -45,7 +45,7 @@ export default async function AdminFeedbackPage({
           },
         ],
       });
-      
+
       feedbacks = response.results.map((page: any) => {
         const properties = page.properties;
         return {
@@ -53,8 +53,11 @@ export default async function AdminFeedbackPage({
           name: properties.name?.title[0]?.plain_text || '',
           email: properties.email?.rich_text[0]?.plain_text || '',
           message: properties.message?.rich_text[0]?.plain_text || '',
-          date: properties.createdAt?.date?.start || new Date().toISOString(),
-          type: properties.type?.select?.name === 'Question' ? 'question' : 'feedback',
+          date: properties.createdAt?.date?.start || page.created_time,
+          type:
+            properties.type?.select?.name === 'Question'
+              ? 'question'
+              : 'feedback',
           isResolved: properties.isResolved?.checkbox || false,
           response: properties.response?.rich_text[0]?.plain_text || '',
           publishResponse: properties.publishResponse?.checkbox || false,
@@ -64,12 +67,11 @@ export default async function AdminFeedbackPage({
   } catch (error) {
     console.error('Error fetching feedbacks:', error);
   }
-  
+
   return (
     <PageAnimation>
       <div className="mt-16 sm:mt-8">
-
-        <PageInfo 
+        <PageInfo
           header={<PageTitle title="Manage Feedback & Questions" />}
           breadcumb={
             <Breadcumb
@@ -79,11 +81,11 @@ export default async function AdminFeedbackPage({
           }
           description="Review and respond to user feedback and questions."
         />
-        
+
         <div className="mt-8 mb-16">
           <AdminAuth feedbacks={feedbacks} />
         </div>
       </div>
     </PageAnimation>
   );
-} 
+}

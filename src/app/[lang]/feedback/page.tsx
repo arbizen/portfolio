@@ -24,14 +24,14 @@ export default async function FeedbackPage({
 }) {
   const supportedLang = supportedLocales.includes(lang)
     ? lang
-    : cookies().get('lang')?.value ?? 'en';
-    
+    : (cookies().get('lang')?.value ?? 'en');
+
   const dictionary = await getDictionary(supportedLang);
-  
+
   // Fetch published feedbacks with responses
   const FEEDBACK_DATABASE_ID = process.env.NOTION_FEEDBACK_DATABASE_ID;
   let feedbacks: Feedback[] = [];
-  
+
   try {
     if (FEEDBACK_DATABASE_ID) {
       const notion = new Client({ auth: process.env.NOTION_TOKEN! });
@@ -66,7 +66,7 @@ export default async function FeedbackPage({
           },
         ],
       });
-      
+
       feedbacks = response.results.map((page: any) => {
         const properties = page.properties;
         return {
@@ -74,8 +74,11 @@ export default async function FeedbackPage({
           name: properties.name?.title[0]?.plain_text || '',
           email: properties.email?.rich_text[0]?.plain_text || '',
           message: properties.message?.rich_text[0]?.plain_text || '',
-          date: properties.createdAt?.date?.start || new Date().toISOString(),
-          type: properties.type?.select?.name === 'Question' ? 'question' : 'feedback',
+          date: properties.createdAt?.date?.start || page.created_time,
+          type:
+            properties.type?.select?.name === 'Question'
+              ? 'question'
+              : 'feedback',
           isResolved: properties.isResolved?.checkbox || false,
           response: properties.response?.rich_text[0]?.plain_text || '',
         };
@@ -84,11 +87,11 @@ export default async function FeedbackPage({
   } catch (error) {
     console.error('Error fetching feedbacks:', error);
   }
-  
+
   return (
     <PageAnimation>
       <div className="mt-16 sm:mt-8">
-        <PageInfo 
+        <PageInfo
           breadcumb={
             <Breadcumb
               firstNav={{ name: dictionary.header.nav[0].name, url: '/' }}
@@ -96,7 +99,7 @@ export default async function FeedbackPage({
             />
           }
           header={<PageTitle title="Feedback & AMA" />}
-          description="Share your thoughts or ask me anything. I appreciate your feedback and will respond to your questions when possible." 
+          description="Share your thoughts or ask me anything. I appreciate your feedback and will respond to your questions when possible."
           footer={
             <div className="mt-8">
               <FeedbackSection />
@@ -106,11 +109,13 @@ export default async function FeedbackPage({
 
         {feedbacks.length > 0 && (
           <div className="mt-16 mb-16">
-            <h2 className="text-2xl font-medium mb-6">Recently Answered Questions & Feedback</h2>
+            <h2 className="text-2xl font-medium mb-6">
+              Recently Answered Questions & Feedback
+            </h2>
             <PublicFeedbackList feedbacks={feedbacks} />
           </div>
         )}
       </div>
     </PageAnimation>
   );
-} 
+}

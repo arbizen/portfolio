@@ -3,7 +3,7 @@ import PageInfo from '@/components/shared/page-info';
 import SubTitle from '@/components/shared/sub-title';
 import Badge from '@/components/ui/badge';
 import { Activity, Blog as BlogType, ImageType, Feedback } from '@/types';
-import { ArrowRight, Subtitles } from 'lucide-react';
+import { ArrowRight, Download, Subtitles } from 'lucide-react';
 import Link from 'next/link';
 import { getDictionary } from './dictionaries';
 import Breadcumb from '@/components/shared/breadcumb';
@@ -168,7 +168,7 @@ export default async function Home({
           }
           description={dictionary.page.home.description}
           footer={
-            <div className="flex flex-row gap-4 sm:flex-col sm:gap-2">
+            <div className="flex flex-row gap-4 sm:gap-4">
               <Link
                 className="flex gap-1 items-center text-blue-500 font-bold text-[14px]"
                 href="/about"
@@ -181,7 +181,7 @@ export default async function Home({
                 target="_blank"
                 download
               >
-                {dictionary.page.home.downloadCV} <ArrowRight size={16} />
+                {dictionary.page.home.downloadCV} <Download size={16} />
               </Link>
             </div>
           }

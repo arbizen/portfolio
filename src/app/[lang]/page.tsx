@@ -70,7 +70,7 @@ export default async function Home({
   const dataBlogs = await paginationBlogs.getCurrentPageData('desc');
 
   const blogsData: BlogType[] = dataBlogs[blogs]?.data;
-  
+
   // Fetch recent images
   const images = 'images';
   const paginationImages = new Pagination({ limit: 3 }, images);
@@ -80,7 +80,7 @@ export default async function Home({
   // Fetch recent answered feedback/questions
   const FEEDBACK_DATABASE_ID = process.env.NOTION_FEEDBACK_DATABASE_ID;
   let recentFeedbacks: Feedback[] = [];
-  
+
   try {
     if (FEEDBACK_DATABASE_ID) {
       const notion = new Client({ auth: process.env.NOTION_TOKEN! });
@@ -116,7 +116,7 @@ export default async function Home({
         ],
         page_size: 3, // Limit to 3 recent feedbacks
       });
-      
+
       recentFeedbacks = response.results.map((page: any) => {
         const properties = page.properties;
         return {
@@ -125,7 +125,10 @@ export default async function Home({
           email: properties.email?.rich_text[0]?.plain_text || '',
           message: properties.message?.rich_text[0]?.plain_text || '',
           date: properties.createdAt?.date?.start || new Date().toISOString(),
-          type: properties.type?.select?.name === 'Question' ? 'question' : 'feedback',
+          type:
+            properties.type?.select?.name === 'Question'
+              ? 'question'
+              : 'feedback',
           isResolved: properties.isResolved?.checkbox || false,
           response: properties.response?.rich_text[0]?.plain_text || '',
         };
@@ -137,14 +140,12 @@ export default async function Home({
 
   const supportedLang = supportedLocales.includes(lang)
     ? lang
-    : cookies().get('lang')?.value ?? 'en';
+    : (cookies().get('lang')?.value ?? 'en');
 
   const dictionary = await getDictionary(supportedLang);
 
   return (
     <PageAnimation>
-      
-
       <div className="flex items-start w-full sm:flex-wrap">
         <PageInfo
           breadcumb={
@@ -167,12 +168,20 @@ export default async function Home({
           }
           description={dictionary.page.home.description}
           footer={
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-4 sm:flex-col sm:gap-2">
               <Link
                 className="flex gap-1 items-center text-blue-500 font-bold text-[14px]"
                 href="/about"
               >
                 {dictionary.page.home.knowMoreAboutMe} <ArrowRight size={16} />
+              </Link>
+              <Link
+                className="flex gap-1 items-center text-green-600 font-bold text-[14px]"
+                href="/arbizen-cv.pdf"
+                target="_blank"
+                download
+              >
+                {dictionary.page.home.downloadCV} <ArrowRight size={16} />
               </Link>
             </div>
           }
@@ -185,12 +194,14 @@ export default async function Home({
       <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-100 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-blue-700 mb-1">Want to ask a question or give feedback?</h2>
+            <h2 className="text-xl font-bold text-blue-700 mb-1">
+              Want to ask a question or give feedback?
+            </h2>
             <p className="text-slate-700">
               I&apos;m always here to help you or answer your questions.
             </p>
           </div>
-          <Link 
+          <Link
             href={`/${lang}/feedback`}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium flex items-center gap-2 transition-colors"
           >
@@ -264,7 +275,7 @@ export default async function Home({
           );
         })}
       </div>
-      
+
       <div className="mt-8">
         <SubTitle
           title={dictionary.page.images.name}
@@ -288,7 +299,7 @@ export default async function Home({
           ))}
         </div>
       </div>
-      
+
       <Script
         id="json-ld-site"
         type="application/ld+json"

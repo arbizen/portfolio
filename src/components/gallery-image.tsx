@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 // @ts-ignore
@@ -51,7 +51,7 @@ export default function CustomImage(props: Props) {
       {
         rootMargin: '200px 0px',
         threshold: 0.01,
-      }
+      },
     );
 
     if (imgRef.current) {
@@ -82,7 +82,7 @@ export default function CustomImage(props: Props) {
               width={props.width}
               height={props.height}
               className={`${props.className} w-full h-full object-cover rounded-md ${
-                isLoaded ? 'blur-none' : 'blur-xl'
+                isLoaded ? 'blur-none' : 'blur-sm'
               }`}
               loading={props.priority ? 'eager' : 'lazy'}
               onLoad={handleImageLoad}
@@ -93,9 +93,7 @@ export default function CustomImage(props: Props) {
           )}
         </div>
         <div className="mt-2 flex justify-between items-center">
-          <span className="text-sm italic text-slate-500">
-            {props.alt}
-          </span>
+          <span className="text-sm italic text-slate-500">{props.alt}</span>
           {props.date && (
             <span className="text-xs text-slate-400">
               {dateformat(props.date, 'dd/mm/yyyy')}

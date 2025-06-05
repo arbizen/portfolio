@@ -46,27 +46,24 @@ export async function GET(req: Request, context: { params: { name: string } }) {
     }
     const pageEnd =
       Number(start) + Number(count) >= 100 ? 0 : Number(start) + Number(count);
-    if (data)
-      results['images'] =
-        {
-          data: limited,
-          next_cursor: data.next_cursor,
-          has_more: data.has_more,
-          totalLength: limited.length,
-          start: pageEnd === 100 ? 0 : start,
-          end: pageEnd,
-        } || data;
+    if (data) {
+      results['images'] = {
+        data: transformedData,
+        next_cursor: data.next_cursor,
+        has_more: data.has_more,
+        totalLength: limited.length,
+        start: pageEnd === 100 ? 0 : start,
+        end: pageEnd,
+      };
+    }
     if (!results || Object.keys(results).length === 0)
       return NextResponse.json('Database not found', { status: 404 });
-    return NextResponse.json(
-      { ...results },
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    return NextResponse.json(results, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json(error, { status: 500 });

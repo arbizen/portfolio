@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const TagsSkeleton = () => (
   <div className="flex gap-2 flex-wrap">
     {['All', 'Next.js', 'React.js', 'TailwindCSS', 'CSS', 'Supabase'].map((_, i) => (
-      <Skeleton key={i} className="h-8 w-20 rounded-full" />
+      <Skeleton key={i} className="h-8 w-20" />
     ))}
   </div>
 );
@@ -61,7 +61,6 @@ export default function Loading() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Skeleton className="h-4 w-[80px] rounded-md" />
           <TagsSkeleton />
         </div>
       </div>

@@ -5,6 +5,7 @@ import { GeistSans } from 'geist/font/sans';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/react';
 import { cn } from '@/lib/utils';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
   creator: 'Arb Rahim Badsa',
@@ -49,6 +50,7 @@ export default async function RootLayout({
           {children}
         </ThemeProvider>
         <Analytics />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
       </body>
     </html>
   );

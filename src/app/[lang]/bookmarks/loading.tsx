@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const TagsSkeleton = () => (
   <div className="flex gap-2 flex-wrap">
     {['All', 'Website', 'Game'].map((_, i) => (
-      <Skeleton key={i} className="h-8 w-16 rounded-full" />
+      <Skeleton key={i} className="h-8 w-16" />
     ))}
   </div>
 );
@@ -36,7 +36,6 @@ export default function Loading() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Skeleton className="h-4 w-[50px] rounded-md" />
           <TagsSkeleton />
         </div>
       </div>

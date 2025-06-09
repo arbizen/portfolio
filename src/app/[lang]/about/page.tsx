@@ -3,7 +3,8 @@ import PageTitle from '@/components/shared/page-title';
 import Breadcumb from '@/components/shared/breadcumb';
 import { getDictionary } from '../dictionaries';
 import Image from 'next/image';
-import { Clock, LocateIcon, Map, MapPin } from 'lucide-react';
+import { Clock, LocateIcon, Map, MapPin, Download, Eye } from 'lucide-react';
+import Link from 'next/link';
 // @ts-ignore
 import dateformat from 'dateformat';
 import { notionManager } from '@/lib/NotionManager';
@@ -94,6 +95,26 @@ export default async function About({ params, searchParams }: pageProps) {
               <Clock size={13} />{' '}
               <span>{dateformat(gmtPlus6Time, 'h:MM TT')}</span>
             </div>
+          </div>
+          
+          {/* Resume Buttons */}
+          <div className="flex gap-3 mt-6 justify-center sm:flex-col sm:items-center">
+            <Link
+              href={`/${params.lang}/resume`}
+              className="inline-flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              <Eye size={18} />
+              View Resume
+            </Link>
+            <Link
+              href="/arbizen-cv.pdf"
+              target="_blank"
+              download
+              className="inline-flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              <Download size={18} />
+              Download Resume
+            </Link>
           </div>
         </div>
       </div>

@@ -177,9 +177,7 @@ export default async function Home({
               </Link>
               <Link
                 className="flex gap-1 items-center text-green-600 font-bold text-[14px]"
-                href="/arbizen-cv.pdf"
-                target="_blank"
-                download
+                href={`/${lang}/resume`}
               >
                 {dictionary.page.home.downloadCV} <Download size={16} />
               </Link>
@@ -229,7 +227,7 @@ export default async function Home({
           title={dictionary.page.home.activities}
           seeMoreText={dictionary.page.home.allActivities}
         />
-        <section className="pt-[64px] flex flex-col gap-4 sm:pt-[32px]">
+        <section className="mt-8 flex flex-col gap-4">
           {activities.map((activity: Activity) => (
             <Link key={activity.id} href={activity.link!} target="_blank">
               <Card className="px-6 py-[20px]">

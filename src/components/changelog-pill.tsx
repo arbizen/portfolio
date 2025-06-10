@@ -30,6 +30,19 @@ const getIcon = (iconName: string, size: number = 14) => {
   }
 };
 
+// Helper function to check if changelog has expired
+const isChangelogExpired = (changelog: Changelog): boolean => {
+  if (!changelog.expiresAfterDays) {
+    return false; // No expiration set
+  }
+  
+  const changelogDate = new Date(changelog.date);
+  const expirationDate = new Date(changelogDate.getTime() + (changelog.expiresAfterDays * 24 * 60 * 60 * 1000));
+  const now = new Date();
+  
+  return now > expirationDate;
+};
+
 export default function ChangelogPill({
   lang,
   className = "",
@@ -44,11 +57,9 @@ export default function ChangelogPill({
         const response = await fetch('/api/changelog');
         const data = await response.json();
         
-        if (data.changelog) {
-          const changelogId = data.changelog.id;
-          const dismissed = localStorage.getItem(`changelog-dismissed-${changelogId}`);
-          
-          if (!dismissed) {
+        if (data.changelog && data.changelog.isActive) {
+          // Check if changelog has expired
+          if (!isChangelogExpired(data.changelog)) {
             setChangelog(data.changelog);
             setIsVisible(true);
           }
@@ -64,10 +75,7 @@ export default function ChangelogPill({
   }, []);
 
   const handleDismiss = () => {
-    if (changelog) {
-      localStorage.setItem(`changelog-dismissed-${changelog.id}`, 'true');
-      setIsVisible(false);
-    }
+    setIsVisible(false);
   };
 
   // Show skeleton loader while loading

@@ -21,6 +21,7 @@ import { SkillBeam } from '@/components/skill-beam';
 import CustomImage from '@/components/gallery-image';
 import { Client } from '@notionhq/client';
 import PublicFeedbackList from '@/components/feedback/public-feedback-list';
+import ChangelogPill from '@/components/changelog-pill';
 
 export const metadata = {
   title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
@@ -146,6 +147,13 @@ export default async function Home({
 
   return (
     <PageAnimation>
+      {/* Changelog Pill */}
+      <div className="flex justify-center mb-6 sm:mb-4">
+        <ChangelogPill
+          lang={lang}
+        />
+      </div>
+
       <div className="flex items-start w-full sm:flex-wrap">
         <PageInfo
           breadcumb={

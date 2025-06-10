@@ -19,6 +19,10 @@ export const metadata: Metadata = {
       en: '/en',
       bn: '/bn',
       es: '/es',
+      fr: '/fr',
+      de: '/de',
+      hi: '/hi',
+      ar: '/ar',
     },
   },
 };
@@ -34,12 +38,13 @@ export default async function RootLayout({
     ? lang
     : cookies().get('lang')?.value ?? 'en';
   const { header } = supportedLang && (await getDictionary(supportedLang));
+  const isRTL = supportedLang === 'ar';
   return (
     <>
       {/* <Header data={header} className="hidden sm:flex rounded-none" /> */}
       <MobileMenu data={header} />
 
-      <main className="flex flex-col p-16 bg-white sm:px-4 sm:pb-4 sm:pt-0 sm:overflow-x-hidden">
+      <main className={`flex flex-col p-16 bg-white sm:px-4 sm:pb-4 sm:pt-0 sm:overflow-x-hidden ${isRTL ? 'rtl' : ''}`}>
         <Header data={header} className="sm:hidden" />
         <Blob
           y="80px"

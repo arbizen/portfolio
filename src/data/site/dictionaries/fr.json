@@ -1,0 +1,89 @@
+{
+  "header": {
+    "siteName": {
+      "text": "Arb.",
+      "url": "/fr"
+    },
+    "nav": [
+      {
+        "name": "Accueil",
+        "url": "/fr"
+      },
+      {
+        "name": "Blogs",
+        "url": "/fr/blogs"
+      },
+      {
+        "name": "Projets",
+        "url": "/fr/projects"
+      },
+      {
+        "name": "Favoris",
+        "url": "/fr/bookmarks"
+      },
+      {
+        "name": "Poèmes",
+        "url": "/fr/poems"
+      },
+      {
+        "name": "Images",
+        "url": "/fr/images"
+      },
+      {
+        "name": "À propos",
+        "url": "/fr/about"
+      },
+      {
+        "name": "Commentaires",
+        "url": "/fr/feedback"
+      },
+      {
+        "name": "Admin",
+        "url": "/fr/admin/feedback"
+      }
+    ]
+  },
+  "page": {
+    "home": {
+      "name": {
+        "first": "Je code,",
+        "second": "donc je suis !",
+        "third": "Accueil"
+      },
+      "description": "Bienvenue dans mon espace numérique. Je suis Arb Rahim Badsa, un développeur passionné qui crée du code, conçoit des expériences et écrit des histoires. J'aborde chaque défi comme une opportunité d'apprendre et de créer quelque chose de significatif.",
+      "knowMoreAboutMe": "En savoir plus sur moi",
+      "downloadCV": "Voir le CV",
+      "activities": "Activités",
+      "allActivities": "Toutes les activités",
+      "recentBlogs": "Blogs récents",
+      "allBlogs": "Tous les blogs"
+    },
+    "blogs": {
+      "name": "Blogs",
+      "description": "Articles couvrant la technologie, la philosophie de vie et les insights créatifs. Rejoignez-moi dans un voyage à travers les idées, les expériences et le monde en constante évolution du développement.",
+      "minRead": "min de lecture",
+      "readMore": "Lire plus"
+    },
+    "projects": {
+      "name": "Projets",
+      "description": "Une collection soigneusement sélectionnée de mes projets et expérimentations les plus significatifs. Chaque pièce représente un défi unique, une leçon apprise et un pas en avant dans mon parcours de développeur."
+    },
+    "bookmarks": {
+      "name": "Favoris",
+      "description": "Ressources, outils et découvertes soigneusement sélectionnés du web. Ces favoris représentent des connaissances qui valent la peine d'être partagées et des références auxquelles je reviens sans cesse."
+    },
+    "poems": {
+      "name": "Poèmes",
+      "description": "Une collection de vers profonds qui ont touché mon âme et façonné ma perspective. La littérature a le pouvoir d'inspirer, et ces poèmes continuent de me émouvoir profondément.",
+      "readMore": "Lire plus"
+    },
+    "images": {
+      "name": "Images",
+      "description": "Moments capturés à travers mon objectif—scènes qui ont parlé à mon âme et exigé d'être préservées. Chaque image raconte une histoire de beauté trouvée dans le monde quotidien qui nous entoure."
+    },
+    "about": {
+      "name": "À propos",
+      "description": "Découvrez mon parcours en tant que développeur, designer et conteur. Explorez les expériences qui m'ont façonné et la passion qui anime mon travail."
+    }
+  }
+} 

@@ -26,6 +26,10 @@ export default function LanguageSelector() {
     { name: 'English', code: 'en' },
     { name: 'Spanish', code: 'es' },
     { name: 'বাংলা', code: 'bn' },
+    { name: 'Français', code: 'fr' },
+    { name: 'Deutsch', code: 'de' },
+    { name: 'हिन्दी', code: 'hi' },
+    { name: 'العربية', code: 'ar' },
   ];
   return (
     <DropdownMenu>

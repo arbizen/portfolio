@@ -6,7 +6,7 @@ export class NotionManager {
   constructor(
     private readonly notion: Client,
     private readonly databases: {
-      name: 'blogs' | 'activities' | 'bookmarks' | 'projects' | 'images' | 'poems';
+      name: 'blogs' | 'activities' | 'bookmarks' | 'projects' | 'images' | 'poems' | 'changelogs';
       id: string;
     }[],
   ) {}
@@ -235,6 +235,25 @@ export class NotionManager {
           isPublished: page.properties?.isPublished?.checkbox || false,
         };
       });
+    } else if (name === 'changelogs') {
+      formatted = db.results.map((page: any) => {
+        if (!isFullPage(page)) {
+          throw new Error('Notion page is not a full page');
+        }
+
+        return {
+          id: page.id,
+          version: page.properties?.title?.title[0]?.plain_text || '',
+          message: page.properties?.message?.rich_text[0]?.plain_text || '',
+          date:
+            page.properties?.date?.date?.start ||
+            page.properties?.createdAt?.created_time ||
+            '',
+          isActive: page.properties?.isActive?.checkbox || false,
+          icon: page.properties?.icon?.rich_text[0]?.plain_text || 'Sparkles',
+          expiresAfterDays: page.properties?.expiresAfterDays?.number || null,
+        };
+      });
     } else if (name === 'images') {
       formatted = db.results.map((page: any) => {
         if (!isFullPage(page)) {
@@ -273,5 +292,6 @@ export const notionManager = new NotionManager(
     { name: 'projects', id: process.env.NOTION_PROJECT_DATABASE_ID! },
     { name: 'images', id: process.env.NOTION_IMAGE_DATABASE_ID! },
     { name: 'poems', id: process.env.NOTION_POEM_DATABASE_ID! },
+    { name: 'changelogs', id: process.env.NOTION_CHANGELOG_DATABASE_ID! },
   ],
 );

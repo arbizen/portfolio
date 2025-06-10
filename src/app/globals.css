@@ -42,3 +42,26 @@
   position: relative;
   z-index: 2;
 }
+
+/* RTL Support for Arabic */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .flex {
+  flex-direction: row-reverse;
+}
+
+.rtl .gap-4 > * + * {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+.rtl .text-left {
+  text-align: right;
+}
+
+.rtl .text-right {
+  text-align: left;
+}

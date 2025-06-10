@@ -50,7 +50,7 @@
         "second": "por lo tanto, existo!",
         "third": "Inicio"
       },
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas.",
+      "description": "Bienvenido a mi espacio digital. Soy Arb Rahim Badsa, un desarrollador apasionado que crea código, diseña experiencias y escribe historias. Abordo cada desafío como una oportunidad para aprender y crear algo significativo.",
       "knowMoreAboutMe": "Conocer más sobre mí",
       "downloadCV": "Ver Resumen",
       "activities": "Actividades",
@@ -60,30 +60,30 @@
     },
     "blogs": {
       "name": "Blogs",
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas.",
+      "description": "Artículos que abarcan tecnología, filosofía de vida e insights creativos. Únete a mi viaje a través de ideas, experiencias y el mundo en constante evolución del desarrollo.",
       "minRead": "min de lectura",
       "readMore": "Leer más"
     },
     "projects": {
       "name": "Proyectos",
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas."
+      "description": "Una colección curada de mis proyectos y experimentos más significativos. Cada pieza representa un desafío único, una lección aprendida y un paso adelante en mi viaje como desarrollador."
     },
     "bookmarks": {
       "name": "Marcadores",
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas."
+      "description": "Recursos, herramientas y descubrimientos cuidadosamente seleccionados de toda la web. Estos marcadores representan conocimiento que vale la pena compartir y referencias a las que vuelvo una y otra vez."
     },
     "poems": {
       "name": "Poemas",
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas.",
+      "description": "Una colección de versos profundos que han tocado mi alma y dado forma a mi perspectiva. La literatura tiene el poder de inspirar, y estos poemas continúan conmoviéndome profundamente.",
       "readMore": "Leer más"
     },
     "images": {
       "name": "Imágenes",
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas."
+      "description": "Momentos capturados a través de mi lente: escenas que hablaron a mi alma y exigieron ser preservadas. Cada imagen cuenta una historia de belleza encontrada en el mundo cotidiano que nos rodea."
     },
     "about": {
       "name": "Sobre",
-      "description": "Estos son algunos de los mejores poemas que he leído hasta ahora. La lista se actualiza con mucha frecuencia ya que me encanta leer poemas."
+      "description": "Aprende sobre mi viaje como desarrollador, diseñador y narrador. Descubre las experiencias que me formaron y la pasión que impulsa mi trabajo."
     }
   }
 }

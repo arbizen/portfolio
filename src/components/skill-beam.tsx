@@ -204,7 +204,7 @@ const Icons = {
           y2="160.5"
         >
           <stop stopColor="white"></stop>
-          <stop offset="1" stopColor="white" stop-opacity="0"></stop>
+          <stop offset="1" stopColor="white" stopOpacity="0"></stop>
         </linearGradient>
         <linearGradient
           gradientUnits="userSpaceOnUse"
@@ -215,7 +215,7 @@ const Icons = {
           y2="106.875"
         >
           <stop stopColor="white"></stop>
-          <stop offset="1" stopColor="white" stop-opacity="0"></stop>
+          <stop offset="1" stopColor="white" stopOpacity="0"></stop>
         </linearGradient>
       </defs>
     </svg>

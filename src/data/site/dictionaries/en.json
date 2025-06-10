@@ -50,7 +50,7 @@
         "second": "therefore I am!",
         "third": "Home"
       },
-      "description": "Hi, I'm Arb Rahim Badsa. I live in a tiny corner of the web. I write, design & code. I love to play with new problems like toys!",
+      "description": "Hi, I'm Arb Rahim Badsa. I live in a tiny corner of the web. I write, design & code. Love to solve new problems!",
       "knowMoreAboutMe": "Know more about me",
       "downloadCV": "View Resume",
       "activities": "Activities",
@@ -60,30 +60,30 @@
     },
     "blogs": {
       "name": "Blogs",
-      "description": "Aritcles that you'll love reading! Starting from tech to life, I enjoy curving the letters on the pages of the web.",
+      "description": "Articles spanning technology, life philosophy, and creative insights. Join me on a journey through ideas, experiences, and the ever-evolving world of development.",
       "minRead": "min read",
       "readMore": "Read more"
     },
     "projects": {
       "name": "Projects",
-      "description": "Displays some of my remarkable projects that I've worked on. I am a hobbyist programmer. I don't rest on weekend. I code, therefore I am!"
+      "description": "A curated collection of my most significant projects and experiments. Each piece represents a unique challenge, a lesson learned, and a step forward in my journey as a developer."
     },
     "bookmarks": {
       "name": "Bookmarks",
-      "description": "Links and websites that I found useful. I bookmark them here so that I can find them easily when I need them."
+      "description": "Carefully curated resources, tools, and discoveries from across the web. These bookmarks represent knowledge worth sharing and references I return to time and again."
     },
     "poems": {
       "name": "Poems",
-      "description": "These are some of the best poems I've read so far. The list updates really frequently as I love reading poems a lot.",
+      "description": "A collection of profound verses that have touched my soul and shaped my perspective. Literature has the power to inspire, and these poems continue to move me deeply.",
       "readMore": "Read more"
     },
     "images": {
       "name": "Images",
-      "description": "Scenes that attracted my sould and pinned my eyes to them. I love to capture the moments that I find beautiful."
+      "description": "Moments captured through my lens—scenes that spoke to my soul and demanded to be preserved. Each image tells a story of beauty found in the everyday world around us."
     },
     "about": {
       "name": "About",
-      "description": "A friendly about page under construction."
+      "description": "Learn about my journey as a developer, designer, and storyteller. Discover the experiences that shaped me and the passion that drives my work."
     }
   }
 }

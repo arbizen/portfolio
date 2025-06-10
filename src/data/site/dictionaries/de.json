@@ -1,0 +1,89 @@
+{
+  "header": {
+    "siteName": {
+      "text": "Arb.",
+      "url": "/de"
+    },
+    "nav": [
+      {
+        "name": "Startseite",
+        "url": "/de"
+      },
+      {
+        "name": "Blogs",
+        "url": "/de/blogs"
+      },
+      {
+        "name": "Projekte",
+        "url": "/de/projects"
+      },
+      {
+        "name": "Lesezeichen",
+        "url": "/de/bookmarks"
+      },
+      {
+        "name": "Gedichte",
+        "url": "/de/poems"
+      },
+      {
+        "name": "Bilder",
+        "url": "/de/images"
+      },
+      {
+        "name": "Über mich",
+        "url": "/de/about"
+      },
+      {
+        "name": "Feedback",
+        "url": "/de/feedback"
+      },
+      {
+        "name": "Admin",
+        "url": "/de/admin/feedback"
+      }
+    ]
+  },
+  "page": {
+    "home": {
+      "name": {
+        "first": "Ich programmiere,",
+        "second": "also bin ich!",
+        "third": "Startseite"
+      },
+      "description": "Willkommen in meinem digitalen Raum. Ich bin Arb Rahim Badsa, ein leidenschaftlicher Entwickler, der Code schreibt, Erfahrungen gestaltet und Geschichten erzählt. Jede Herausforderung betrachte ich als Gelegenheit zu lernen und etwas Bedeutsames zu erschaffen.",
+      "knowMoreAboutMe": "Mehr über mich erfahren",
+      "downloadCV": "Lebenslauf ansehen",
+      "activities": "Aktivitäten",
+      "allActivities": "Alle Aktivitäten",
+      "recentBlogs": "Neueste Blogs",
+      "allBlogs": "Alle Blogs"
+    },
+    "blogs": {
+      "name": "Blogs",
+      "description": "Artikel über Technologie, Lebensphilosophie und kreative Einsichten. Begleiten Sie mich auf einer Reise durch Ideen, Erfahrungen und die sich ständig weiterentwickelnde Welt der Entwicklung.",
+      "minRead": "Min. Lesezeit",
+      "readMore": "Weiterlesen"
+    },
+    "projects": {
+      "name": "Projekte",
+      "description": "Eine kuratierte Sammlung meiner bedeutendsten Projekte und Experimente. Jedes Stück repräsentiert eine einzigartige Herausforderung, eine gelernte Lektion und einen Schritt vorwärts in meiner Reise als Entwickler."
+    },
+    "bookmarks": {
+      "name": "Lesezeichen",
+      "description": "Sorgfältig kuratierte Ressourcen, Tools und Entdeckungen aus dem Web. Diese Lesezeichen repräsentieren teilenswertes Wissen und Referenzen, zu denen ich immer wieder zurückkehre."
+    },
+    "poems": {
+      "name": "Gedichte",
+      "description": "Eine Sammlung tiefgreifender Verse, die meine Seele berührt und meine Perspektive geprägt haben. Literatur hat die Macht zu inspirieren, und diese Gedichte bewegen mich weiterhin zutiefst.",
+      "readMore": "Weiterlesen"
+    },
+    "images": {
+      "name": "Bilder",
+      "description": "Durch meine Linse eingefangene Momente—Szenen, die zu meiner Seele sprachen und bewahrt werden mussten. Jedes Bild erzählt eine Geschichte von Schönheit, die in der alltäglichen Welt um uns herum gefunden wurde."
+    },
+    "about": {
+      "name": "Über mich",
+      "description": "Erfahren Sie mehr über meine Reise als Entwickler, Designer und Geschichtenerzähler. Entdecken Sie die Erfahrungen, die mich geprägt haben, und die Leidenschaft, die meine Arbeit antreibt."
+    }
+  }
+} 

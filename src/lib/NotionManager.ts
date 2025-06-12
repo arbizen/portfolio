@@ -268,6 +268,7 @@ export class NotionManager {
             page.cover?.file?.url ||
             'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
           date: page.properties?.createdAt?.created_time || '',
+          reactions: page.properties?.reactions?.number || 0,
           categories:
             'multi_select' in page.properties.category
               ? page.properties.category.multi_select.map((tag) => tag.name)

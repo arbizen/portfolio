@@ -105,6 +105,8 @@ export default async function Images({ params, searchParams }: pageProps) {
               className="h-full w-full"
               link={`/${params.lang}/images/${image.id}`}
               date={image.date}
+              reactions={image.reactions}
+              imageId={image.id}
             />
           ))}
         </div>

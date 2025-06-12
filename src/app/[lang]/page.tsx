@@ -301,6 +301,8 @@ export default async function Home({
               className="h-full w-full"
               link={`/${lang}/images/${image.id}`}
               date={image.date}
+              reactions={image.reactions}
+              imageId={image.id}
             />
           ))}
         </div>

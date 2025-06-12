@@ -67,6 +67,7 @@ export type ImageType = {
   alt: string;
   src: string;
   date: string;
+  reactions?: number;
 };
 
 export type Feedback = {

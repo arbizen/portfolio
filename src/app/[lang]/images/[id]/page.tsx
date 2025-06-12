@@ -9,6 +9,7 @@ import Badge from '@/components/ui/badge';
 // @ts-ignore
 import dateformat from 'dateformat';
 import Image from 'next/image';
+import HeartReaction from '@/components/heart-reaction';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,6 +32,7 @@ export async function generateMetadata(
       page.cover?.file?.url ||
       'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
     date: page.properties?.createdAt?.created_time || '',
+    reactions: page.properties?.reactions?.number || 0,
     categories: page.properties.category
       ? // @ts-ignore
         page.properties.category.multi_select.map((tag: string) => tag.name)
@@ -72,6 +74,7 @@ export default async function Share({ params, searchParams }: Props) {
       page.cover?.file?.url ||
       'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
     date: page.properties?.createdAt?.created_time || '',
+    reactions: page.properties?.reactions?.number || 0,
     categories: page.properties.category
       ? // @ts-ignore
         page.properties.category.multi_select.map((tag: string) => tag.name)
@@ -85,16 +88,25 @@ export default async function Share({ params, searchParams }: Props) {
         header={<PageTitle title={image.alt} />}
         description={image.description && image.description}
         footer={
-          <div className="flex gap-2">
-            <Badge className="bg-orange-100 text-orange-500">
-              {dateformat(image.date, 'ddS mmmm, yyyy')}
-            </Badge>
-
-            {image.categories.map((category: string) => (
-              <Badge key={category} className="bg-red-100 text-red-500">
-                {category}
+          <div className="flex gap-2 items-center justify-between sm:flex-wrap">
+            <div className="flex gap-2">
+              <Badge className="bg-orange-100 text-orange-500">
+                {dateformat(image.date, 'ddS mmmm, yyyy')}
               </Badge>
-            ))}
+
+              {image.categories.map((category: string) => (
+                <Badge key={category} className="bg-red-100 text-red-500">
+                  {category}
+                </Badge>
+              ))}
+            </div>
+            
+            {/* Heart Reaction */}
+            <HeartReaction 
+              imageId={image.id} 
+              initialReactions={image.reactions}
+              size="md"
+            />
           </div>
         }
       />

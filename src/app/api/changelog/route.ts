@@ -22,7 +22,7 @@ export async function GET() {
     const data = await notionManager.getDatabaseByName('changelogs');
 
     if (!data || !data.results) {
-      return NextResponse.json({ changelog: null });
+      return NextResponse.json({ changelogs: [] });
     }
 
     // Find the most recent active changelog that hasn't expired
@@ -36,17 +36,15 @@ export async function GET() {
           new Date(b.date).getTime() - new Date(a.date).getTime(),
       );
 
-    const latestChangelog = activeChangelogs[0] || null;
-
     return NextResponse.json({
-      changelog: latestChangelog,
+      changelogs: activeChangelogs,
     });
   } catch (error) {
     console.error('Error fetching changelog:', error);
     return NextResponse.json(
       {
-        changelog: null,
-        error: 'Failed to fetch changelog',
+        changelogs: [],
+        error: 'Failed to fetch changelogs',
       },
       { status: 500 },
     );

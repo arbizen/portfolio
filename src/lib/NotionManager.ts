@@ -6,7 +6,14 @@ export class NotionManager {
   constructor(
     private readonly notion: Client,
     private readonly databases: {
-      name: 'blogs' | 'activities' | 'bookmarks' | 'projects' | 'images' | 'poems' | 'changelogs';
+      name:
+        | 'blogs'
+        | 'activities'
+        | 'bookmarks'
+        | 'projects'
+        | 'images'
+        | 'poems'
+        | 'changelogs';
       id: string;
     }[],
   ) {}
@@ -243,14 +250,14 @@ export class NotionManager {
 
         return {
           id: page.id,
-          version: page.properties?.title?.title[0]?.plain_text || '',
-          message: page.properties?.message?.rich_text[0]?.plain_text || '',
+          message: page.properties?.title?.title[0]?.plain_text || '',
+          link: page.properties?.link?.rich_text[0]?.plain_text || '',
           date:
             page.properties?.date?.date?.start ||
             page.properties?.createdAt?.created_time ||
             '',
           isActive: page.properties?.isActive?.checkbox || false,
-          icon: page.properties?.icon?.rich_text[0]?.plain_text || 'Sparkles',
+          icon: page.properties?.icon?.rich_text[0]?.plain_text || 'sparkles',
           expiresAfterDays: page.properties?.expiresAfterDays?.number || null,
         };
       });

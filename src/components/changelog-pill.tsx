@@ -124,42 +124,42 @@ export default function ChangelogPill({
   const icon = changelog.icon ? getIcon(changelog.icon) : getIcon('sparkles');
 
   return (
-    <Link
-      href={changelog.link}
-      target="_blank"
-      className="w-full flex justify-center"
-    >
-      <div
-        className={`inline-flex mt-4 items-center gap-2 bg-gradient-to-r from-purple-50 via-blue-50 to-indigo-50 
+    <div
+      className={`inline-flex mt-4 items-center gap-2 bg-gradient-to-r from-purple-50 via-blue-50 to-indigo-50 cursor-pointer
                     border border-purple-200/50 px-3 py-1.5 rounded-full shadow-sm relative ${className}`}
+    >
+      {/* Version Badge */}
+      <div
+        onClick={() => window.open(changelog.link, '_self')}
+        className="flex items-center gap-1.5"
       >
-        {/* Version Badge */}
-        <div className="flex items-center gap-1.5">
-          <div
-            className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-[10px] font-semibold
+        <div
+          className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-[10px] font-semibold
                         px-2 py-0.5 rounded-full"
-          >
-            Update
-          </div>
-
-          {/* Icon */}
-          <div className="text-purple-600">{icon}</div>
+        >
+          Update
         </div>
 
-        {/* Change Text */}
-        <span className="text-xs font-medium text-slate-700">
-          {changelog.message}
-        </span>
-
-        {/* Dismiss Button */}
-        <button
-          onClick={handleDismiss}
-          className="ml-1 text-slate-400 hover:text-slate-600 transition-colors p-0.5 rounded-full hover:bg-slate-100"
-          aria-label="Dismiss changelog"
-        >
-          <X size={12} />
-        </button>
+        {/* Icon */}
+        <div className="text-purple-600">{icon}</div>
       </div>
-    </Link>
+
+      {/* Change Text */}
+      <span
+        onClick={() => window.open(changelog.link, '_self')}
+        className="text-xs font-medium text-slate-700"
+      >
+        {changelog.message}
+      </span>
+
+      {/* Dismiss Button */}
+      <button
+        onClick={handleDismiss}
+        className="ml-1 text-slate-400 hover:text-slate-600 transition-colors p-0.5 rounded-full hover:bg-slate-100"
+        aria-label="Dismiss changelog"
+      >
+        <X size={12} />
+      </button>
+    </div>
   );
 }

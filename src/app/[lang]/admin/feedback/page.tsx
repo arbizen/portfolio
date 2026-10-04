@@ -4,7 +4,6 @@ import Breadcumb from '@/components/shared/breadcumb';
 import PageAnimation from '@/components/page-animation';
 import { getDictionary } from '../../dictionaries';
 import { supportedLocales } from '@/data/site/supportedLocales';
-import { cookies } from 'next/headers';
 import FeedbackList from '@/components/feedback/feedback-list';
 import { notionManager } from '@/lib/NotionManager';
 import { Client } from '@notionhq/client';
@@ -23,7 +22,7 @@ export default async function AdminFeedbackPage({
 }) {
   const supportedLang = supportedLocales.includes(lang)
     ? lang
-    : (cookies().get('lang')?.value ?? 'en');
+    : 'en';
 
   const dictionary = await getDictionary(supportedLang);
 

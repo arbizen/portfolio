@@ -12,7 +12,7 @@ export default function PublicFeedbackList({ feedbacks }: PublicFeedbackListProp
   return (
     <div className="space-y-6">
       {feedbacks.map((feedback) => (
-        <Card key={feedback.id} className="p-5 border-blue-100 overflow-hidden">
+        <Card key={feedback.id} className="overflow-hidden p-5">
           <div className="mb-4">
             <div className="flex items-center mb-1 sm:flex-wrap sm:gap-2">
               <h3 className="font-medium">{feedback.name}</h3>
@@ -29,7 +29,7 @@ export default function PublicFeedbackList({ feedbacks }: PublicFeedbackListProp
             <p className="text-slate-800 break-words">{feedback.message}</p>
           </div>
           
-          <div className="border-l-2 border-blue-400 pl-4">
+          <div className="border-l-2 border-neutral-200 pl-4">
             <h4 className="text-sm font-medium text-slate-700 mb-2">Response:</h4>
             <div className="text-slate-700">
               <p className="break-words">{feedback.response}</p>

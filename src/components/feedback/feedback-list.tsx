@@ -218,7 +218,7 @@ export default function FeedbackList({ feedbacks, adminToken }: FeedbackListProp
                 </div>
               </div>
               <p className="text-sm text-slate-500">{feedback.email}</p>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 {format(new Date(feedback.date), 'MMM d, yyyy h:mm a')}
               </p>
             </div>

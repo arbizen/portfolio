@@ -4,15 +4,8 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
 }
+
+/** A quiet surface for the few things that need one (forms, feedback). */
 export default function Card({ children, className }: CardProps) {
-  return (
-    <div
-      className={cn(
-        'p-4 border border-blue-100 rounded-2xl relative z-50 bg-transparent backdrop-blur-sm bg-opacity-10',
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn('rounded-lg border border-neutral-100 p-4', className)}>{children}</div>;
 }

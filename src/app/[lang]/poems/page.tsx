@@ -16,70 +16,35 @@ import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import PageAnimation from '@/components/page-animation';
 import { supportedLocales } from '@/data/site/supportedLocales';
-import { cookies } from 'next/headers';
 
-export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Poems — Lines that I read and loved',
-  description: 'This is the poems page',
+  title: 'Poems',
+  description: 'Poems written and loved by Arb Rahim Badsa (Arbizen), many of them in Bengali.',
+  alternates: { canonical: '/en/poems' },
+  openGraph: { title: 'Poems', description: 'Poems written and loved by Arb Rahim Badsa (Arbizen), many of them in Bengali.', url: '/en/poems' },
 };
 
+/** One poem: its title and date on a line, who wrote it and its first lines under it. */
 const Poem = (props: PoemType) => {
   return (
-    <Card className="p-16 sm:p-8">
-      <div className="flex gap-8 sm:flex-col">
-        <Link className="flex-none" href={`/${props.lang}/poems/${props.slug}`}>
-          <Image
-            unoptimized
-            src={props.image!}
-            alt="poem"
-            width={360}
-            height={240}
-            className="rounded-md max-h-[240px] object-cover"
-            placeholder="blur"
-            blurDataURL="/blur-placeholder.png"
-          />
-        </Link>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-2 flex-wrap">
-              <Badge className="bg-purple-100 text-purple-600">
-                {props.author}
-              </Badge>
-              {props?.categories?.map((category: string) => (
-                <Badge key={category} className="bg-red-100 text-red-500">
-                  {category}
-                </Badge>
-              ))}
-            </div>
-            <span className="text-xs text-slate-600">
-              {dateformat(props.date, 'ddS mmmm, yyyy')}
-            </span>
-          </div>
-          <Link
-            href={`/${props.lang}/poems/${props.slug}`}
-            className="hover:underline"
-          >
-            <h2 className="text-[36px] font-extrabold leading-tight sm:text-2xl sm:font-bold">
-              {props.title}
-            </h2>
-          </Link>
-          <p className="font-medium text-slate-600">{props.description}</p>
-          <div className="flex justify-between">
-            <Link
-              href={`/${props.lang}/poems/${props.slug}`}
-              className="flex items-center gap-1 text-xs font-bold leading-tight text-blue-500 hover:underline"
-            >
-              {props.page.poems.readMore}
-              <ArrowRight size={15} />
-            </Link>
-          </div>
-        </div>
+    <Link
+      href={`/${props.lang}/poems/${props.slug}`}
+      className="-mx-2 flex flex-col gap-1 rounded-md px-2 py-2.5 transition-colors hover:bg-neutral-50"
+    >
+      <div className="flex items-baseline justify-between gap-4">
+        <span className="text-[15px] text-neutral-900">{props.title}</span>
+        <time className="flex-none text-sm tabular-nums text-neutral-500">{dateformat(props.date, 'mmm yyyy')}</time>
       </div>
-    </Card>
+      {props.description ? <p className="line-clamp-2 text-sm text-neutral-500">{props.description}</p> : null}
+      {/* Only credit other poets; mine go unsigned. */}
+      {props.author && !isMine(props.author) ? <p className="text-xs text-neutral-500">{props.author}</p> : null}
+    </Link>
   );
 };
+
+/** A poem I wrote (signed "Arb" in Notion), as opposed to one I'm sharing. */
+const isMine = (author: string) => /^arb\b/i.test(author.trim());
 
 export default async function Poems({
   params,
@@ -100,7 +65,7 @@ export default async function Poems({
 
   const supportedLang = supportedLocales.includes(params.lang)
     ? params.lang
-    : cookies().get('lang')?.value ?? 'en';
+    : 'en';
 
   const { page } = await getDictionary(supportedLang);
 
@@ -137,33 +102,9 @@ export default async function Poems({
         itemsLength={poems?.length}
         header={<PageTitle title={page.poems.name} />}
         description={page.poems.description}
-        footer={
-          <>
-            <TagContainer>
-              {tagsWithLink.map((tag) => (
-                <Link
-                  href={`/${params.lang}/${pageName}?${
-                    pageNumber ? `page=${pageNumber}` : ''
-                  }&category=${tag.path}`}
-                  key={tag.name}
-                >
-                  <Tag
-                    className={
-                      category === tag.name
-                        ? 'border-slate-800'
-                        : 'border-slate-200'
-                    }
-                  >
-                    {tag.name}
-                  </Tag>
-                </Link>
-              ))}
-            </TagContainer>
-          </>
-        }
       />
 
-      <div className="flex flex-col gap-4 relative z-50">
+      <div className="flex flex-col">
         {poems?.map((poem: PoemType) => {
           if (poem.isPublished === false) return null;
           return (

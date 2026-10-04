@@ -2,15 +2,16 @@ import PageInfo from '@/components/shared/page-info';
 import Breadcumb from '@/components/shared/breadcumb';
 import { getDictionary } from '../dictionaries';
 import { supportedLocales } from '@/data/site/supportedLocales';
-import { cookies } from 'next/headers';
 import PageAnimation from '@/components/page-animation';
-import { Download } from 'lucide-react';
+
 import Link from 'next/link';
 import PDFViewer from '@/components/pdf-viewer';
 
 export const metadata = {
-  title: 'Resume — Arb Rahim Badsa',
-  description: 'View the resume of Arb Rahim Badsa (Arbizen), showcasing skills in JavaScript, React.js, Next.js, TypeScript, and more.',
+  title: 'Resume',
+  description: 'The resume of Arb Rahim Badsa (Arbizen): full-stack JavaScript, React, Next.js, TypeScript and more.',
+  alternates: { canonical: '/en/resume' },
+  openGraph: { title: 'Resume', description: 'The resume of Arb Rahim Badsa (Arbizen): full-stack JavaScript, React, Next.js, TypeScript and more.', url: '/en/resume' },
 };
 
 export default async function ResumePage({
@@ -20,7 +21,7 @@ export default async function ResumePage({
 }) {
   const supportedLang = supportedLocales.includes(lang)
     ? lang
-    : (cookies().get('lang')?.value ?? 'en');
+    : 'en';
 
   const dictionary = await getDictionary(supportedLang);
 
@@ -28,7 +29,7 @@ export default async function ResumePage({
 
   return (
     <PageAnimation>
-      <div className="flex items-start w-full sm:flex-wrap">
+      <div>
         <PageInfo
           breadcumb={
             <Breadcumb
@@ -42,30 +43,24 @@ export default async function ResumePage({
               }}
             />
           }
-          header={
-            <div>
-              <h1 className="font-black text-[40px] sm:text-[36px]">
-                My <span className="text-blue-500">Resume</span>
-              </h1>
-            </div>
-          }
+          header={<h1 className="text-xl font-medium tracking-tight text-neutral-900">Resume</h1>}
           description="View my professional resume showcasing my skills, experience, and projects."
           footer={
             <div className="flex flex-row gap-4 sm:gap-4">
               <Link
-                className="flex gap-1 items-center text-green-600 font-bold text-[14px] bg-green-50 hover:bg-green-100 px-3 py-2 rounded-md transition-colors"
+                className="text-sm text-neutral-500 transition-colors hover:text-neutral-900"
                 href="/arbizen-cv.pdf"
                 target="_blank"
                 download
               >
-                <Download size={16} /> Download PDF
+                Download PDF
               </Link>
             </div>
           }
         />
       </div>
 
-      <div className="mt-8">
+      <div>
         <PDFViewer src={resumeUrl} title="Arb Rahim Badsa Resume" />
       </div>
     </PageAnimation>

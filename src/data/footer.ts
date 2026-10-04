@@ -9,9 +9,5 @@ export const footer = {
       name: 'Twitter',
       link: 'https://x.com/arbizzen',
     },
-    {
-      name: 'LinkedIn',
-      link: 'https://linkedin.com/in/arbizen',
-    },
   ],
 };

@@ -4,15 +4,16 @@ import Breadcumb from '@/components/shared/breadcumb';
 import PageAnimation from '@/components/page-animation';
 import { getDictionary } from '../dictionaries';
 import { supportedLocales } from '@/data/site/supportedLocales';
-import { cookies } from 'next/headers';
 import { Client } from '@notionhq/client';
 import { Feedback } from '@/types';
 import PublicFeedbackList from '@/components/feedback/public-feedback-list';
 import FeedbackSection from '@/components/feedback/feedback-section';
 
 export const metadata = {
-  title: 'Feedback & AMA',
-  description: 'Leave feedback or ask me a question',
+  title: 'Feedback and questions',
+  description: 'Ask Arbizen anything or leave feedback, and read answers to past questions.',
+  alternates: { canonical: '/en/feedback' },
+  openGraph: { title: 'Feedback and questions', description: 'Ask Arbizen anything or leave feedback, and read answers to past questions.', url: '/en/feedback' },
 };
 
 export const dynamic = 'force-dynamic';
@@ -24,7 +25,7 @@ export default async function FeedbackPage({
 }) {
   const supportedLang = supportedLocales.includes(lang)
     ? lang
-    : (cookies().get('lang')?.value ?? 'en');
+    : 'en';
 
   const dictionary = await getDictionary(supportedLang);
 
@@ -109,7 +110,7 @@ export default async function FeedbackPage({
 
         {feedbacks.length > 0 && (
           <div className="mt-16 mb-16">
-            <h2 className="text-2xl font-medium mb-6">
+            <h2 className="mb-4 text-[15px] font-medium text-neutral-900">
               Recently Answered Questions & Feedback
             </h2>
             <PublicFeedbackList feedbacks={feedbacks} />

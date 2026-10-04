@@ -1,136 +1,85 @@
-import PageInfo from '@/components/shared/page-info';
-import PageTitle from '@/components/shared/page-title';
-import Breadcumb from '@/components/shared/breadcumb';
-import { getDictionary } from '../dictionaries';
 import Image from 'next/image';
-import { Clock, LocateIcon, Map, MapPin, Download, Eye } from 'lucide-react';
 import Link from 'next/link';
-// @ts-ignore
-import dateformat from 'dateformat';
-import { notionManager } from '@/lib/NotionManager';
-
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeKatex from 'rehype-katex';
-import remarkMath from 'remark-math';
-import 'katex/dist/katex.min.css';
-import CodeBlock from '@/components/markdown/Code';
-import Pre from '@/components/markdown/Pre';
-import MarkDownImage from '@/components/markdown/Image';
-import Paragraph from '@/components/markdown/Paragraph';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import Badge from '@/components/ui/badge';
-import { Metadata, ResolvingMetadata } from 'next';
-import Card from '@/components/card';
-import PageAnimation from '@/components/page-animation';
-import { supportedLocales } from '@/data/site/supportedLocales';
-import { cookies } from 'next/headers';
-
-export const dynamic = 'force-dynamic';
-
-type pageProps = {
-  params: { slug: string; lang: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
 
 export const metadata = {
-  title: 'About — A little about me',
-  description: 'This is the about page',
+  title: 'About',
+  description: 'Arb Rahim Badsa (Arbizen): a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems on the side.',
+  alternates: { canonical: '/en/about' },
+  openGraph: { title: 'About', description: 'Arb Rahim Badsa (Arbizen): a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems on the side.', url: '/en/about' },
 };
 
-export default async function About({ params, searchParams }: pageProps) {
-  const supportedLang = supportedLocales.includes(params.lang)
-    ? params.lang
-    : cookies().get('lang')?.value ?? 'en';
-  const { page } = await getDictionary(supportedLang);
-  const currentTime = new Date();
-  const utcTime =
-    currentTime.getTime() + currentTime.getTimezoneOffset() * 60000;
-  const gmtPlus6Time = new Date(utcTime + 3600000 * 6);
-  const mdString = await notionManager.getMdStringById(
-    process.env.NEXT_PUBLIC_ABOUT_PAGE_ID!,
-  );
-  const customComponents = {
-    code: CodeBlock,
-    pre: Pre,
-    img: MarkDownImage,
-    p: Paragraph,
-  };
+const link = 'text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-900';
+
+/** A short, plain about: who I am, what I make, how I work. */
+export default function About({ params }: { params: { lang: string } }) {
+  const lang = params.lang;
   return (
-    <PageAnimation>
-      <PageInfo
-        breadcumb={
-          <Breadcumb
-            firstNav={{
-              name: page.home.name.third,
-              url: `/${params.lang}`,
-            }}
-            secondNav={{
-              name: page.about.name,
-              url: `/${params.lang}/about`,
-            }}
-          />
-        }
-      />
-      <div className="flex items-center flex-col gap-8 sm:gap-4 relative z-50">
-        <Image
-          src={'/arb.png'}
-          alt="Arb Rahim Badsa"
-          width={100}
-          height={100}
-          className="rounded-full"
-        />
-        <div className="">
-          <h1 className="w-full text-[32px] sm:text-[24px] font-bold text-center">
-            Arb Rahim Badsa
-          </h1>
-          <p className="text-slate-500 text-balance text-center sm:text-sm sm:px-2">
-            A self-taught full-stack Javascript Engineer
-          </p>
-          <div className="text-slate-500 flex items-center gap-4 mt-2 justify-center text-sm sm:flex-wrap">
-            <div className="flex gap-1.5 items-center">
-              <MapPin size={15} /> <span>Dhaka, Bangladesh</span>
-            </div>
-            <div className="flex gap-1.5 items-center">
-              <Clock size={13} />{' '}
-              <span>{dateformat(gmtPlus6Time, 'h:MM TT')}</span>
-            </div>
-          </div>
-          
-          {/* Resume Buttons */}
-          <div className="flex gap-3 mt-6 justify-center sm:flex-col sm:items-center">
-            <Link
-              href={`/${params.lang}/resume`}
-              className="inline-flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 px-6 py-3 rounded-lg font-medium transition-colors"
-            >
-              <Eye size={18} />
-              View Resume
-            </Link>
-            <Link
-              href="/arbizen-cv.pdf"
-              target="_blank"
-              download
-              className="inline-flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 px-6 py-3 rounded-lg font-medium transition-colors"
-            >
-              <Download size={18} />
-              Download Resume
-            </Link>
-          </div>
+    <div className="flex flex-col gap-10">
+      <div className="flex items-center gap-4">
+        <Image unoptimized src={'/arb.png'} alt="Arb Rahim Badsa" width={56} height={56} className="rounded-full" />
+        <div className="flex flex-col gap-0.5">
+          <h1 className="text-xl font-medium tracking-tight text-neutral-900">Arbizen</h1>
+          <p className="text-sm text-neutral-500">A self-taught full-stack JavaScript engineer</p>
         </div>
       </div>
 
-      <article className="flex justify-center mt-8 sm:mt-8 min-w-[800px] sm:min-w-full">
-        <Card className="p-8 text-slate-800 sm:p-4">
-          <Markdown
-            remarkPlugins={[remarkGfm, remarkMath]}
-            rehypePlugins={[rehypeKatex, rehypeAutolinkHeadings]}
-            components={customComponents}
-            className="prose w-full min-w-[800px] sm:min-w-full"
-          >
-            {mdString}
-          </Markdown>
-        </Card>
-      </article>
-    </PageAnimation>
+      <div className="flex flex-col gap-5 text-[15px] leading-relaxed text-neutral-600">
+        <p>
+          I&apos;m Arb. I taught myself to code as a kid and have been at it since 2018. I like building things
+          all the way through: the idea, the design, the code, and the part after launch where real people
+          start using it.
+        </p>
+        <p>
+          On paper I&apos;m a university student: 3.89 CGPA, Dean&apos;s List twice in a row, somehow.
+          Off paper, I&apos;m here, shipping software.
+        </p>
+        <p>
+          For 5+ years I&apos;ve been building for clients on Upwork, where I&apos;ve been Top Rated Plus for
+          over two years.
+        </p>
+        <p>
+          These days my own thing is{' '}
+          <a href="https://kittymessages.com" className={link}>
+            Kitty Messages
+          </a>
+          , personalized cat cards people send to the ones they love. I built and run all of it myself, from the
+          card designs to payments to the server it lives on, and I spend a lot of time on the small details,
+          because that&apos;s where people feel the care.
+        </p>
+        <p>
+          Before that, plenty of side projects, two Supabase hackathon prizes (
+          <a href="https://supabase.com/blog/launch-week-8-hackathon-winners#runner-up-4" target="_blank" rel="noopener" className={link}>
+            Supadraw
+          </a>{' '}
+          and{' '}
+          <a href="https://supabase.com/blog/launch-week-x-hackathon-winners#runner-up-2" target="_blank" rel="noopener" className={link}>
+            Wordbuzz
+          </a>
+          ), and{' '}
+          <Link href={`/${lang}/blogs`} className={link}>
+            writing
+          </Link>{' '}
+          about what I learn along the way.
+        </p>
+        <p>
+          When I&apos;m not building, I&apos;m usually writing{' '}
+          <Link href={`/${lang}/poems`} className={link}>
+            poems
+          </Link>{' '}
+          or taking{' '}
+          <Link href={`/${lang}/images`} className={link}>
+            photos
+          </Link>
+          . I&apos;ve never quite been one thing, and I like it that way.
+        </p>
+        <p>
+          Want to say hi? Find me on{' '}
+          <a href="https://x.com/arbizzen" target="_blank" className={link}>
+            X
+          </a>
+          .
+        </p>
+      </div>
+    </div>
   );
 }

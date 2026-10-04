@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import Breadcumb from '@/components/shared/breadcumb';
 import { Metadata, ResolvingMetadata } from 'next';
 import Pagination from '@/lib/Pagination';
 import { ImageType } from '@/types';
@@ -11,7 +12,6 @@ import dateformat from 'dateformat';
 import Image from 'next/image';
 import HeartReaction from '@/components/heart-reaction';
 
-export const dynamic = 'force-dynamic';
 
 type Props = {
   params: { id: string; lang: string };
@@ -30,7 +30,7 @@ export async function generateMetadata(
     src:
       page.cover?.external?.url ||
       page.cover?.file?.url ||
-      'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+      '/en/opengraph-image.png',
     date: page.properties?.createdAt?.created_time || '',
     reactions: page.properties?.reactions?.number || 0,
     categories: page.properties.category
@@ -41,13 +41,13 @@ export async function generateMetadata(
   };
   const src = firstImage.src;
   return {
-    title: firstImage.alt || 'Images — Scenes that I stumbled upon',
-    description:
-      'Scenes that attracted my soul and pinned my eyes to them. I love to capture the moments that I find beautiful.',
+    title: firstImage.alt || 'Image',
+    description: 'A photo by Arbizen: a scene that caught my eye and would not let go.',
+    alternates: { canonical: `/en/images/${params.id}` },
     openGraph: {
       title: firstImage.alt || 'Images — Scenes that I stumbled upon',
       description:
-        'Scenes that attracted my sould and pinned my eyes to them. I love to capture the moments that I find beautiful.',
+        'A photo by Arbizen: a scene that caught my eye and would not let go.',
       images: [src],
       url: process.env.NEXT_PUBLIC_API_URL + `/${params.lang}/images/${id}`,
       type: 'website',
@@ -72,7 +72,7 @@ export default async function Share({ params, searchParams }: Props) {
     src:
       page.cover?.external?.url ||
       page.cover?.file?.url ||
-      'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+      '/en/opengraph-image.png',
     date: page.properties?.createdAt?.created_time || '',
     reactions: page.properties?.reactions?.number || 0,
     categories: page.properties.category
@@ -85,6 +85,13 @@ export default async function Share({ params, searchParams }: Props) {
   return (
     <section>
       <PageInfo
+        breadcumb={
+          <Breadcumb
+            firstNav={{ name: 'Home', url: `/${params.lang}` }}
+            secondNav={{ name: 'Images', url: `/${params.lang}/images` }}
+            current={image.alt}
+          />
+        }
         header={<PageTitle title={image.alt} />}
         description={image.description && image.description}
         footer={
@@ -116,10 +123,10 @@ export default async function Share({ params, searchParams }: Props) {
             unoptimized
             src={image.src}
             alt={image.alt}
-            width={500}
-            height={500}
-            className="h-auto w-auto rounded-md"
-            loading="lazy"
+            width={1200}
+            height={1600}
+            className="h-auto w-full rounded-md"
+            priority
           />
         </div>
       </div>
@@ -127,7 +134,7 @@ export default async function Share({ params, searchParams }: Props) {
         <p className="text-sm italic text-slate-500">
           {image.alt}
         </p>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-500">
           ({dateformat(image.date, 'dd/mm/yyyy')})
         </span>
       </div>

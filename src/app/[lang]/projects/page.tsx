@@ -1,4 +1,5 @@
 import Card from '@/components/card';
+import { ProjectBadges, orderProjects } from '@/lib/project-highlights';
 import PageInfo from '@/components/shared/page-info';
 import PageTitle from '@/components/shared/page-title';
 import Badge from '@/components/ui/badge';
@@ -17,92 +18,32 @@ import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import PageAnimation from '@/components/page-animation';
 import { supportedLocales } from '@/data/site/supportedLocales';
-import { cookies } from 'next/headers';
 
-export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Projects — Best selection of my recent projects',
-  description: 'This is the project page',
+  title: 'Projects',
+  description: 'Things Arbizen has built: Kitty Messages, Blank Board, Supabase hackathon winners Wordbuzz and Supadraw, and more.',
+  alternates: { canonical: '/en/projects' },
+  openGraph: { title: 'Projects', description: 'Things Arbizen has built: Kitty Messages, Blank Board, Supabase hackathon winners Wordbuzz and Supadraw, and more.', url: '/en/projects' },
 };
 
+/** One project: its name and what it is, the year, and what it is built with. */
 const Project = (props: ProjectType) => {
   return (
-    <Card className="flex gap-6 flex-col p-8">
-      <div className="flex justify-between items-center">
-        <Chip color="blue">{props.year}</Chip>
-        <Chip color="green">
-          {props.isCompleted ? `Completed` : `In progress`}
-        </Chip>
+    <Link
+      href={`/${props.lang}/projects/${props.slug}`}
+      className="-mx-2 flex flex-col gap-1 rounded-md px-2 py-2.5 transition-colors hover:bg-neutral-50"
+    >
+      <div className="flex items-baseline justify-between gap-4">
+        <span className="text-[15px] text-neutral-900">
+          {props.name}
+          <ProjectBadges project={props} />
+        </span>
+        <span className="flex-none text-sm tabular-nums text-neutral-500">{props.year}</span>
       </div>
-      <div className="flex flex-col gap-4 flex-grow">
-        <Link
-          className="hover:underline"
-          href={`/${props.lang}/projects/${props.slug}`}
-        >
-          <Image
-            unoptimized
-            src={props.image!}
-            width={320}
-            height={180}
-            alt={props.name}
-            className="rounded-md w-full aspect-auto"
-          />
-        </Link>
-        <div className="flex flex-col gap-8 flex-grow relative z-50">
-          <div className="flex flex-col gap-4 mt-4">
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <Link
-                  className="hover:underline"
-                  href={`/${props.lang}/projects/${props.slug}`}
-                >
-                  <h3 className="leading-tight font-bold text-2xl">
-                    {props.name}
-                  </h3>
-                </Link>
-                <Badge className="bg-red-100 text-red-600">{props.type}</Badge>
-              </div>
-              <p className="text-base leading-tight font-medium text-slate-600 w-full">
-                {props.description}
-              </p>
-            </div>
-            <div className="flex gap-2 flex-wrap w-full">
-              {props.stack.map((item) => (
-                <Badge key={item} className="bg-blue-100 text-blue-600">
-                  {item}
-                </Badge>
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-between items-end flex-grow">
-            <Link
-              href={`/${props.lang}/projects/${props.slug}`}
-              className="flex gap-1 items-center text-sm font-medium text-blue-500 hover:underline"
-            >
-              See details
-              <ArrowRight size={15} />
-            </Link>
-            <div className="flex gap-4">
-              <Link
-                href={props.previewLink!}
-                className="text-sm font-medium text-blue-500 hover:underline"
-                target="_blank"
-              >
-                Preview
-              </Link>
-              <Link
-                href={props.githubLink!}
-                className="text-sm font-medium text-blue-500 hover:underline"
-                target="_blank"
-              >
-                Github
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Card>
+      {props.description ? <p className="text-sm text-neutral-500">{props.description}</p> : null}
+      {props.stack?.length ? <p className="text-xs text-neutral-500">{props.stack.join(' · ')}</p> : null}
+    </Link>
   );
 };
 
@@ -120,12 +61,13 @@ export default async function Blogs({
   const pagination = new Pagination(searchParams, pageName);
   const data = await pagination.getCurrentPageData('desc');
 
-  const projects: ProjectType[] = data[pageName]?.data;
+  // Kitty first, then the hackathon winners, the same as the home page.
+  const projects: ProjectType[] = orderProjects(data[pageName]?.data ?? []);
   const nextPageUrl = pagination.nextPageUrl(data);
 
   const supportedLang = supportedLocales.includes(params.lang)
     ? params.lang
-    : cookies().get('lang')?.value ?? 'en';
+    : 'en';
 
   const { page: dictionaryPage } = await getDictionary(supportedLang);
 
@@ -157,32 +99,8 @@ export default async function Blogs({
         header={<PageTitle title={dictionaryPage.projects.name} />}
         description={dictionaryPage.projects.description}
         itemsLength={projects.length}
-        footer={
-          <>
-            <TagContainer>
-              {tagsWithLink.map((tag) => (
-                <Link
-                  href={`/${params.lang}/${pageName}?${
-                    pageNumber ? `page=${pageNumber}` : ''
-                  }&category=${tag.path}`}
-                  key={tag.name}
-                >
-                  <Tag
-                    className={
-                      category === tag.name
-                        ? 'border-slate-800'
-                        : 'border-slate-200'
-                    }
-                  >
-                    {tag.name}
-                  </Tag>
-                </Link>
-              ))}
-            </TagContainer>
-          </>
-        }
       />
-      <section className="grid grid-cols-3 gap-4 sm:grid-cols-1">
+      <section className="flex flex-col">
         {projects.map((project) => (
           <Project key={project.id} {...project} lang={params.lang} />
         ))}

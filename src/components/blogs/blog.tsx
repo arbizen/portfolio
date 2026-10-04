@@ -1,64 +1,21 @@
-import Badge from "../ui/badge";
-import Card from "../card";
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { Blog as BlogType } from "@/types";
-import Link from "next/link";
+import SupabaseBadge from '@/components/shared/supabase-badge';
+import Link from 'next/link';
+import { Blog as BlogType } from '@/types';
 // @ts-ignore
-import dateformat from "dateformat";
+import dateformat from 'dateformat';
 
-export default function Blog(props: BlogType) {
-    return (
-      <Card className="p-16 sm:p-8">
-        <div className="flex gap-8 sm:flex-col">
-          <Link className="flex-none" href={`/${props.lang}/blogs/${props.slug}`}>
-            <Image
-              unoptimized
-              src={props.image!}
-              alt="blog"
-              width={360}
-              height={240}
-              className="rounded-md max-h-[240px] object-cover"
-              placeholder="blur"
-              blurDataURL="/blur-placeholder.png"
-            />
-          </Link>
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2 flex-wrap">
-                <Badge className="bg-blue-100 text-blue-600">
-                  {props.readTime} {props.page.blogs.minRead}
-                </Badge>
-                {props?.categories?.map((category: string) => (
-                  <Badge key={category} className="bg-red-100 text-red-500">
-                    {category}
-                  </Badge>
-                ))}
-              </div>
-              <span className="text-xs text-slate-600">
-                {dateformat(props.date, 'ddS mmmm, yyyy')}
-              </span>
-            </div>
-            <Link
-              href={`/${props.lang}/blogs/${props.slug}`}
-              className="hover:underline"
-            >
-              <h2 className="text-[36px] font-extrabold leading-tight sm:text-2xl sm:font-bold">
-                {props.title}
-              </h2>
-            </Link>
-            <p className="font-medium text-slate-600">{props.description}</p>
-            <div className="flex justify-between">
-              <Link
-                href={`/${props.lang}/blogs/${props.slug}`}
-                className="flex items-center gap-1 text-xs font-bold leading-tight text-blue-500 hover:underline"
-              >
-                {props.page.blogs.readMore}
-                <ArrowRight size={15} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </Card>
-    );
-  };
+/** One post: its title and date on a line, the description under it. */
+export default function Blog(props: BlogType & { compact?: boolean; citedBySupabase?: boolean }) {
+  return (
+    <Link href={`/${props.lang}/blogs/${props.slug}`} className="group -mx-2 flex flex-col gap-1 rounded-md px-2 py-2 transition-colors hover:bg-neutral-50">
+      <div className="flex items-baseline justify-between gap-4">
+        <h3 className="text-[15px] text-neutral-900">
+          {props.title}
+          {props.citedBySupabase ? <SupabaseBadge>Featured by Supabase</SupabaseBadge> : null}
+        </h3>
+        <time className="flex-none text-sm tabular-nums text-neutral-500">{dateformat(props.date, 'mmm yyyy')}</time>
+      </div>
+      {props.description && !props.compact ? <p className="line-clamp-2 text-sm text-neutral-500">{props.description}</p> : null}
+    </Link>
+  );
+}

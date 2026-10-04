@@ -1,4 +1,5 @@
 import { notionManager } from '@/lib/NotionManager';
+import Breadcumb from '@/components/shared/breadcumb';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
@@ -22,7 +23,6 @@ import ClientAnimatePresence from '@/components/client-animate-presence';
 import ClientMotionDiv from '@/components/client-motion-div';
 import PageAnimation from '@/components/page-animation';
 
-export const dynamic = 'force-dynamic';
 
 type Props = {
   params: { slug: string; lang: string };
@@ -45,7 +45,7 @@ export async function generateMetadata(
         title: 'Blog',
         description: 'Description',
         images: [
-          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          '/en/opengraph-image.png',
         ],
       },
       twitter: {
@@ -54,7 +54,7 @@ export async function generateMetadata(
         description: 'Description',
         creator: '@arbizzen',
         images: [
-          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          '/en/opengraph-image.png',
         ], // Must be an absolute URL
       },
     };
@@ -65,23 +65,24 @@ export async function generateMetadata(
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||
-    'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+    '/en/opengraph-image.png';
   const title =
     (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Blog';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
 
+  // The page itself is canonical (its id is part of the address).
+  const canonical = `/en/blogs/${encodeURIComponent(decodeURIComponent(params.slug))}?id=${id}`;
   return {
     title,
     description,
+    alternates: { canonical },
     openGraph: {
+      url: canonical,
       title,
       description,
       images: [coverUrl],
-      url:
-        process.env.NEXT_PUBLIC_API_URL +
-        `/${params.lang}/blogs/${params.slug}?id=${id}`,
       type: 'article',
     },
     twitter: {
@@ -112,10 +113,14 @@ export default async function BlogPage({
 
   const mdString = await notionManager.getMdStringById(id || extractedId);
   const pageInfo = await notionManager.getPageById(id || extractedId);
+  // Unpublished in Notion: gone from the site, its own link included.
+  if ((pageInfo as any)?.properties?.isPublished?.checkbox === false) {
+    return notFound();
+  }
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||
-    'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+    '/en/opengraph-image.png';
   const title =
     (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Blog';
   const description =
@@ -147,6 +152,13 @@ export default async function BlogPage({
   return (
     <PageAnimation>
       <PageInfo
+        breadcumb={
+          <Breadcumb
+            firstNav={{ name: 'Home', url: `/${params.lang}` }}
+            secondNav={{ name: 'Blogs', url: `/${params.lang}/blogs` }}
+            current={title}
+          />
+        }
         header={<PageTitle title={title} />}
         description={description}
         footer={
@@ -171,12 +183,12 @@ export default async function BlogPage({
           alt={title}
           className="max-h-[800px] object-cover rounded-md"
         />
-        <article className="flex justify-center mt-16 min-w-[800px] sm:min-w-full">
+        <article className="mt-10">
           <Markdown
             remarkPlugins={[remarkGfm, remarkMath]}
             rehypePlugins={[rehypeKatex, rehypeAutolinkHeadings]}
             components={customComponents}
-            className="prose w-full min-w-[800px] sm:min-w-full"
+            className="prose prose-neutral max-w-none text-[15px] prose-headings:font-medium prose-strong:font-medium prose-a:decoration-neutral-300 prose-a:underline-offset-4"
           >
             {mdString}
           </Markdown>

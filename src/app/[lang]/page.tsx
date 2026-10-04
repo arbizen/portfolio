@@ -1,318 +1,175 @@
-import Card from '@/components/card';
-import PageInfo from '@/components/shared/page-info';
-import SubTitle from '@/components/shared/sub-title';
-import Badge from '@/components/ui/badge';
-import { Activity, Blog as BlogType, ImageType, Feedback } from '@/types';
-import { ArrowRight, Download, Subtitles } from 'lucide-react';
 import Link from 'next/link';
-import { getDictionary } from './dictionaries';
-import Breadcumb from '@/components/shared/breadcumb';
-import Pagination from '@/lib/Pagination';
-// @ts-ignore
-import dateformat from 'dateformat';
-import PageAnimation from '@/components/page-animation';
 import Script from 'next/script';
+import { Blog as BlogType } from '@/types';
+import Pagination from '@/lib/Pagination';
+import { getDictionary } from './dictionaries';
 import { supportedLocales } from '@/data/site/supportedLocales';
-import { cookies } from 'next/headers';
+import SubTitle from '@/components/shared/sub-title';
 import Blog from '@/components/blogs/blog';
-import Image from 'next/image';
-import Circles from '@/components/circles';
-import { SkillBeam } from '@/components/skill-beam';
-import CustomImage from '@/components/gallery-image';
-import { Client } from '@notionhq/client';
-import PublicFeedbackList from '@/components/feedback/public-feedback-list';
-import ChangelogPill from '@/components/changelog-pill';
+import { ProjectBadges, SUPABASE_RECOGNITION, homeProjects, isCitedBySupabase, orderBlogs } from '@/lib/project-highlights';
+import SupabaseBadge from '@/components/shared/supabase-badge';
+import UpworkBadge from '@/components/shared/upwork-badge';
 
 export const metadata = {
-  title: `Home — Arb Rahim Badsa's Activities and Portfolio`,
-  description: `Discover the portfolio of Arb Rahim Badsa (Arbizen), a talented JavaScript developer with expertise in React.js, Next.js, TypeScript, Supabase, Figma, and more. Explore a range of projects showcasing Arbizen's skills in web development, blogs, liked poems, images and more.`,
+  title: { absolute: 'Arbizen · Arb Rahim Badsa, developer and poem writer' },
+  description: 'I build small, sweet things for the internet, like Kitty Messages, and write about code, poems and life. The home of Arb Rahim Badsa (Arbizen).',
+  alternates: { canonical: '/en' },
+  openGraph: { title: 'Arbizen · Arb Rahim Badsa, developer and poem writer', description: 'I build small, sweet things for the internet, like Kitty Messages, and write about code, poems and life. The home of Arb Rahim Badsa (Arbizen).', url: '/en' },
 };
 
+const SITE_URL = process.env.NEXT_PUBLIC_API_URL!;
+
+/** Who this site is, for search engines: the person, and the site that is theirs. */
 const siteJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Arbizen',
-  alternateName: ['Arb', 'Arb Rahim Badsa'],
-  url: process.env.NEXT_PUBLIC_API_URL!,
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${process.env.NEXT_PUBLIC_API_URL}/en/blogs?category={search_term_string}`,
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${SITE_URL}/#person`,
+      name: 'Arb Rahim Badsa',
+      alternateName: ['Arbizen', 'Arb'],
+      url: `${SITE_URL}/en`,
+      image: `${SITE_URL}/arb.png`,
+      jobTitle: 'Full-stack developer',
+      description: 'Self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems.',
+      sameAs: ['https://github.com/arbizen', 'https://x.com/arbizzen'],
+      knowsAbout: ['JavaScript', 'TypeScript', 'React', 'Next.js', 'Supabase', 'PostgreSQL', 'Web development'],
     },
-    'query-input': 'required name=search_term_string',
-  },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      name: 'Arbizen',
+      alternateName: ['Arb Rahim Badsa'],
+      url: `${SITE_URL}/en`,
+      publisher: { '@id': `${SITE_URL}/#person` },
+    },
+  ],
 };
 
-export const dynamic = 'force-dynamic';
 
-export default async function Home({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
-  // const res = await fetch(
-  //   `${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`,
-  // );
-  // console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/data/activities`);
-  // const data = await res.json();
-  // const activities: Activity[] = data.activities.data;
+/**
+ * Home: who I am, what I have built, what I have written, and where
+ * everything else lives. One column, plain text, read in under a minute.
+ */
+export default async function Home({ params: { lang } }: { params: { lang: string } }) {
+  const [projectsData, blogsData] = await Promise.all([
+    new Pagination({ limit: 25 }, 'projects').getCurrentPageData('desc'),
+    new Pagination({ limit: 25 }, 'blogs').getCurrentPageData('desc'),
+  ]);
+  const projects = homeProjects(projectsData.projects?.data ?? []);
+  const published: BlogType[] = (blogsData.blogs?.data ?? []).filter((b: BlogType) => b.isPublished !== false);
+  // The post Supabase cited leads the list, whatever its date; then the newest.
+  const blogs = orderBlogs(published).slice(0, 6);
 
-  const pageName = `activities`;
-  const pagination = new Pagination({ limit: 10 }, pageName);
-  const data = await pagination.getCurrentPageData('desc');
-
-  const activities: Activity[] = data[pageName]?.data;
-
-  const blogs = 'blogs';
-
-  const paginationBlogs = new Pagination({ limit: 2 }, blogs);
-
-  const dataBlogs = await paginationBlogs.getCurrentPageData('desc');
-
-  const blogsData: BlogType[] = dataBlogs[blogs]?.data;
-
-  // Fetch recent images
-  const images = 'images';
-  const paginationImages = new Pagination({ limit: 3 }, images);
-  const dataImages = await paginationImages.getCurrentPageData('desc');
-  const imagesData: ImageType[] = dataImages[images]?.data;
-
-  // Fetch recent answered feedback/questions
-  const FEEDBACK_DATABASE_ID = process.env.NOTION_FEEDBACK_DATABASE_ID;
-  let recentFeedbacks: Feedback[] = [];
-
-  try {
-    if (FEEDBACK_DATABASE_ID) {
-      const notion = new Client({ auth: process.env.NOTION_TOKEN! });
-      const response = await notion.databases.query({
-        database_id: FEEDBACK_DATABASE_ID,
-        filter: {
-          and: [
-            {
-              property: 'response',
-              rich_text: {
-                is_not_empty: true,
-              },
-            },
-            {
-              property: 'isResolved',
-              checkbox: {
-                equals: true,
-              },
-            },
-            {
-              property: 'publishResponse',
-              checkbox: {
-                equals: true,
-              },
-            },
-          ],
-        },
-        sorts: [
-          {
-            property: 'createdAt',
-            direction: 'descending',
-          },
-        ],
-        page_size: 3, // Limit to 3 recent feedbacks
-      });
-
-      recentFeedbacks = response.results.map((page: any) => {
-        const properties = page.properties;
-        return {
-          id: page.id,
-          name: properties.name?.title[0]?.plain_text || '',
-          email: properties.email?.rich_text[0]?.plain_text || '',
-          message: properties.message?.rich_text[0]?.plain_text || '',
-          date: properties.createdAt?.date?.start || new Date().toISOString(),
-          type:
-            properties.type?.select?.name === 'Question'
-              ? 'question'
-              : 'feedback',
-          isResolved: properties.isResolved?.checkbox || false,
-          response: properties.response?.rich_text[0]?.plain_text || '',
-        };
-      });
-    }
-  } catch (error) {
-    console.error('Error fetching feedbacks:', error);
-  }
-
-  const supportedLang = supportedLocales.includes(lang)
-    ? lang
-    : (cookies().get('lang')?.value ?? 'en');
-
+  const supportedLang = supportedLocales.includes(lang) ? lang : 'en';
   const dictionary = await getDictionary(supportedLang);
 
   return (
-    <PageAnimation>
-      {/* Changelog Pill */}
-      <div className="flex justify-center mb-6 sm:mb-4">
-        <ChangelogPill
-          lang={lang}
-        />
-      </div>
-
-      <div className="flex items-start w-full sm:flex-wrap">
-        <PageInfo
-          breadcumb={
-            <Breadcumb
-              firstNav={{
-                name: dictionary.page.home.name.third,
-                url: `/${lang}`,
-              }}
-            />
-          }
-          header={
-            <div>
-              <h1 className="font-black text-[40px] sm:text-[36px]">
-                {dictionary.page.home.name.first}{' '}
-                <span className="text-blue-500">
-                  {dictionary.page.home.name.second}
-                </span>
-              </h1>
-            </div>
-          }
-          description={dictionary.page.home.description}
-          footer={
-            <div className="flex flex-row gap-4 sm:gap-4">
-              <Link
-                className="flex gap-1 items-center text-blue-500 font-bold text-[14px]"
-                href="/about"
-              >
-                {dictionary.page.home.knowMoreAboutMe} <ArrowRight size={16} />
-              </Link>
-              <Link
-                className="flex gap-1 items-center text-green-600 font-bold text-[14px]"
-                href={`/${lang}/resume`}
-              >
-                {dictionary.page.home.downloadCV} <Download size={16} />
-              </Link>
-            </div>
-          }
-        />
-        <div className="w-full">
-          <SkillBeam />
-        </div>
-      </div>
-
-      <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-100 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold text-blue-700 mb-1">
-              Want to ask a question or give feedback?
-            </h2>
-            <p className="text-slate-700">
-              I&apos;m always here to help you or answer your questions.
-            </p>
-          </div>
+    <div className="flex flex-col gap-14">
+      <section className="flex flex-col gap-4">
+        <h1 className="text-xl font-medium tracking-tight text-neutral-900">Arbizen</h1>
+        <p className="text-[15px] leading-relaxed text-neutral-600">{dictionary.page.home.description}</p>
+        <p className="text-[15px] leading-relaxed text-neutral-600">
+          Lately I am building{' '}
+          <a href="https://kittymessages.com" className="text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-900">
+            Kitty Messages
+          </a>
+          , personalized cat cards people send to the ones they love.
+        </p>
+        <div className="flex gap-4 text-sm">
           <Link
-            href={`/${lang}/feedback`}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium flex items-center gap-2 transition-colors"
+            href={`/${lang}/about`}
+            className="text-neutral-500 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 hover:decoration-neutral-900"
           >
-            Give Feedback <ArrowRight size={16} />
+            {dictionary.page.home.knowMoreAboutMe}
           </Link>
         </div>
-      </div>
+      </section>
 
-      {/* Recent answered feedback/questions section */}
-      {recentFeedbacks.length > 0 && (
-        <div className="mb-8">
-          <SubTitle
-            title="Recently Answered Questions"
-            seeMoreText="View All"
-            seeMoreLink={`/${lang}/feedback`}
-          />
-          <div className="mt-6">
-            <PublicFeedbackList feedbacks={recentFeedbacks} />
-          </div>
-        </div>
-      )}
-
-      <div>
-        <SubTitle
-          title={dictionary.page.home.activities}
-          seeMoreText={dictionary.page.home.allActivities}
-        />
-        <section className="mt-8 flex flex-col gap-4">
-          {activities.map((activity: Activity) => (
-            <Link key={activity.id} href={activity.link!} target="_blank">
-              <Card className="px-6 py-[20px]">
-                <h3 className="font-semibold text-base">{activity.name}</h3>
-                <div className="flex gap-2 mt-1 items-center">
-                  <span className="text-xs text-slate-600">
-                    {dateformat(activity.date, 'ddS mmm, yyyy')} at{' '}
-                    {dateformat(activity.date, 'h:MM TT')}
-                  </span>
-                  <Badge className="bg-red-100 text-red-500">
-                    {activity.type}
-                  </Badge>
-                </div>
-              </Card>
-            </Link>
+      <section>
+        <SubTitle title={dictionary.page.projects.name} seeMoreText="All" seeMoreLink={`/${lang}/projects`} />
+        <ul className="flex flex-col">
+          {projects.map((project) => (
+            <li key={project.id}>
+              <Link
+                href={`/${lang}/projects/${project.slug}`}
+                className="-mx-2 flex items-baseline justify-between gap-4 rounded-md px-2 py-2 transition-colors hover:bg-neutral-50"
+              >
+                <span className="min-w-0">
+                  <span className="text-[15px] text-neutral-900">{project.name}</span>
+                  <ProjectBadges project={project} />
+                  <span className="ml-2 text-sm text-neutral-500 sm:ml-0 sm:mt-0.5 sm:block">{project.description}</span>
+                </span>
+                <span className="flex-none text-sm tabular-nums text-neutral-500">{project.year}</span>
+              </Link>
+            </li>
           ))}
-        </section>
-      </div>
-      <div className="mt-8">
-        <SubTitle
-          title={dictionary.page.home.recentBlogs}
-          seeMoreText={dictionary.page.home.allBlogs}
-          seeMoreLink={`/${lang}/blogs`}
-        />
-      </div>
-      <div className="flex flex-col gap-4 mt-8">
-        {blogsData?.map((blog: BlogType) => {
-          if (blog.isPublished === false) return null;
-          return (
-            <Blog
-              id={blog.id}
-              slug={blog.slug}
-              title={blog.title}
-              categories={blog.categories}
-              date={blog.date}
-              description={blog.description}
-              image={blog.image}
-              key={blog.id}
-              readTime={blog.readTime}
-              lang={lang}
-              page={dictionary.page}
-            />
-          );
-        })}
-      </div>
+        </ul>
+      </section>
 
-      <div className="mt-8">
-        <SubTitle
-          title={dictionary.page.images.name}
-          seeMoreText="All Images"
-          seeMoreLink={`/${lang}/images`}
-        />
-      </div>
-      <div className="mt-8 w-full">
-        <div className="grid grid-cols-3 gap-4 sm:grid-cols-1">
-          {imagesData?.map((image: ImageType) => (
-            <CustomImage
-              src={image.src}
-              alt={image.alt}
-              key={image.id}
-              height={300}
-              width={500}
-              className="h-full w-full"
-              link={`/${lang}/images/${image.id}`}
-              date={image.date}
-              reactions={image.reactions}
-              imageId={image.id}
-            />
+      {/* The proof: Upwork's top badge, and Supabase on its own blog and GitHub. */}
+      <section>
+        <SubTitle title="Recognition" />
+        <ul className="flex flex-col">
+          <li>
+            <div className="-mx-2 flex items-baseline justify-between gap-4 rounded-md px-2 py-2">
+              <span className="min-w-0">
+                <span className="text-[15px] text-neutral-900">Upwork</span>
+                <UpworkBadge>Top Rated Plus</UpworkBadge>
+                <span className="ml-2 text-sm text-neutral-500 sm:ml-0 sm:mt-0.5 sm:block">5+ years building for clients</span>
+              </span>
+              <span className="flex-none text-sm tabular-nums text-neutral-500">2+ years</span>
+            </div>
+          </li>
+          <li>
+            <div className="-mx-2 flex items-baseline justify-between gap-4 rounded-md px-2 py-2">
+              <span className="min-w-0">
+                <span className="text-[15px] text-neutral-900">Dean&apos;s List</span>
+                {' '}
+                <span className="inline-flex items-center gap-0.5 whitespace-nowrap align-baseline text-[11px] text-neutral-500">
+                  <svg viewBox="0 0 24 24" className="h-3 w-3 flex-none" fill="none" stroke="#B8860B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M22 9 12 4 2 9l10 5 10-5Z" />
+                    <path d="M6 11v4.5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V11" />
+                    <path d="M22 9v5" />
+                  </svg>
+                  Twice in a row, and counting
+                </span>
+                <span className="ml-2 text-sm text-neutral-500 sm:ml-0 sm:mt-0.5 sm:block">3.89 CGPA</span>
+              </span>
+              <span className="flex-none text-sm tabular-nums text-neutral-500">2021 to 2023</span>
+            </div>
+          </li>
+          {SUPABASE_RECOGNITION.map((win) => (
+            <li key={win.url}>
+              <a
+                href={win.url}
+                target="_blank"
+                rel="noopener"
+                className="-mx-2 flex items-baseline justify-between gap-4 rounded-md px-2 py-2 transition-colors hover:bg-neutral-50"
+              >
+                <span className="min-w-0">
+                  <span className="text-[15px] text-neutral-900">{win.project}</span>
+                  <SupabaseBadge>{win.prize}</SupabaseBadge>
+                  <span className="ml-2 text-sm text-neutral-500 sm:ml-0 sm:mt-0.5 sm:block">{win.event}</span>
+                </span>
+                <span className="flex-none text-sm tabular-nums text-neutral-500">{win.date}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <SubTitle title={dictionary.page.home.recentBlogs} seeMoreText="All" seeMoreLink={`/${lang}/blogs`} />
+        <div className="flex flex-col">
+          {blogs.map((blog) => (
+            <Blog key={blog.id} {...blog} lang={lang} page={dictionary.page} compact citedBySupabase={isCitedBySupabase(blog)} />
           ))}
         </div>
-      </div>
+      </section>
 
-      <Script
-        id="json-ld-site"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
-      />
-    </PageAnimation>
+
+      <Script id="json-ld-site" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }} />
+    </div>
   );
 }

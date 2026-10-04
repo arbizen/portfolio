@@ -44,7 +44,11 @@ export default function About({ params }: { params: { lang: string } }) {
           </a>
           , personalized cat cards people send to the ones they love. I built and run all of it myself, from the
           card designs to payments to the server it lives on, and I spend a lot of time on the small details,
-          because that&apos;s where people feel the care.
+          because that&apos;s where people feel the care.{' '}
+          <Link href={`/${lang}/blogs/how-3%2C000-people-ended-up-sending-cat-cards`} className={link}>
+            Read more about it
+          </Link>
+          .
         </p>
         <p>
           Before that, plenty of side projects, two Supabase hackathon prizes (

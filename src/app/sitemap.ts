@@ -1,5 +1,4 @@
-import { headerItems } from '@/data/header';
-import { Blog, ImageType, Project } from '@/types';
+import { Blog, ImageType, Poem, Project } from '@/types';
 import { MetadataRoute } from 'next';
 import Pagination from '@/lib/Pagination';
 
@@ -7,17 +6,25 @@ export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-  const HEADER_PAGES = headerItems.map((item) => ({
-    url: `${BASE_URL}${item.route}`,
+  // The real, final addresses (bare /blogs only redirects to /en/blogs).
+  const MAIN_PAGES = [
+    { path: '/en', priority: 1, changeFrequency: 'weekly' },
+    { path: '/en/projects', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/en/blogs', priority: 0.9, changeFrequency: 'weekly' },
+    { path: '/en/about', priority: 0.8, changeFrequency: 'yearly' },
+    { path: '/en/poems', priority: 0.7, changeFrequency: 'weekly' },
+    { path: '/en/images', priority: 0.6, changeFrequency: 'monthly' },
+    { path: '/en/bookmarks', priority: 0.4, changeFrequency: 'monthly' },
+  ].map((page) => ({
+    url: `${BASE_URL}${page.path}`,
     lastModified: new Date(),
-    changeFrequency:
-      item.name === 'Home' || item.name === 'About' ? 'yearly' : 'monthly',
-    priority: 1,
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
   }));
   const blogsPagination = new Pagination({ limit: 100 }, 'blogs');
   const blogsData = await blogsPagination.getCurrentPageData('desc');
   const blogs: Blog[] = blogsData['blogs']?.data;
-  const slugPages = blogs.map((blog) => ({
+  const slugPages = blogs.filter((blog) => blog.isPublished !== false).map((blog) => ({
     url: `${BASE_URL}/en/blogs/${blog.slug}`,
     lastModified: blog.date,
     changeFrequency: 'weekly',
@@ -34,6 +41,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const poemsPagination = new Pagination({ limit: 100 }, 'poems');
+  const poemsData = await poemsPagination.getCurrentPageData('desc');
+  const poems: Poem[] = poemsData['poems']?.data ?? [];
+  const poemsSlug = poems
+    .filter((poem) => poem.isPublished !== false)
+    .map((poem) => ({
+      url: `${BASE_URL}/en/poems/${poem.slug}`,
+      lastModified: poem.date,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    }));
+
   const imagesPagination = new Pagination({ limit: 100 }, 'images');
   const imagesData = await imagesPagination.getCurrentPageData('desc');
   const images: ImageType[] = imagesData['images']?.data;
@@ -45,9 +64,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   return [
-    ...(HEADER_PAGES as MetadataRoute.Sitemap),
+    ...(MAIN_PAGES as MetadataRoute.Sitemap),
     ...(slugPages as MetadataRoute.Sitemap),
     ...(projectsSlug as MetadataRoute.Sitemap),
+    ...(poemsSlug as MetadataRoute.Sitemap),
     ...(imagesSlug as MetadataRoute.Sitemap),
   ];
 }

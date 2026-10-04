@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import NextImage from 'next/image';
 // @ts-ignore
 import dateformat from 'dateformat';
 
@@ -161,19 +162,17 @@ export default function CustomImage(props: Props) {
           <div className="img-placeholder relative aspect-[4/3] overflow-hidden rounded-md">
             {/* Main image with blur effect while loading */}
             {isVisible && (
-              <img
+              // Straight from Notion, not through Vercel's image optimizer.
+              <NextImage
+                unoptimized
                 src={props.src}
                 alt={props.alt}
-                width={props.width}
-                height={props.height}
-                className={`${props.className} w-full h-full object-cover transition-all duration-300 ${
+                fill
+                className={`${props.className ?? ''} object-cover transition-all duration-300 ${
                   isLoaded ? 'blur-none' : 'blur-sm'
                 }`}
-                loading={props.priority ? 'eager' : 'lazy'}
+                priority={props.priority}
                 onLoad={handleImageLoad}
-                decoding="async"
-                crossOrigin="anonymous"
-                fetchPriority={props.priority ? 'high' : 'low'}
               />
             )}
             
@@ -228,7 +227,7 @@ export default function CustomImage(props: Props) {
         <div className="mt-2 flex justify-between items-center">
           <span className="text-sm italic text-slate-500">{props.alt}</span>
           {props.date && (
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-slate-500">
               {dateformat(props.date, 'dd/mm/yyyy')}
             </span>
           )}

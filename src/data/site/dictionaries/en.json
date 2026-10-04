@@ -50,7 +50,7 @@
         "second": "therefore I am!",
         "third": "Home"
       },
-      "description": "Hi, I'm Arb Rahim Badsa. I live in a tiny corner of the web. I write, design & code. Love to solve new problems!",
+      "description": "I build small, sweet things for the internet and then stare at them for an unreasonable amount of time. Also poems. Also photos. Mostly the staring.",
       "knowMoreAboutMe": "Know more about me",
       "downloadCV": "View Resume",
       "activities": "Activities",
@@ -60,26 +60,26 @@
     },
     "blogs": {
       "name": "Blogs",
-      "description": "Articles spanning technology, life philosophy, and creative insights. Join me on a journey through ideas, experiences, and the ever-evolving world of development.",
+      "description": "Things I learned the hard way, written down so you don't have to.",
       "minRead": "min read",
       "readMore": "Read more"
     },
     "projects": {
       "name": "Projects",
-      "description": "A curated collection of my most significant projects and experiments. Each piece represents a unique challenge, a lesson learned, and a step forward in my journey as a developer."
+      "description": "Things I made, broke, fixed and shipped. A few of them people actually use."
     },
     "bookmarks": {
       "name": "Bookmarks",
-      "description": "Carefully curated resources, tools, and discoveries from across the web. These bookmarks represent knowledge worth sharing and references I return to time and again."
+      "description": "Corners of the internet I keep going back to."
     },
     "poems": {
       "name": "Poems",
-      "description": "A collection of profound verses that have touched my soul and shaped my perspective. Literature has the power to inspire, and these poems continue to move me deeply.",
+      "description": "Words I wrote when code wasn't enough. Mostly in Bengali, mostly at night.",
       "readMore": "Read more"
     },
     "images": {
       "name": "Images",
-      "description": "Moments captured through my lens—scenes that spoke to my soul and demanded to be preserved. Each image tells a story of beauty found in the everyday world around us."
+      "description": "Moments I stopped to look at. My camera roll, minus the screenshots."
     },
     "about": {
       "name": "About",

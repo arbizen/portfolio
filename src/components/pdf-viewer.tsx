@@ -30,9 +30,9 @@ export default function PDFViewer({ src, title = 'PDF Viewer', className = '' }:
   };
 
   return (
-    <div className={`relative bg-white rounded-lg shadow-lg border border-gray-200 p-4 ${className}`}>
+    <div className={`relative rounded-lg border border-neutral-100 p-3 ${className}`}>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-gray-800">Resume Preview</h2>
+        <h2 className="text-sm font-medium text-neutral-500">Preview</h2>
         {/* <div className="flex gap-2">
           <Link
             className="flex gap-1 items-center text-blue-600 font-medium text-sm bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-md transition-colors"

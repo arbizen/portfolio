@@ -2,6 +2,18 @@
 import { Client, isFullPage } from '@notionhq/client';
 import { NotionToMarkdown } from 'notion-to-md';
 import { getPlaiceholder } from 'plaiceholder';
+import { unstable_cache } from 'next/cache';
+
+/**
+ * How long Notion content is served from the server's cache, in seconds.
+ * Pages then appear instantly instead of waiting on Notion, and an edit in
+ * Notion shows up within this long (refetched in the background).
+ */
+export const NOTION_REVALIDATE = 300;
+
+function cached<T>(key: string[], fn: () => Promise<T>): Promise<T> {
+  return unstable_cache(fn, ['notion', ...key], { revalidate: NOTION_REVALIDATE, tags: ['notion'] })();
+}
 export class NotionManager {
   constructor(
     private readonly notion: Client,
@@ -18,11 +30,13 @@ export class NotionManager {
     }[],
   ) {}
   async getNextCursorData(cursor: string, name: string) {
-    const db = await this.notion.databases.query({
-      database_id: this.databases.find((db) => db.name === name)?.id!,
-      start_cursor: cursor,
+    return cached(['cursor', name, cursor], async () => {
+      const db = await this.notion.databases.query({
+        database_id: this.databases.find((db) => db.name === name)?.id!,
+        start_cursor: cursor,
+      });
+      return this.getFormattedData(db, name);
     });
-    return this.getFormattedData(db, name);
   }
   async getPageBySlug(slug: string) {
     try {
@@ -41,14 +55,15 @@ export class NotionManager {
     }
   }
   async getPageById(id: string) {
-    const page = await this.notion.pages.retrieve({ page_id: id });
-    return page;
+    return cached(['page', id], () => this.notion.pages.retrieve({ page_id: id }));
   }
   async getMdStringById(id: string) {
-    const n2m = new NotionToMarkdown({ notionClient: this.notion });
-    const blocks = await n2m.pageToMarkdown(id);
-    const mdString = n2m.toMarkdownString(blocks);
-    return mdString.parent;
+    return cached(['markdown', id], async () => {
+      const n2m = new NotionToMarkdown({ notionClient: this.notion });
+      const blocks = await n2m.pageToMarkdown(id);
+      const mdString = n2m.toMarkdownString(blocks);
+      return mdString.parent;
+    });
   }
   async getFormatted(name: string) {
     const res = await this.notion.search({
@@ -70,7 +85,7 @@ export class NotionManager {
           src:
             page.cover?.external?.url ||
             page.cover?.file?.url ||
-            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+            '/blog-image.png',
           date: page.properties?.createdAt?.created_time || '',
           categories: page.properties.category
             ? page.properties.category.multi_select.map((tag) => tag.name)
@@ -84,10 +99,12 @@ export class NotionManager {
   async getDatabaseByName(name: string) {
     const id = this.databases.find((db) => db.name === name)?.id;
     if (!id) return null;
-    const db = await this.notion.databases.query({
-      database_id: id!,
+    return cached(['database', name], async () => {
+      const db = await this.notion.databases.query({
+        database_id: id!,
+      });
+      return this.getFormattedData(db, name);
     });
-    return this.getFormattedData(db, name);
   }
   getFormattedData(db: any, name: string) {
     let formatted = null;
@@ -139,7 +156,7 @@ export class NotionManager {
           image:
             page.cover?.external?.url ||
             page.cover?.file?.url ||
-            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+            '/blog-image.png',
           readTime: page.properties?.readTime?.number || 0,
           slug: encodedSlug,
           decodedSlug: slug,
@@ -193,7 +210,7 @@ export class NotionManager {
           image:
             page.cover?.external?.url ||
             page.cover?.file?.url ||
-            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+            '/blog-image.png',
           stack:
             'multi_select' in page.properties.stack
               ? page.properties.stack.multi_select.map((tag) => tag.name)
@@ -235,7 +252,7 @@ export class NotionManager {
           image:
             page.cover?.external?.url ||
             page.cover?.file?.url ||
-            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+            '/blog-image.png',
           author: page.properties?.author?.rich_text[0]?.plain_text || '',
           slug: encodedSlug,
           decodedSlug: slug,
@@ -273,7 +290,7 @@ export class NotionManager {
           src:
             page.cover?.external?.url ||
             page.cover?.file?.url ||
-            'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+            '/blog-image.png',
           date: page.properties?.createdAt?.created_time || '',
           reactions: page.properties?.reactions?.number || 0,
           categories:

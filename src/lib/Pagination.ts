@@ -17,7 +17,8 @@ export default class Pagination {
     } else {
       url = `${process.env.NEXT_PUBLIC_API_URL}/api/data/${this.pageName}/${cursor}?page=${page}&limit=${limit}&category=${category}&order=${order}`;
     }
-    const res = await fetch(url);
+    // Cached like the Notion data behind it, so pages render without waiting.
+    const res = await fetch(url, { next: { revalidate: 300 } });
     const data = await res.json();
     return data;
   }

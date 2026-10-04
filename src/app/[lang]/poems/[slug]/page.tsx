@@ -1,4 +1,5 @@
 import { notionManager } from '@/lib/NotionManager';
+import Breadcumb from '@/components/shared/breadcumb';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
@@ -19,7 +20,6 @@ import dateformat from 'dateformat';
 import { notFound } from 'next/navigation';
 import PageAnimation from '@/components/page-animation';
 
-export const dynamic = 'force-dynamic';
 
 type Props = {
   params: { slug: string; lang: string };
@@ -42,7 +42,7 @@ export async function generateMetadata(
         title: 'Poem',
         description: 'Description',
         images: [
-          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          '/en/opengraph-image.png',
         ],
       },
       twitter: {
@@ -51,7 +51,7 @@ export async function generateMetadata(
         description: 'Description',
         creator: '@arbizzen',
         images: [
-          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          '/en/opengraph-image.png',
         ], // Must be an absolute URL
       },
     };
@@ -62,23 +62,24 @@ export async function generateMetadata(
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||
-    'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+    '/en/opengraph-image.png';
   const title =
     (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Poem';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
 
+  // The page itself is canonical (its id is part of the address).
+  const canonical = `/en/poems/${encodeURIComponent(decodeURIComponent(params.slug))}?id=${id}`;
   return {
     title,
     description,
+    alternates: { canonical },
     openGraph: {
+      url: canonical,
       title,
       description,
       images: [coverUrl],
-      url:
-        process.env.NEXT_PUBLIC_API_URL +
-        `/${params.lang}/poems/${params.slug}?id=${id}`,
       type: 'article',
     },
     twitter: {
@@ -112,7 +113,7 @@ export default async function PoemPage({
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||
-    'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+    '/en/opengraph-image.png';
   const title =
     (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Poem';
   const description =
@@ -137,6 +138,13 @@ export default async function PoemPage({
   return (
     <PageAnimation>
       <PageInfo
+        breadcumb={
+          <Breadcumb
+            firstNav={{ name: 'Home', url: `/${params.lang}` }}
+            secondNav={{ name: 'Poems', url: `/${params.lang}/poems` }}
+            current={title}
+          />
+        }
         header={<PageTitle title={title} />}
         description={description}
         footer={
@@ -144,9 +152,9 @@ export default async function PoemPage({
             <Badge className="bg-orange-100 text-orange-500">
               {dateformat(date, 'ddS mmmm, yyyy')}
             </Badge>
-            <Badge className="bg-purple-100 text-purple-600">
-              {author}
-            </Badge>
+            {author !== 'Unknown' && !/^arb\b/i.test(author.trim()) ? (
+              <Badge className="bg-purple-100 text-purple-600">{author}</Badge>
+            ) : null}
             {categories.map((category: string) => (
               <Badge key={category} className="bg-red-100 text-red-500">
                 {category}
@@ -161,12 +169,12 @@ export default async function PoemPage({
           alt={title}
           className="max-h-[800px] object-cover rounded-md"
         />
-        <article className="flex justify-center mt-16 min-w-[800px] sm:min-w-full">
+        <article className="mt-10">
           <Markdown
             remarkPlugins={[remarkGfm, remarkMath]}
             rehypePlugins={[rehypeKatex, rehypeAutolinkHeadings]}
             components={customComponents}
-            className="prose w-full min-w-[800px] sm:min-w-full"
+            className="prose prose-neutral max-w-none text-[15px] prose-headings:font-medium prose-strong:font-medium prose-a:decoration-neutral-300 prose-a:underline-offset-4"
           >
             {mdString}
           </Markdown>

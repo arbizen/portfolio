@@ -11,15 +11,15 @@ import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import { Tag, TagContainer } from '@/components/tag';
 import PageAnimation from '@/components/page-animation';
-import { cookies } from 'next/headers';
 import { supportedLocales } from '@/data/site/supportedLocales';
 
 export const metadata = {
-  title: 'Bookmarks — Some of the best links I adore',
-  description: 'This is the home page',
+  title: 'Bookmarks',
+  description: 'Links, tools and websites Arbizen keeps coming back to.',
+  alternates: { canonical: '/en/bookmarks' },
+  openGraph: { title: 'Bookmarks', description: 'Links, tools and websites Arbizen keeps coming back to.', url: '/en/bookmarks' },
 };
 
-export const dynamic = 'force-dynamic';
 
 export default async function BookmarksPage({
   params,
@@ -40,7 +40,7 @@ export default async function BookmarksPage({
 
   const supportedLang = supportedLocales.includes(params.lang)
     ? params.lang
-    : cookies().get('lang')?.value ?? 'en';
+    : 'en';
 
   const { page } = await getDictionary(supportedLang);
 
@@ -68,54 +68,28 @@ export default async function BookmarksPage({
         header={<PageTitle title={page.bookmarks.name} />}
         description={page.bookmarks.description}
         itemsLength={bookmarks.length ?? 0}
-        footer={
-          <>
-            <TagContainer>
-              {tagsWithLink.map((tag) => (
-                <Link
-                  href={`/${params.lang}/${pageName}?${
-                    pageNumber ? `page=${pageNumber}` : ''
-                  }&category=${tag.path}`}
-                  key={tag.name}
-                >
-                  <Tag
-                    className={
-                      category === tag.name
-                        ? 'border-slate-800'
-                        : 'border-slate-200'
-                    }
-                  >
-                    {tag.name}
-                  </Tag>
-                </Link>
-              ))}
-            </TagContainer>
-          </>
-        }
       />
-      <section className="flex flex-wrap gap-4 relative z-50">
+      <section className="flex flex-col">
         {bookmarks.map((bookmark) => (
           <Link
             key={bookmark.id}
             href={bookmark.link}
             target="_blank"
-            className="flex-grow max-w-[400px]"
+            className="-mx-2 flex flex-col gap-1 rounded-md px-2 py-2.5 transition-colors hover:bg-neutral-50"
           >
-            <Card className="px-6 py-[20px]">
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold">{bookmark.name}</h3>
-                <Badge className="bg-blue-100 text-blue-500">
-                  {bookmark.type}
-                </Badge>
-              </div>
-              <div className="mt-1 flex items-center gap-1">
-                <Link2 size={15} />
-                <span className="text-xs">{bookmark.link}</span>
-              </div>
-              <p className="mt-2 leading-tight text-slate-600">
-                {bookmark.description}
-              </p>
-            </Card>
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="text-[15px] text-neutral-900">{bookmark.name}</span>
+              <span className="flex-none text-sm text-neutral-500">
+                {(() => {
+                  try {
+                    return new URL(bookmark.link).hostname.replace(/^www\./, '');
+                  } catch {
+                    return '';
+                  }
+                })()}
+              </span>
+            </div>
+            {bookmark.description ? <p className="text-sm text-neutral-500">{bookmark.description}</p> : null}
           </Link>
         ))}
         {bookmarks.length > 24 && (

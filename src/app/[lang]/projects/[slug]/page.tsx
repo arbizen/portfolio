@@ -1,4 +1,5 @@
 import { notionManager } from '@/lib/NotionManager';
+import Breadcumb from '@/components/shared/breadcumb';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
@@ -22,7 +23,6 @@ import { Github, ExternalLink } from 'lucide-react';
 import dateformat from 'dateformat';
 import PageAnimation from '@/components/page-animation';
 
-export const dynamic = 'force-dynamic';
 
 type Props = {
   params: { slug: string };
@@ -47,7 +47,7 @@ export async function generateMetadata(
         title: 'Project',
         description: 'Description',
         images: [
-          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          '/en/opengraph-image.png',
         ],
       },
       twitter: {
@@ -56,7 +56,7 @@ export async function generateMetadata(
         description: 'Description',
         creator: '@arbizzen',
         images: [
-          'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU',
+          '/en/opengraph-image.png',
         ], // Must be an absolute URL
       },
     };
@@ -67,17 +67,23 @@ export async function generateMetadata(
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||
-    'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+    '/en/opengraph-image.png';
   const title =
-    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Project';
+    (pageInfo as any)?.properties?.name?.title[0]?.plain_text ||
+    (pageInfo as any)?.properties?.title?.title[0]?.plain_text ||
+    'Project';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
 
+  // The page itself is canonical (its id is part of the address).
+  const canonical = `/en/projects/${encodeURIComponent(decodeURIComponent(params.slug))}?id=${id || extractedId}`;
   return {
     title,
     description,
+    alternates: { canonical },
     openGraph: {
+      url: canonical,
       title,
       description,
       images: [coverUrl],
@@ -113,7 +119,7 @@ export default async function ProjectPage({
   const coverUrl =
     (pageInfo as any)?.cover?.external?.url ||
     (pageInfo as any).cover?.file?.url ||
-    'https://source.unsplash.com/a-person-standing-on-top-of-a-mountain-nMzbnMzMjYU';
+    '/en/opengraph-image.png';
   const title =
     (pageInfo as any)?.properties?.name?.title[0]?.plain_text || 'Project name';
   const description =
@@ -135,6 +141,13 @@ export default async function ProjectPage({
   return (
     <PageAnimation>
       <PageInfo
+        breadcumb={
+          <Breadcumb
+            firstNav={{ name: 'Home', url: `/${params.lang}` }}
+            secondNav={{ name: 'Projects', url: `/${params.lang}/projects` }}
+            current={title}
+          />
+        }
         header={<PageTitle title={title} />}
         description={description}
         footer={
@@ -172,12 +185,12 @@ export default async function ProjectPage({
           alt={title}
           className="max-h-[800px] object-cover rounded-md"
         />
-        <article className="flex justify-center mt-16 min-w-[800px] sm:min-w-full">
+        <article className="mt-10">
           <Markdown
             remarkPlugins={[remarkGfm, remarkMath]}
             rehypePlugins={[rehypeKatex, rehypeAutolinkHeadings]}
             components={customComponents}
-            className="prose w-full min-w-[800px] sm:min-w-full"
+            className="prose prose-neutral max-w-none text-[15px] prose-headings:font-medium prose-strong:font-medium prose-a:decoration-neutral-300 prose-a:underline-offset-4"
           >
             {mdString}
           </Markdown>

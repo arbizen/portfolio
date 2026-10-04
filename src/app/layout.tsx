@@ -7,30 +7,26 @@ import { Analytics } from '@vercel/analytics/react';
 import { cn } from '@/lib/utils';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
+const SITE_DESCRIPTION =
+  'Arbizen is Arb Rahim Badsa, a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes about code, poems and life.';
+
 export const metadata: Metadata = {
-  creator: 'Arb Rahim Badsa',
-  category: 'technology',
-  applicationName: 'Arb Rahim Badsa',
-  description: `Discover the portfolio of Arb Rahim Badsa (Arbizen), a talented JavaScript developer with expertise in React.js, Next.js, TypeScript, Supabase, Figma, and more. Explore a range of projects showcasing Arbizen's skills in web development, blogs, liked poems, images and more.`,
-  keywords: [
-    'Portfolio',
-    'Arb Rahim Badsa',
-    'Arb Rahim Badsa Portfolio',
-    'Arb Rahim Badsa Blog',
-    'Arb Rahim Badsa Website',
-    'Arb Rahim Badsa Personal Website',
-    'Arb Rahim Badsa Projects',
-    'Arbizen Blog',
-    'Arbizen Website',
-    'Arbizen Portfolio',
-    'Arbizen Projects',
-    'Arb Blog',
-    'Arb Website',
-    'Arb Portfolio',
-    'Arb Projects',
-    'Arb Personal Website',
-  ],
   metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL!),
+  // Every page reads "Page · Arbizen" in search results and tabs.
+  title: { default: 'Arbizen · Arb Rahim Badsa', template: '%s · Arbizen' },
+  description: SITE_DESCRIPTION,
+  applicationName: 'Arbizen',
+  creator: 'Arb Rahim Badsa',
+  authors: [{ name: 'Arb Rahim Badsa', url: process.env.NEXT_PUBLIC_API_URL! }],
+  category: 'technology',
+  keywords: ['Arbizen', 'Arb Rahim Badsa', 'Arb', 'full-stack developer', 'Next.js', 'React', 'Kitty Messages', 'blog', 'poems'],
+  openGraph: {
+    type: 'website',
+    siteName: 'Arbizen',
+    locale: 'en_US',
+    description: SITE_DESCRIPTION,
+  },
+  twitter: { card: 'summary_large_image', creator: '@arbizzen', site: '@arbizzen' },
 };
 
 export default async function RootLayout({

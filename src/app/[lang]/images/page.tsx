@@ -10,9 +10,7 @@ import Link from 'next/link';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import PageAnimation from '@/components/page-animation';
 import { supportedLocales } from '@/data/site/supportedLocales';
-import { cookies } from 'next/headers';
 
-export const dynamic = 'force-dynamic';
 
 type pageProps = {
   params: { slug: string; lang: string };
@@ -20,9 +18,10 @@ type pageProps = {
 };
 
 export const metadata = {
-  title: 'Images — Scenes that I stumbled upon',
-  description:
-    'I like to walk around and take pictures of things that I find interesting.',
+  title: 'Images',
+  description: 'Photos Arbizen took of everyday scenes: nature, cities, villages and quiet moments.',
+  alternates: { canonical: '/en/images' },
+  openGraph: { title: 'Images', description: 'Photos Arbizen took of everyday scenes: nature, cities, villages and quiet moments.', url: '/en/images' },
 };
 
 export default async function Images({ params, searchParams }: pageProps) {
@@ -46,7 +45,7 @@ export default async function Images({ params, searchParams }: pageProps) {
 
   const supportedLang = supportedLocales.includes(params.lang)
     ? params.lang
-    : cookies().get('lang')?.value ?? 'en';
+    : 'en';
 
   const { page: dictionaryPage } = await getDictionary(supportedLang);
 
@@ -68,33 +67,9 @@ export default async function Images({ params, searchParams }: pageProps) {
         itemsLength={images.length}
         header={<PageTitle title={dictionaryPage.images.name} />}
         description={dictionaryPage.images.description}
-        footer={
-          <>
-            <TagContainer>
-              {tagsWithLink.map((tag) => (
-                <Link
-                  href={`/${params.lang}/${pageName}?${
-                    pageNumber ? `page=${pageNumber}` : ''
-                  }&category=${tag.path}`}
-                  key={tag.name}
-                >
-                  <Tag
-                    className={
-                      category === tag.name
-                        ? 'border-slate-800'
-                        : 'border-slate-200'
-                    }
-                  >
-                    {tag.name}
-                  </Tag>
-                </Link>
-              ))}
-            </TagContainer>
-          </>
-        }
       />
       <div className="w-full relative z-50">
-        <div className="columns-4 gap-4 sm:columns-1">
+        <div className="columns-2 gap-4 sm:columns-1">
           {images.map((image) => (
             <CustomImage
               src={image.src}

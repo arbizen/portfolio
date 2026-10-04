@@ -1,49 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supportedLocales } from './data/site/supportedLocales';
+import { retiredLocales } from './data/site/supportedLocales';
+
+/**
+ * English only, under /en. Links from when the site had other languages
+ * (/bn/blogs/…, /es/projects/…) go to the same page in English, permanently,
+ * so nothing that was ever shared or indexed breaks. Bare paths (/blogs) get
+ * the /en prefix.
+ */
+const PAGES = ['/', '/blogs', '/images', '/poems', '/projects', '/bookmarks', '/about', '/feedback', '/resume', '/admin/feedback'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const langInUrl = pathname.split('/')[1];
-  const langFromCookie = request.cookies.get('lang')?.value;
-  const res = NextResponse.next();
-  if (!langFromCookie && supportedLocales.includes(langInUrl)) {
-    // add cookie if not exists
-    res.cookies.set('lang', langInUrl, {
-      path: '/',
-      // set expiry date to 1 year
-      expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-    });
-  } else {
-    if (langInUrl !== langFromCookie && supportedLocales.includes(langInUrl)) {
-      // update cookie if different
-      res.cookies.set('lang', langInUrl, {
-        path: '/',
-        expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-      });
-    }
+  const first = pathname.split('/')[1];
+
+  if (retiredLocales.includes(first)) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/en${pathname.slice(first.length + 1)}`;
+    return NextResponse.redirect(url, 308);
   }
-  const pathnameHasLocale = supportedLocales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
-  if (pathnameHasLocale) return res;
-  const locale = langFromCookie ?? 'en'; // default locale
-  // pages to be redirected
-  const pages = [
-    '/',
-    '/blogs',
-    '/images',
-    '/poems',
-    '/projects',
-    '/bookmarks',
-    '/about',
-    '/feedback',
-    '/admin/feedback',
-  ];
-  if (pages.includes(pathname)) {
-    request.nextUrl.pathname = `/${locale}${pathname}`;
-    return NextResponse.redirect(request.nextUrl);
+  if (first !== 'en' && PAGES.includes(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === '/' ? '/en' : `/en${pathname}`;
+    return NextResponse.redirect(url);
   }
-  return res;
+  return NextResponse.next();
 }
 
 export const config = {

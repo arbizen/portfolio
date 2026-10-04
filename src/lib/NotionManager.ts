@@ -5,15 +5,48 @@ import { getPlaiceholder } from 'plaiceholder';
 import { unstable_cache } from 'next/cache';
 
 /**
- * How long Notion content is served from the server's cache, in seconds.
- * Pages then appear instantly instead of waiting on Notion, and an edit in
- * Notion shows up within this long (refetched in the background).
+ * How long Notion data is reused, in seconds.
+ *
+ * Pages themselves are built ahead of time and served from the CDN (see
+ * revalidate in app/[lang]/layout.tsx); this only spares Notion when several
+ * pages rebuild at once. Kept short so it adds little to how long an edit in
+ * Notion takes to appear. /api/revalidate clears both at once.
  */
-export const NOTION_REVALIDATE = 300;
+export const NOTION_REVALIDATE = 60;
 
 function cached<T>(key: string[], fn: () => Promise<T>): Promise<T> {
   return unstable_cache(fn, ['notion', ...key], { revalidate: NOTION_REVALIDATE, tags: ['notion'] })();
 }
+
+/**
+ * A page's cover, as a link that keeps working.
+ *
+ * Notion's own uploads come back as signed links that expire after an hour,
+ * and pages are now built ahead of time and kept for longer than that. So an
+ * uploaded cover goes through /api/notion-file, which fetches a fresh link
+ * whenever it's asked. Covers hosted elsewhere are used as they are.
+ */
+export function coverUrl(page: any): string {
+  if (page?.cover?.external?.url) return page.cover.external.url;
+  if (page?.cover?.file?.url) return `/api/notion-file/page/${page.id}`;
+  return '';
+}
+
+/** Undo URL encoding however many times it was applied ("%2C" and "%252C" alike). */
+function decodeSlug(slug: string): string {
+  let out = slug;
+  for (let i = 0; i < 3; i++) {
+    try {
+      const next = decodeURIComponent(out);
+      if (next === out) break;
+      out = next;
+    } catch {
+      break;
+    }
+  }
+  return out;
+}
+
 export class NotionManager {
   constructor(
     private readonly notion: Client,
@@ -60,6 +93,13 @@ export class NotionManager {
   async getMdStringById(id: string) {
     return cached(['markdown', id], async () => {
       const n2m = new NotionToMarkdown({ notionClient: this.notion });
+      // Uploaded images get a link that doesn't expire (see coverUrl).
+      n2m.setCustomTransformer('image', async (block: any) => {
+        const image = block.image;
+        const caption = (image?.caption ?? []).map((t: any) => t.plain_text).join('');
+        const src = image?.type === 'external' ? image.external.url : `/api/notion-file/block/${block.id}`;
+        return `![${caption}](${src})`;
+      });
       const blocks = await n2m.pageToMarkdown(id);
       const mdString = n2m.toMarkdownString(blocks);
       return mdString.parent;
@@ -83,8 +123,7 @@ export class NotionManager {
           id: page.id,
           alt: page.properties?.name?.title[0]?.plain_text || '',
           src:
-            page.cover?.external?.url ||
-            page.cover?.file?.url ||
+            coverUrl(page) ||
             '/blog-image.png',
           date: page.properties?.createdAt?.created_time || '',
           categories: page.properties.category
@@ -95,6 +134,13 @@ export class NotionManager {
         };
       })
       .filter((item) => item.alt === name)?.[0];
+  }
+  /** The page id behind a /blogs, /projects or /poems link, or null. */
+  async findIdBySlug(name: 'blogs' | 'projects' | 'poems', slug: string) {
+    const db = await this.getDatabaseByName(name);
+    const want = decodeSlug(slug);
+    const item = db?.results?.find((item: any) => decodeSlug(item.slug) === want);
+    return (item?.id as string) ?? null;
   }
   async getDatabaseByName(name: string) {
     const id = this.databases.find((db) => db.name === name)?.id;
@@ -141,7 +187,7 @@ export class NotionManager {
           .replace(/ /g, '-');
 
         // url encode
-        const encodedSlug = encodeURIComponent(slug) + `?id=${page.id}`;
+        const encodedSlug = encodeURIComponent(slug);
 
         return {
           id: page.id,
@@ -154,8 +200,7 @@ export class NotionManager {
           description:
             page.properties?.description?.rich_text[0]?.plain_text || '',
           image:
-            page.cover?.external?.url ||
-            page.cover?.file?.url ||
+            coverUrl(page) ||
             '/blog-image.png',
           readTime: page.properties?.readTime?.number || 0,
           slug: encodedSlug,
@@ -197,7 +242,7 @@ export class NotionManager {
           .replace(/ /g, '-');
 
         // url encode
-        const encodedSlug = encodeURIComponent(slug) + `?id=${page.id}`;
+        const encodedSlug = encodeURIComponent(slug);
 
         return {
           id: page.id,
@@ -208,8 +253,7 @@ export class NotionManager {
             page.properties?.description?.rich_text[0]?.plain_text || '',
           year: page.properties?.year?.number || '',
           image:
-            page.cover?.external?.url ||
-            page.cover?.file?.url ||
+            coverUrl(page) ||
             '/blog-image.png',
           stack:
             'multi_select' in page.properties.stack
@@ -237,7 +281,7 @@ export class NotionManager {
           .replace(/ /g, '-');
 
         // url encode
-        const encodedSlug = encodeURIComponent(slug) + `?id=${page.id}`;
+        const encodedSlug = encodeURIComponent(slug);
 
         return {
           id: page.id,
@@ -250,8 +294,7 @@ export class NotionManager {
           description:
             page.properties?.description?.rich_text[0]?.plain_text || '',
           image:
-            page.cover?.external?.url ||
-            page.cover?.file?.url ||
+            coverUrl(page) ||
             '/blog-image.png',
           author: page.properties?.author?.rich_text[0]?.plain_text || '',
           slug: encodedSlug,
@@ -288,8 +331,7 @@ export class NotionManager {
           id: page.id,
           alt: page.properties?.name?.title[0]?.plain_text || '',
           src:
-            page.cover?.external?.url ||
-            page.cover?.file?.url ||
+            coverUrl(page) ||
             '/blog-image.png',
           date: page.properties?.createdAt?.created_time || '',
           reactions: page.properties?.reactions?.number || 0,

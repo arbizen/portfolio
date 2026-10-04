@@ -1,4 +1,4 @@
-import { notionManager } from '@/lib/NotionManager';
+import { notionManager, coverUrl as lastingCover } from '@/lib/NotionManager';
 import Breadcumb from '@/components/shared/breadcumb';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -21,18 +21,22 @@ import { notFound } from 'next/navigation';
 import PageAnimation from '@/components/page-animation';
 
 
+// Each page is built on its first visit, then served from the cache and
+// refreshed in the background (see revalidate in the [lang] layout).
+export async function generateStaticParams() {
+  return [];
+}
+
 type Props = {
   params: { slug: string; lang: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
+  { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   // read route params
-  const decodedSlug = decodeURIComponent(params.slug);
-  const id = decodedSlug.split('#')?.[1] || (searchParams?.id as string);
+  const id = await notionManager.findIdBySlug('poems', params.slug);
 
   if (!id) {
     return {
@@ -60,8 +64,7 @@ export async function generateMetadata(
   const pageInfo = await notionManager.getPageById(id);
 
   const coverUrl =
-    (pageInfo as any)?.cover?.external?.url ||
-    (pageInfo as any).cover?.file?.url ||
+    lastingCover(pageInfo) ||
     '/en/opengraph-image.png';
   const title =
     (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Poem';
@@ -70,7 +73,7 @@ export async function generateMetadata(
     'Description';
 
   // The page itself is canonical (its id is part of the address).
-  const canonical = `/en/poems/${encodeURIComponent(decodeURIComponent(params.slug))}?id=${id}`;
+  const canonical = `/en/poems/${encodeURIComponent(decodeURIComponent(params.slug))}`;
   return {
     title,
     description,
@@ -94,25 +97,19 @@ export async function generateMetadata(
 
 export default async function PoemPage({
   params,
-  searchParams,
 }: {
   params: { slug: string; lang: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const id = searchParams?.id as string;
-  const decodedSlug = decodeURIComponent(params.slug);
+  const id = await notionManager.findIdBySlug('poems', params.slug);
 
-  const extractedId = decodedSlug.split('#')?.[1];
-
-  if (!extractedId && !id) {
+  if (!id) {
     return notFound();
   }
 
-  const mdString = await notionManager.getMdStringById(id || extractedId);
-  const pageInfo = await notionManager.getPageById(id || extractedId);
+  const mdString = await notionManager.getMdStringById(id);
+  const pageInfo = await notionManager.getPageById(id);
   const coverUrl =
-    (pageInfo as any)?.cover?.external?.url ||
-    (pageInfo as any).cover?.file?.url ||
+    lastingCover(pageInfo) ||
     '/en/opengraph-image.png';
   const title =
     (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Poem';

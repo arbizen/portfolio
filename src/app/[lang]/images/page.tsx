@@ -24,12 +24,10 @@ export const metadata = {
   openGraph: { title: 'Images', description: 'Photos Arbizen took of everyday scenes: nature, cities, villages and quiet moments.', url: '/en/images' },
 };
 
-export default async function Images({ params, searchParams }: pageProps) {
-  const category = searchParams?.category || '';
-  const pageNumber = searchParams?.page || 1;
+export default async function Images({ params }: pageProps) {
 
   const pageName = `images`;
-  const pagination = new Pagination(searchParams, pageName);
+  const pagination = new Pagination({ limit: 100 }, pageName);
   const data = await pagination.getCurrentPageData('desc');
 
   const images: ImageType[] = data[pageName]?.data;

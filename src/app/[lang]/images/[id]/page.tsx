@@ -3,7 +3,7 @@ import Breadcumb from '@/components/shared/breadcumb';
 import { Metadata, ResolvingMetadata } from 'next';
 import Pagination from '@/lib/Pagination';
 import { ImageType } from '@/types';
-import { notionManager } from '@/lib/NotionManager';
+import { coverUrl, notionManager } from '@/lib/NotionManager';
 import PageInfo from '@/components/shared/page-info';
 import PageTitle from '@/components/shared/page-title';
 import Badge from '@/components/ui/badge';
@@ -13,13 +13,17 @@ import Image from 'next/image';
 import HeartReaction from '@/components/heart-reaction';
 
 
+// Each image page is built on its first visit, then served from the cache.
+export async function generateStaticParams() {
+  return [];
+}
+
 type Props = {
   params: { id: string; lang: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
+  { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const id = params.id;
@@ -28,8 +32,7 @@ export async function generateMetadata(
     id: page.id,
     alt: page.properties?.name?.title[0]?.plain_text || '',
     src:
-      page.cover?.external?.url ||
-      page.cover?.file?.url ||
+      coverUrl(page) ||
       '/en/opengraph-image.png',
     date: page.properties?.createdAt?.created_time || '',
     reactions: page.properties?.reactions?.number || 0,
@@ -63,15 +66,14 @@ export async function generateMetadata(
   };
 }
 
-export default async function Share({ params, searchParams }: Props) {
+export default async function Share({ params }: Props) {
   const id = params.id;
   const page = (await notionManager.getPageById(id)) as any;
   const image = {
     id: page.id,
     alt: page.properties?.name?.title[0]?.plain_text || '',
     src:
-      page.cover?.external?.url ||
-      page.cover?.file?.url ||
+      coverUrl(page) ||
       '/en/opengraph-image.png',
     date: page.properties?.createdAt?.created_time || '',
     reactions: page.properties?.reactions?.number || 0,

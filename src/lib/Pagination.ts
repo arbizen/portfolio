@@ -1,3 +1,5 @@
+import { getCollections } from '@/lib/collections';
+
 export default class Pagination {
   constructor(
     private readonly params: any,
@@ -17,7 +19,9 @@ export default class Pagination {
     } else {
       url = `${process.env.NEXT_PUBLIC_API_URL}/api/data/${this.pageName}/${cursor}?page=${page}&limit=${limit}&category=${category}&order=${order}`;
     }
-    // Cached like the Notion data behind it, so pages render without waiting.
+    // Read directly, not over HTTP from our own /api/data: no second trip to
+    // the server, and pages can be built ahead of time.
+    if (!cursor) return getCollections(this.pageName, { page, limit, category, order });
     const res = await fetch(url, { next: { revalidate: 300 } });
     const data = await res.json();
     return data;

@@ -8,6 +8,18 @@ import { getDictionary } from './dictionaries';
 // every post and project included, at the home page.
 export const metadata: Metadata = {};
 
+/**
+ * Every page is built ahead of time and served from Vercel's CDN, so it
+ * opens instantly. After this many seconds the next visit still gets the
+ * cached page at once, and a fresh one is built from Notion in the
+ * background. To show a Notion edit right away, open /api/revalidate.
+ */
+export const revalidate = 300;
+
+export function generateStaticParams() {
+  return [{ lang: 'en' }];
+}
+
 export default async function RootLayout({
   params: { lang },
   children,

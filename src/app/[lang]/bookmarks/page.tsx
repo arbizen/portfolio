@@ -23,16 +23,13 @@ export const metadata = {
 
 export default async function BookmarksPage({
   params,
-  searchParams,
 }: {
   params: { slug: string; lang: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const category = searchParams?.category || '';
-  const pageNumber = searchParams?.page || 1;
 
   const pageName = `bookmarks`;
-  const pagination = new Pagination(searchParams, pageName);
+  const pagination = new Pagination({ limit: 100 }, pageName);
   const data = await pagination.getCurrentPageData();
 
   const bookmarks: Bookmark[] = data[pageName]?.data;

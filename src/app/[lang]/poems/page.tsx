@@ -48,16 +48,13 @@ const isMine = (author: string) => /^arb\b/i.test(author.trim());
 
 export default async function Poems({
   params,
-  searchParams,
 }: {
   params: { slug: string; lang: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const category = searchParams?.category || '';
-  const pageNumber = searchParams?.page || 1;
 
   const pageName = `poems`;
-  const pagination = new Pagination(searchParams, pageName);
+  const pagination = new Pagination({ limit: 100 }, pageName);
   const data = await pagination.getCurrentPageData();
 
   const poems: PoemType[] = data[pageName]?.data;

@@ -11,20 +11,19 @@ import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import { Tag, TagContainer } from '@/components/tag';
 import PageAnimation from '@/components/page-animation';
-import { supportedLocales } from '@/data/site/supportedLocales';
 
 export const metadata = {
   title: 'Bookmarks',
   description: 'Links, tools and websites Arbizen keeps coming back to.',
-  alternates: { canonical: '/en/bookmarks' },
-  openGraph: { title: 'Bookmarks', description: 'Links, tools and websites Arbizen keeps coming back to.', url: '/en/bookmarks' },
+  alternates: { canonical: '/bookmarks' },
+  openGraph: { title: 'Bookmarks', description: 'Links, tools and websites Arbizen keeps coming back to.', url: '/bookmarks', images: ['/opengraph-image.png'] },
 };
 
 
 export default async function BookmarksPage({
   params,
 }: {
-  params: { slug: string; lang: string };
+  params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
 
@@ -35,11 +34,7 @@ export default async function BookmarksPage({
   const bookmarks: Bookmark[] = data[pageName]?.data;
   const nextPageUrl = pagination.nextPageUrl(data);
 
-  const supportedLang = supportedLocales.includes(params.lang)
-    ? params.lang
-    : 'en';
-
-  const { page } = await getDictionary(supportedLang);
+  const { page } = await getDictionary('en');
 
   const tagsWithLink = [
     { name: 'All', path: 'All' },
@@ -54,11 +49,11 @@ export default async function BookmarksPage({
           <Breadcumb
             firstNav={{
               name: page.home.name.third,
-              url: `/${params.lang}`,
+              url: '/',
             }}
             secondNav={{
               name: page.bookmarks.name,
-              url: `/${params.lang}/bookmarks`,
+              url: `/bookmarks`,
             }}
           />
         }

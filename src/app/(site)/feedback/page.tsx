@@ -3,7 +3,6 @@ import PageInfo from '@/components/shared/page-info';
 import Breadcumb from '@/components/shared/breadcumb';
 import PageAnimation from '@/components/page-animation';
 import { getDictionary } from '../dictionaries';
-import { supportedLocales } from '@/data/site/supportedLocales';
 import { Client } from '@notionhq/client';
 import { Feedback } from '@/types';
 import PublicFeedbackList from '@/components/feedback/public-feedback-list';
@@ -12,22 +11,14 @@ import FeedbackSection from '@/components/feedback/feedback-section';
 export const metadata = {
   title: 'Feedback and questions',
   description: 'Ask Arbizen anything or leave feedback, and read answers to past questions.',
-  alternates: { canonical: '/en/feedback' },
-  openGraph: { title: 'Feedback and questions', description: 'Ask Arbizen anything or leave feedback, and read answers to past questions.', url: '/en/feedback' },
+  alternates: { canonical: '/feedback' },
+  openGraph: { title: 'Feedback and questions', description: 'Ask Arbizen anything or leave feedback, and read answers to past questions.', url: '/feedback', images: ['/opengraph-image.png'] },
 };
 
 export const dynamic = 'force-dynamic';
 
-export default async function FeedbackPage({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
-  const supportedLang = supportedLocales.includes(lang)
-    ? lang
-    : 'en';
-
-  const dictionary = await getDictionary(supportedLang);
+export default async function FeedbackPage() {
+  const dictionary = await getDictionary('en');
 
   // Fetch published feedbacks with responses
   const FEEDBACK_DATABASE_ID = process.env.NOTION_FEEDBACK_DATABASE_ID;

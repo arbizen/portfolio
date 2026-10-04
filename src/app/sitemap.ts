@@ -6,15 +6,15 @@ export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-  // The real, final addresses (bare /blogs only redirects to /en/blogs).
+  // The real, final addresses (/en/… only redirects to these).
   const MAIN_PAGES = [
-    { path: '/en', priority: 1, changeFrequency: 'weekly' },
-    { path: '/en/projects', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/en/blogs', priority: 0.9, changeFrequency: 'weekly' },
-    { path: '/en/about', priority: 0.8, changeFrequency: 'yearly' },
-    { path: '/en/poems', priority: 0.7, changeFrequency: 'weekly' },
-    { path: '/en/images', priority: 0.6, changeFrequency: 'monthly' },
-    { path: '/en/bookmarks', priority: 0.4, changeFrequency: 'monthly' },
+    { path: '/', priority: 1, changeFrequency: 'weekly' },
+    { path: '/projects', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/blogs', priority: 0.9, changeFrequency: 'weekly' },
+    { path: '/about', priority: 0.8, changeFrequency: 'yearly' },
+    { path: '/poems', priority: 0.7, changeFrequency: 'weekly' },
+    { path: '/images', priority: 0.6, changeFrequency: 'monthly' },
+    { path: '/bookmarks', priority: 0.4, changeFrequency: 'monthly' },
   ].map((page) => ({
     url: `${BASE_URL}${page.path}`,
     lastModified: new Date(),
@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogsData = await blogsPagination.getCurrentPageData('desc');
   const blogs: Blog[] = blogsData['blogs']?.data;
   const slugPages = blogs.filter((blog) => blog.isPublished !== false).map((blog) => ({
-    url: `${BASE_URL}/en/blogs/${blog.slug}`,
+    url: `${BASE_URL}/blogs/${blog.slug}`,
     lastModified: blog.date,
     changeFrequency: 'weekly',
     priority: 0.8,
@@ -35,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const projectsData = await projectsPagination.getCurrentPageData('desc');
   const projects: Project[] = projectsData['projects']?.data;
   const projectsSlug = projects.map((project) => ({
-    url: `${BASE_URL}/en/projects/${project.slug}`,
+    url: `${BASE_URL}/projects/${project.slug}`,
     lastModified: project.date,
     changeFrequency: 'weekly',
     priority: 0.8,
@@ -47,7 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const poemsSlug = poems
     .filter((poem) => poem.isPublished !== false)
     .map((poem) => ({
-      url: `${BASE_URL}/en/poems/${poem.slug}`,
+      url: `${BASE_URL}/poems/${poem.slug}`,
       lastModified: poem.date,
       changeFrequency: 'monthly',
       priority: 0.6,
@@ -57,7 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const imagesData = await imagesPagination.getCurrentPageData('desc');
   const images: ImageType[] = imagesData['images']?.data;
   const imagesSlug = images.map((image) => ({
-    url: `${BASE_URL}/en/images/${image.id}`,
+    url: `${BASE_URL}/images/${image.id}`,
     lastModified: image.date,
     changeFrequency: 'weekly',
     priority: 0.8,

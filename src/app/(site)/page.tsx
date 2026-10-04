@@ -3,7 +3,6 @@ import Script from 'next/script';
 import { Blog as BlogType } from '@/types';
 import Pagination from '@/lib/Pagination';
 import { getDictionary } from './dictionaries';
-import { supportedLocales } from '@/data/site/supportedLocales';
 import SubTitle from '@/components/shared/sub-title';
 import Blog from '@/components/blogs/blog';
 import { ProjectBadges, SUPABASE_RECOGNITION, homeProjects, isCitedBySupabase, orderBlogs } from '@/lib/project-highlights';
@@ -13,8 +12,8 @@ import UpworkBadge from '@/components/shared/upwork-badge';
 export const metadata = {
   title: { absolute: 'Arbizen · Arb Rahim Badsa, developer and poem writer' },
   description: 'I build small, sweet things for the internet, like Kitty Messages, and write about code, poems and life. The home of Arb Rahim Badsa (Arbizen).',
-  alternates: { canonical: '/en' },
-  openGraph: { title: 'Arbizen · Arb Rahim Badsa, developer and poem writer', description: 'I build small, sweet things for the internet, like Kitty Messages, and write about code, poems and life. The home of Arb Rahim Badsa (Arbizen).', url: '/en' },
+  alternates: { canonical: '/' },
+  openGraph: { title: 'Arbizen · Arb Rahim Badsa, developer and poem writer', description: 'I build small, sweet things for the internet, like Kitty Messages, and write about code, poems and life. The home of Arb Rahim Badsa (Arbizen).', url: '/', images: ['/opengraph-image.png'] },
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -28,7 +27,7 @@ const siteJsonLd = {
       '@id': `${SITE_URL}/#person`,
       name: 'Arb Rahim Badsa',
       alternateName: ['Arbizen', 'Arb'],
-      url: `${SITE_URL}/en`,
+      url: `${SITE_URL}`,
       image: `${SITE_URL}/arb.png`,
       jobTitle: 'Full-stack developer',
       description: 'Self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems.',
@@ -40,7 +39,7 @@ const siteJsonLd = {
       '@id': `${SITE_URL}/#website`,
       name: 'Arbizen',
       alternateName: ['Arb Rahim Badsa'],
-      url: `${SITE_URL}/en`,
+      url: `${SITE_URL}`,
       publisher: { '@id': `${SITE_URL}/#person` },
     },
   ],
@@ -51,7 +50,7 @@ const siteJsonLd = {
  * Home: who I am, what I have built, what I have written, and where
  * everything else lives. One column, plain text, read in under a minute.
  */
-export default async function Home({ params: { lang } }: { params: { lang: string } }) {
+export default async function Home() {
   const [projectsData, blogsData] = await Promise.all([
     new Pagination({ limit: 25 }, 'projects').getCurrentPageData('desc'),
     new Pagination({ limit: 25 }, 'blogs').getCurrentPageData('desc'),
@@ -61,8 +60,7 @@ export default async function Home({ params: { lang } }: { params: { lang: strin
   // The post Supabase cited leads the list, whatever its date; then the newest.
   const blogs = orderBlogs(published).slice(0, 6);
 
-  const supportedLang = supportedLocales.includes(lang) ? lang : 'en';
-  const dictionary = await getDictionary(supportedLang);
+  const dictionary = await getDictionary('en');
 
   return (
     <div className="flex flex-col gap-14">
@@ -78,7 +76,7 @@ export default async function Home({ params: { lang } }: { params: { lang: strin
         </p>
         <div className="flex gap-4 text-sm">
           <Link
-            href={`/${lang}/about`}
+            href={`/about`}
             className="text-neutral-500 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 hover:decoration-neutral-900"
           >
             {dictionary.page.home.knowMoreAboutMe}
@@ -87,12 +85,12 @@ export default async function Home({ params: { lang } }: { params: { lang: strin
       </section>
 
       <section>
-        <SubTitle title={dictionary.page.projects.name} seeMoreText="All" seeMoreLink={`/${lang}/projects`} />
+        <SubTitle title={dictionary.page.projects.name} seeMoreText="All" seeMoreLink={`/projects`} />
         <ul className="flex flex-col">
           {projects.map((project) => (
             <li key={project.id}>
               <Link
-                href={`/${lang}/projects/${project.slug}`}
+                href={`/projects/${project.slug}`}
                 className="-mx-2 flex items-baseline justify-between gap-4 rounded-md px-2 py-2 transition-colors hover:bg-neutral-50"
               >
                 <span className="min-w-0">
@@ -160,10 +158,10 @@ export default async function Home({ params: { lang } }: { params: { lang: strin
       </section>
 
       <section>
-        <SubTitle title={dictionary.page.home.recentBlogs} seeMoreText="All" seeMoreLink={`/${lang}/blogs`} />
+        <SubTitle title={dictionary.page.home.recentBlogs} seeMoreText="All" seeMoreLink={`/blogs`} />
         <div className="flex flex-col">
           {blogs.map((blog) => (
-            <Blog key={blog.id} {...blog} lang={lang} page={dictionary.page} compact citedBySupabase={isCitedBySupabase(blog)} />
+            <Blog key={blog.id} {...blog} page={dictionary.page} compact citedBySupabase={isCitedBySupabase(blog)} />
           ))}
         </div>
       </section>

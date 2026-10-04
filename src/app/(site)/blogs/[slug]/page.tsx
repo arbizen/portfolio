@@ -14,21 +14,24 @@ import PageInfo from '@/components/shared/page-info';
 import PageTitle from '@/components/shared/page-title';
 import Badge from '@/components/ui/badge';
 import { Metadata, ResolvingMetadata } from 'next';
+import { motion } from 'framer-motion';
 
 // @ts-ignore
 import dateformat from 'dateformat';
 import { notFound } from 'next/navigation';
+import ClientAnimatePresence from '@/components/client-animate-presence';
+import ClientMotionDiv from '@/components/client-motion-div';
 import PageAnimation from '@/components/page-animation';
 
 
 // Each page is built on its first visit, then served from the cache and
-// refreshed in the background (see revalidate in the [lang] layout).
+// refreshed in the background (see revalidate in the (site) layout).
 export async function generateStaticParams() {
   return [];
 }
 
 type Props = {
-  params: { slug: string; lang: string };
+  params: { slug: string };
 };
 
 export async function generateMetadata(
@@ -36,26 +39,26 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   // read route params
-  const id = await notionManager.findIdBySlug('poems', params.slug);
+  const id = await notionManager.findIdBySlug('blogs', params.slug);
 
   if (!id) {
     return {
-      title: 'Poem',
+      title: 'Blog',
       description: 'Description',
       openGraph: {
-        title: 'Poem',
+        title: 'Blog',
         description: 'Description',
         images: [
-          '/en/opengraph-image.png',
+          '/opengraph-image.png',
         ],
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'Poem',
+        title: 'Blog',
         description: 'Description',
         creator: '@arbizzen',
         images: [
-          '/en/opengraph-image.png',
+          '/opengraph-image.png',
         ], // Must be an absolute URL
       },
     };
@@ -65,15 +68,15 @@ export async function generateMetadata(
 
   const coverUrl =
     lastingCover(pageInfo) ||
-    '/en/opengraph-image.png';
+    '/opengraph-image.png';
   const title =
-    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Poem';
+    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Blog';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
 
   // The page itself is canonical (its id is part of the address).
-  const canonical = `/en/poems/${encodeURIComponent(decodeURIComponent(params.slug))}`;
+  const canonical = `/blogs/${encodeURIComponent(decodeURIComponent(params.slug))}`;
   return {
     title,
     description,
@@ -95,12 +98,12 @@ export async function generateMetadata(
   };
 }
 
-export default async function PoemPage({
+export default async function BlogPage({
   params,
 }: {
-  params: { slug: string; lang: string };
+  params: { slug: string };
 }) {
-  const id = await notionManager.findIdBySlug('poems', params.slug);
+  const id = await notionManager.findIdBySlug('blogs', params.slug);
 
   if (!id) {
     return notFound();
@@ -108,11 +111,15 @@ export default async function PoemPage({
 
   const mdString = await notionManager.getMdStringById(id);
   const pageInfo = await notionManager.getPageById(id);
+  // Unpublished in Notion: gone from the site, its own link included.
+  if ((pageInfo as any)?.properties?.isPublished?.checkbox === false) {
+    return notFound();
+  }
   const coverUrl =
     lastingCover(pageInfo) ||
-    '/en/opengraph-image.png';
+    '/opengraph-image.png';
   const title =
-    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Poem';
+    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Blog';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
@@ -122,7 +129,7 @@ export default async function PoemPage({
           (tag: any) => tag.name,
         )
       : [];
-  const author = (pageInfo as any)?.properties?.author?.rich_text[0]?.plain_text || 'Unknown';
+  const readTime = (pageInfo as any)?.properties?.readTime?.number || 0;
   const date = (pageInfo as any)?.properties?.createdAt?.created_time || '';
 
   const customComponents = {
@@ -132,13 +139,20 @@ export default async function PoemPage({
     p: Paragraph,
   };
 
+  const animation = {
+    transition: { duration: 0.2 },
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
+
   return (
     <PageAnimation>
       <PageInfo
         breadcumb={
           <Breadcumb
-            firstNav={{ name: 'Home', url: `/${params.lang}` }}
-            secondNav={{ name: 'Poems', url: `/${params.lang}/poems` }}
+            firstNav={{ name: 'Home', url: '/' }}
+            secondNav={{ name: 'Blogs', url: `/blogs` }}
             current={title}
           />
         }
@@ -149,9 +163,9 @@ export default async function PoemPage({
             <Badge className="bg-orange-100 text-orange-500">
               {dateformat(date, 'ddS mmmm, yyyy')}
             </Badge>
-            {author !== 'Unknown' && !/^arb\b/i.test(author.trim()) ? (
-              <Badge className="bg-purple-100 text-purple-600">{author}</Badge>
-            ) : null}
+            <Badge className="bg-blue-100 text-blue-500">
+              {readTime} min read
+            </Badge>
             {categories.map((category: string) => (
               <Badge key={category} className="bg-red-100 text-red-500">
                 {category}
@@ -177,6 +191,37 @@ export default async function PoemPage({
           </Markdown>
         </article>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: title,
+            image: coverUrl,
+            datePublished: date,
+            description,
+            author: {
+              '@type': 'Person',
+              name: 'Arb Rahim Badsa',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'Arbizen',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://avatars.githubusercontent.com/u/34975329?v=4',
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id':
+                process.env.NEXT_PUBLIC_API_URL +
+                `/blogs/${params.slug}`,
+            },
+          }),
+        }}
+      />
     </PageAnimation>
   );
-} 
+}

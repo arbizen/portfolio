@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 }
 
 type Props = {
-  params: { id: string; lang: string };
+  params: { id: string };
 };
 
 export async function generateMetadata(
@@ -33,7 +33,7 @@ export async function generateMetadata(
     alt: page.properties?.name?.title[0]?.plain_text || '',
     src:
       coverUrl(page) ||
-      '/en/opengraph-image.png',
+      '/opengraph-image.png',
     date: page.properties?.createdAt?.created_time || '',
     reactions: page.properties?.reactions?.number || 0,
     categories: page.properties.category
@@ -46,13 +46,13 @@ export async function generateMetadata(
   return {
     title: firstImage.alt || 'Image',
     description: 'A photo by Arbizen: a scene that caught my eye and would not let go.',
-    alternates: { canonical: `/en/images/${params.id}` },
+    alternates: { canonical: `/images/${params.id}` },
     openGraph: {
       title: firstImage.alt || 'Images — Scenes that I stumbled upon',
       description:
         'A photo by Arbizen: a scene that caught my eye and would not let go.',
       images: [src],
-      url: process.env.NEXT_PUBLIC_API_URL + `/${params.lang}/images/${id}`,
+      url: process.env.NEXT_PUBLIC_API_URL + `/images/${id}`,
       type: 'website',
     },
     twitter: {
@@ -74,7 +74,7 @@ export default async function Share({ params }: Props) {
     alt: page.properties?.name?.title[0]?.plain_text || '',
     src:
       coverUrl(page) ||
-      '/en/opengraph-image.png',
+      '/opengraph-image.png',
     date: page.properties?.createdAt?.created_time || '',
     reactions: page.properties?.reactions?.number || 0,
     categories: page.properties.category
@@ -89,8 +89,8 @@ export default async function Share({ params }: Props) {
       <PageInfo
         breadcumb={
           <Breadcumb
-            firstNav={{ name: 'Home', url: `/${params.lang}` }}
-            secondNav={{ name: 'Images', url: `/${params.lang}/images` }}
+            firstNav={{ name: 'Home', url: '/' }}
+            secondNav={{ name: 'Images', url: `/images` }}
             current={image.alt}
           />
         }

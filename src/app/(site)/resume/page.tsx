@@ -1,7 +1,6 @@
 import PageInfo from '@/components/shared/page-info';
 import Breadcumb from '@/components/shared/breadcumb';
 import { getDictionary } from '../dictionaries';
-import { supportedLocales } from '@/data/site/supportedLocales';
 import PageAnimation from '@/components/page-animation';
 
 import Link from 'next/link';
@@ -10,20 +9,12 @@ import PDFViewer from '@/components/pdf-viewer';
 export const metadata = {
   title: 'Resume',
   description: 'The resume of Arb Rahim Badsa (Arbizen): full-stack JavaScript, React, Next.js, TypeScript and more.',
-  alternates: { canonical: '/en/resume' },
-  openGraph: { title: 'Resume', description: 'The resume of Arb Rahim Badsa (Arbizen): full-stack JavaScript, React, Next.js, TypeScript and more.', url: '/en/resume' },
+  alternates: { canonical: '/resume' },
+  openGraph: { title: 'Resume', description: 'The resume of Arb Rahim Badsa (Arbizen): full-stack JavaScript, React, Next.js, TypeScript and more.', url: '/resume', images: ['/opengraph-image.png'] },
 };
 
-export default async function ResumePage({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
-  const supportedLang = supportedLocales.includes(lang)
-    ? lang
-    : 'en';
-
-  const dictionary = await getDictionary(supportedLang);
+export default async function ResumePage() {
+  const dictionary = await getDictionary('en');
 
   const resumeUrl = `/arbizen-cv.pdf`;
 
@@ -35,11 +26,11 @@ export default async function ResumePage({
             <Breadcumb
               firstNav={{
                 name: dictionary.page.home.name.third,
-                url: `/${lang}`,
+                url: '/',
               }}
               secondNav={{
                 name: 'Resume',
-                url: `/${lang}/resume`,
+                url: `/resume`,
               }}
             />
           }

@@ -3,7 +3,6 @@ import PageInfo from '@/components/shared/page-info';
 import Breadcumb from '@/components/shared/breadcumb';
 import PageAnimation from '@/components/page-animation';
 import { getDictionary } from '../../dictionaries';
-import { supportedLocales } from '@/data/site/supportedLocales';
 import FeedbackList from '@/components/feedback/feedback-list';
 import { notionManager } from '@/lib/NotionManager';
 import { Client } from '@notionhq/client';
@@ -15,16 +14,8 @@ export const metadata = {
   description: 'Admin dashboard to manage feedback submissions',
 };
 
-export default async function AdminFeedbackPage({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
-  const supportedLang = supportedLocales.includes(lang)
-    ? lang
-    : 'en';
-
-  const dictionary = await getDictionary(supportedLang);
+export default async function AdminFeedbackPage() {
+  const dictionary = await getDictionary('en');
 
   // Fetch feedbacks from Notion
   // You need to create a Feedback database in Notion first

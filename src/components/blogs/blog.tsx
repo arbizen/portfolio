@@ -7,7 +7,7 @@ import dateformat from 'dateformat';
 /** One post: its title and date on a line, the description under it. */
 export default function Blog(props: BlogType & { compact?: boolean; citedBySupabase?: boolean }) {
   return (
-    <Link href={`/${props.lang}/blogs/${props.slug}`} className="group -mx-2 flex flex-col gap-1 rounded-md px-2 py-2 transition-colors hover:bg-neutral-50">
+    <Link href={`/blogs/${props.slug}`} className="group -mx-2 flex flex-col gap-1 rounded-md px-2 py-2 transition-colors hover:bg-neutral-50">
       <div className="flex items-baseline justify-between gap-4">
         <h3 className="text-[15px] text-neutral-900">
           {props.title}

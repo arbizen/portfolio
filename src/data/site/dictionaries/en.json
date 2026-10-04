@@ -2,44 +2,44 @@
   "header": {
     "siteName": {
       "text": "Arb.",
-      "url": "/en"
+      "url": "/"
     },
     "nav": [
       {
         "name": "Home",
-        "url": "/en"
+        "url": "/"
       },
       {
         "name": "Blogs",
-        "url": "/en/blogs"
+        "url": "/blogs"
       },
       {
         "name": "Projects",
-        "url": "/en/projects"
+        "url": "/projects"
       },
       {
         "name": "Bookmarks",
-        "url": "/en/bookmarks"
+        "url": "/bookmarks"
       },
       {
         "name": "Poems",
-        "url": "/en/poems"
+        "url": "/poems"
       },
       {
         "name": "Images",
-        "url": "/en/images"
+        "url": "/images"
       },
       {
         "name": "About",
-        "url": "/en/about"
+        "url": "/about"
       },
       {
         "name": "Feedback",
-        "url": "/en/feedback"
+        "url": "/feedback"
       },
       {
         "name": "Admin",
-        "url": "/en/admin/feedback"
+        "url": "/admin/feedback"
       }
     ]
   },

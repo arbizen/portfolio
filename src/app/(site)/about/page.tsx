@@ -4,15 +4,14 @@ import Link from 'next/link';
 export const metadata = {
   title: 'About',
   description: 'Arb Rahim Badsa (Arbizen): a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems on the side.',
-  alternates: { canonical: '/en/about' },
-  openGraph: { title: 'About', description: 'Arb Rahim Badsa (Arbizen): a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems on the side.', url: '/en/about' },
+  alternates: { canonical: '/about' },
+  openGraph: { title: 'About', description: 'Arb Rahim Badsa (Arbizen): a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems on the side.', url: '/about', images: ['/opengraph-image.png'] },
 };
 
 const link = 'text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-900';
 
 /** A short, plain about: who I am, what I make, how I work. */
-export default function About({ params }: { params: { lang: string } }) {
-  const lang = params.lang;
+export default function About() {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center gap-4">
@@ -45,7 +44,7 @@ export default function About({ params }: { params: { lang: string } }) {
           , personalized cat cards people send to the ones they love. I built and run all of it myself, from the
           card designs to payments to the server it lives on, and I spend a lot of time on the small details,
           because that&apos;s where people feel the care.{' '}
-          <Link href={`/${lang}/blogs/how-3%2C000-people-ended-up-sending-cat-cards`} className={link}>
+          <Link href={`/blogs/how-3%2C000-people-ended-up-sending-cat-cards`} className={link}>
             Read more about it
           </Link>
           .
@@ -60,18 +59,18 @@ export default function About({ params }: { params: { lang: string } }) {
             Wordbuzz
           </a>
           ), and{' '}
-          <Link href={`/${lang}/blogs`} className={link}>
+          <Link href={`/blogs`} className={link}>
             writing
           </Link>{' '}
           about what I learn along the way.
         </p>
         <p>
           When I&apos;m not building, I&apos;m usually writing{' '}
-          <Link href={`/${lang}/poems`} className={link}>
+          <Link href={`/poems`} className={link}>
             poems
           </Link>{' '}
           or taking{' '}
-          <Link href={`/${lang}/images`} className={link}>
+          <Link href={`/images`} className={link}>
             photos
           </Link>
           . I&apos;ve never quite been one thing, and I like it that way.

@@ -9,19 +9,18 @@ import Pagination from '@/lib/Pagination';
 import Link from 'next/link';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import PageAnimation from '@/components/page-animation';
-import { supportedLocales } from '@/data/site/supportedLocales';
 
 
 type pageProps = {
-  params: { slug: string; lang: string };
+  params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 export const metadata = {
   title: 'Images',
   description: 'Photos Arbizen took of everyday scenes: nature, cities, villages and quiet moments.',
-  alternates: { canonical: '/en/images' },
-  openGraph: { title: 'Images', description: 'Photos Arbizen took of everyday scenes: nature, cities, villages and quiet moments.', url: '/en/images' },
+  alternates: { canonical: '/images' },
+  openGraph: { title: 'Images', description: 'Photos Arbizen took of everyday scenes: nature, cities, villages and quiet moments.', url: '/images', images: ['/opengraph-image.png'] },
 };
 
 export default async function Images({ params }: pageProps) {
@@ -41,11 +40,7 @@ export default async function Images({ params }: pageProps) {
     { name: 'Archaic', path: 'Archaic' },
   ];
 
-  const supportedLang = supportedLocales.includes(params.lang)
-    ? params.lang
-    : 'en';
-
-  const { page: dictionaryPage } = await getDictionary(supportedLang);
+  const { page: dictionaryPage } = await getDictionary('en');
 
   return (
     <PageAnimation>
@@ -54,11 +49,11 @@ export default async function Images({ params }: pageProps) {
           <Breadcumb
             firstNav={{
               name: dictionaryPage.home.name.third,
-              url: `/${params.lang}`,
+              url: '/',
             }}
             secondNav={{
               name: dictionaryPage.images.name,
-              url: `/${params.lang}/images`,
+              url: `/images`,
             }}
           />
         }
@@ -76,7 +71,7 @@ export default async function Images({ params }: pageProps) {
               height={300}
               width={500}
               className="h-full w-full"
-              link={`/${params.lang}/images/${image.id}`}
+              link={`/images/${image.id}`}
               date={image.date}
               reactions={image.reactions}
               imageId={image.id}

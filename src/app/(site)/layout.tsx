@@ -16,18 +16,9 @@ export const metadata: Metadata = {};
  */
 export const revalidate = 300;
 
-export function generateStaticParams() {
-  return [{ lang: 'en' }];
-}
 
-export default async function RootLayout({
-  params: { lang },
-  children,
-}: {
-  params: { lang: string };
-  children: React.ReactNode;
-}) {
-  const { header } = await getDictionary(lang);
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const { header } = await getDictionary('en');
   return (
     <div
       className={`mx-auto flex min-h-screen w-full max-w-[640px] flex-col bg-white px-6 py-12 sm:px-5 sm:py-8`}

@@ -18,21 +18,20 @@ import { useMemo } from 'react';
 import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import PageAnimation from '@/components/page-animation';
-import { supportedLocales } from '@/data/site/supportedLocales';
 
 
 export const metadata = {
   title: 'Blog',
   description: 'Posts by Arb Rahim Badsa (Arbizen) on React, Next.js, Supabase, building products, and the occasional bit of life.',
-  alternates: { canonical: '/en/blogs' },
-  openGraph: { title: 'Blog', description: 'Posts by Arb Rahim Badsa (Arbizen) on React, Next.js, Supabase, building products, and the occasional bit of life.', url: '/en/blogs' },
+  alternates: { canonical: '/blogs' },
+  openGraph: { title: 'Blog', description: 'Posts by Arb Rahim Badsa (Arbizen) on React, Next.js, Supabase, building products, and the occasional bit of life.', url: '/blogs', images: ['/opengraph-image.png'] },
 };
 
 
 export default async function Blogs({
   params,
 }: {
-  params: { slug: string; lang: string };
+  params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
 
@@ -45,11 +44,7 @@ export default async function Blogs({
 
   // TODO: get dynamic category url with all the necessary query
 
-  const supportedLang = supportedLocales.includes(params.lang)
-    ? params.lang
-    : 'en';
-
-  const { page } = await getDictionary(supportedLang);
+  const { page } = await getDictionary('en');
 
   const tagsWithLink = [
     { name: 'All', path: 'All' },
@@ -73,11 +68,11 @@ export default async function Blogs({
           <Breadcumb
             firstNav={{
               name: page.home.name.third,
-              url: `/${params.lang}`,
+              url: '/',
             }}
             secondNav={{
               name: page.blogs.name,
-              url: `/${params.lang}/blogs`,
+              url: `/blogs`,
             }}
           />
         }
@@ -100,7 +95,6 @@ export default async function Blogs({
               image={blog.image}
               key={blog.id}
               readTime={blog.readTime}
-              lang={params.lang}
               page={page}
               citedBySupabase={isCitedBySupabase(blog)}
             />

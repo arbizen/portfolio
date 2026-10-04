@@ -15,21 +15,20 @@ import Breadcumb from '@/components/shared/breadcumb';
 import Pagination from '@/lib/Pagination';
 import PaginationNavigation from '@/components/shared/pagination-navigation';
 import PageAnimation from '@/components/page-animation';
-import { supportedLocales } from '@/data/site/supportedLocales';
 
 
 export const metadata = {
   title: 'Poems',
   description: 'Poems written and loved by Arb Rahim Badsa (Arbizen), many of them in Bengali.',
-  alternates: { canonical: '/en/poems' },
-  openGraph: { title: 'Poems', description: 'Poems written and loved by Arb Rahim Badsa (Arbizen), many of them in Bengali.', url: '/en/poems' },
+  alternates: { canonical: '/poems' },
+  openGraph: { title: 'Poems', description: 'Poems written and loved by Arb Rahim Badsa (Arbizen), many of them in Bengali.', url: '/poems', images: ['/opengraph-image.png'] },
 };
 
 /** One poem: its title and date on a line, who wrote it and its first lines under it. */
 const Poem = (props: PoemType) => {
   return (
     <Link
-      href={`/${props.lang}/poems/${props.slug}`}
+      href={`/poems/${props.slug}`}
       className="-mx-2 flex flex-col gap-1 rounded-md px-2 py-2.5 transition-colors hover:bg-neutral-50"
     >
       <div className="flex items-baseline justify-between gap-4">
@@ -49,7 +48,7 @@ const isMine = (author: string) => /^arb\b/i.test(author.trim());
 export default async function Poems({
   params,
 }: {
-  params: { slug: string; lang: string };
+  params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
 
@@ -60,11 +59,7 @@ export default async function Poems({
   const poems: PoemType[] = data[pageName]?.data;
   const nextPageUrl = pagination.nextPageUrl(data);
 
-  const supportedLang = supportedLocales.includes(params.lang)
-    ? params.lang
-    : 'en';
-
-  const { page } = await getDictionary(supportedLang);
+  const { page } = await getDictionary('en');
 
   const tagsWithLink = [
     { name: 'All', path: 'All' },
@@ -88,11 +83,11 @@ export default async function Poems({
           <Breadcumb
             firstNav={{
               name: page.home.name.third,
-              url: `/${params.lang}`,
+              url: '/',
             }}
             secondNav={{
               name: page.poems.name,
-              url: `/${params.lang}/poems`,
+              url: `/poems`,
             }}
           />
         }
@@ -115,7 +110,6 @@ export default async function Poems({
               description={poem.description}
               image={poem.image}
               key={poem.id}
-              lang={params.lang}
               page={page}
             />
           );

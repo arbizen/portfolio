@@ -169,7 +169,7 @@ export const FeedbackEmailTemplate: React.FC<FeedbackEmailTemplateProps> = ({
             : 'New feedback to review! 📝'}
         </p>
         <a
-          href={`${process.env.NEXT_PUBLIC_API_URL + '/en/admin/feedback'}`}
+          href={`${process.env.NEXT_PUBLIC_API_URL + '/admin/feedback'}`}
           style={{
             display: 'inline-block',
             padding: '12px 24px',

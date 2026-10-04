@@ -14,18 +14,15 @@ import PageInfo from '@/components/shared/page-info';
 import PageTitle from '@/components/shared/page-title';
 import Badge from '@/components/ui/badge';
 import { Metadata, ResolvingMetadata } from 'next';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Github, ExternalLink } from 'lucide-react';
 
 // @ts-ignore
 import dateformat from 'dateformat';
+import { notFound } from 'next/navigation';
 import PageAnimation from '@/components/page-animation';
 
 
 // Each page is built on its first visit, then served from the cache and
-// refreshed in the background (see revalidate in the [lang] layout).
+// refreshed in the background (see revalidate in the (site) layout).
 export async function generateStaticParams() {
   return [];
 }
@@ -39,26 +36,26 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   // read route params
-  const id = await notionManager.findIdBySlug('projects', params.slug);
+  const id = await notionManager.findIdBySlug('poems', params.slug);
 
   if (!id) {
     return {
-      title: 'Project',
+      title: 'Poem',
       description: 'Description',
       openGraph: {
-        title: 'Project',
+        title: 'Poem',
         description: 'Description',
         images: [
-          '/en/opengraph-image.png',
+          '/opengraph-image.png',
         ],
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'Project',
+        title: 'Poem',
         description: 'Description',
         creator: '@arbizzen',
         images: [
-          '/en/opengraph-image.png',
+          '/opengraph-image.png',
         ], // Must be an absolute URL
       },
     };
@@ -68,17 +65,15 @@ export async function generateMetadata(
 
   const coverUrl =
     lastingCover(pageInfo) ||
-    '/en/opengraph-image.png';
+    '/opengraph-image.png';
   const title =
-    (pageInfo as any)?.properties?.name?.title[0]?.plain_text ||
-    (pageInfo as any)?.properties?.title?.title[0]?.plain_text ||
-    'Project';
+    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Poem';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
 
   // The page itself is canonical (its id is part of the address).
-  const canonical = `/en/projects/${encodeURIComponent(decodeURIComponent(params.slug))}`;
+  const canonical = `/poems/${encodeURIComponent(decodeURIComponent(params.slug))}`;
   return {
     title,
     description,
@@ -88,6 +83,7 @@ export async function generateMetadata(
       title,
       description,
       images: [coverUrl],
+      type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
@@ -99,32 +95,35 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProjectPage({
+export default async function PoemPage({
   params,
 }: {
-  params: { slug: string; lang: string };
+  params: { slug: string };
 }) {
-  const id = await notionManager.findIdBySlug('projects', params.slug);
+  const id = await notionManager.findIdBySlug('poems', params.slug);
 
   if (!id) {
     return notFound();
   }
-  const mdString = await notionManager.getMdStringById(id);
 
+  const mdString = await notionManager.getMdStringById(id);
   const pageInfo = await notionManager.getPageById(id);
   const coverUrl =
     lastingCover(pageInfo) ||
-    '/en/opengraph-image.png';
+    '/opengraph-image.png';
   const title =
-    (pageInfo as any)?.properties?.name?.title[0]?.plain_text || 'Project name';
+    (pageInfo as any)?.properties?.title?.title[0]?.plain_text || 'Poem';
   const description =
     (pageInfo as any)?.properties?.description?.rich_text[0]?.plain_text ||
     'Description';
-  const type =
-    (pageInfo as any).properties?.type?.rich_text[0]?.plain_text || '';
+  const categories =
+    'multi_select' in (pageInfo as any)?.properties.category
+      ? (pageInfo as any)?.properties.category.multi_select.map(
+          (tag: any) => tag.name,
+        )
+      : [];
+  const author = (pageInfo as any)?.properties?.author?.rich_text[0]?.plain_text || 'Unknown';
   const date = (pageInfo as any)?.properties?.createdAt?.created_time || '';
-  const githubLink = (pageInfo as any)?.properties?.githubLink?.rich_text[0]?.plain_text || '';
-  const previewLink = (pageInfo as any)?.properties?.previewLink?.rich_text[0]?.plain_text || '';
 
   const customComponents = {
     code: CodeBlock,
@@ -138,43 +137,30 @@ export default async function ProjectPage({
       <PageInfo
         breadcumb={
           <Breadcumb
-            firstNav={{ name: 'Home', url: `/${params.lang}` }}
-            secondNav={{ name: 'Projects', url: `/${params.lang}/projects` }}
+            firstNav={{ name: 'Home', url: '/' }}
+            secondNav={{ name: 'Poems', url: `/poems` }}
             current={title}
           />
         }
         header={<PageTitle title={title} />}
         description={description}
         footer={
-          <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <div className="flex gap-2">
-              <Badge className="bg-orange-100 text-orange-500">
-                {dateformat(date, 'ddS mmmm, yyyy')}
+          <div className="flex gap-2 flex-wrap">
+            <Badge className="bg-orange-100 text-orange-500">
+              {dateformat(date, 'ddS mmmm, yyyy')}
+            </Badge>
+            {author !== 'Unknown' && !/^arb\b/i.test(author.trim()) ? (
+              <Badge className="bg-purple-100 text-purple-600">{author}</Badge>
+            ) : null}
+            {categories.map((category: string) => (
+              <Badge key={category} className="bg-red-100 text-red-500">
+                {category}
               </Badge>
-              <Badge className="bg-red-100 text-red-500">{type}</Badge>
-            </div>
-            <div className="flex gap-2 sm:ml-auto">
-              {githubLink && (
-                <Button variant="outline" size="sm" asChild>
-                  <Link href={githubLink} target="_blank" className="flex items-center gap-2">
-                    <Github size={16} />
-                    GitHub
-                  </Link>
-                </Button>
-              )}
-              {previewLink && (
-                <Button variant="outline" size="sm" asChild>
-                  <Link href={previewLink} target="_blank" className="flex items-center gap-2">
-                    <ExternalLink size={16} />
-                    Preview
-                  </Link>
-                </Button>
-              )}
-            </div>
+            ))}
           </div>
         }
       />
-      <div className="flex flex-col relative z-50">
+      <div className="flex flex-col px-[15px] relative z-50">
         <Image
           src={coverUrl}
           alt={title}
@@ -193,4 +179,4 @@ export default async function ProjectPage({
       </div>
     </PageAnimation>
   );
-}
+} 

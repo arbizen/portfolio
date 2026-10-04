@@ -21,7 +21,8 @@ export function middleware(request: NextRequest) {
   if (first !== 'en' && PAGES.includes(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = pathname === '/' ? '/en' : `/en${pathname}`;
-    return NextResponse.redirect(url);
+    // Permanent, so Google treats /en as the home page rather than keeping /.
+    return NextResponse.redirect(url, 308);
   }
   return NextResponse.next();
 }

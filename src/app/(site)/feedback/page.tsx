@@ -10,9 +10,9 @@ import FeedbackSection from '@/components/feedback/feedback-section';
 
 export const metadata = {
   title: 'Feedback and questions',
-  description: 'Ask Arbizen anything or leave feedback, and read answers to past questions.',
+  description: 'Ask Arbizen a question or share feedback, and read answers to past questions.',
   alternates: { canonical: '/feedback' },
-  openGraph: { title: 'Feedback and questions', description: 'Ask Arbizen anything or leave feedback, and read answers to past questions.', url: '/feedback', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'Feedback and questions', description: 'Ask Arbizen a question or share feedback, and read answers to past questions.', url: '/feedback', images: ['/opengraph-image.png'] },
 };
 
 export const dynamic = 'force-dynamic';

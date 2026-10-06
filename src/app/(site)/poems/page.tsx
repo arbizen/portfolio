@@ -19,9 +19,9 @@ import PageAnimation from '@/components/page-animation';
 
 export const metadata = {
   title: 'Poems',
-  description: 'Poems written and loved by Arb Rahim Badsa (Arbizen), many of them in Bengali.',
+  description: 'A collection of original poems, many of them written in Bengali, about love, memory and the quiet moments in between.',
   alternates: { canonical: '/poems' },
-  openGraph: { title: 'Poems', description: 'Poems written and loved by Arb Rahim Badsa (Arbizen), many of them in Bengali.', url: '/poems', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'Poems', description: 'A collection of original poems, many of them written in Bengali, about love, memory and the quiet moments in between.', url: '/poems', images: ['/opengraph-image.png'] },
 };
 
 /** One poem: its title and date on a line, who wrote it and its first lines under it. */

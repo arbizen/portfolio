@@ -45,21 +45,21 @@ export async function generateMetadata(
   const src = firstImage.src;
   return {
     title: firstImage.alt || 'Image',
-    description: 'A photo by Arbizen: a scene that caught my eye and would not let go.',
+    description: 'Photography by Arbizen: a quiet, everyday moment worth keeping.',
     alternates: { canonical: `/images/${params.id}` },
     openGraph: {
-      title: firstImage.alt || 'Images — Scenes that I stumbled upon',
+      title: firstImage.alt || 'Photography',
       description:
-        'A photo by Arbizen: a scene that caught my eye and would not let go.',
+        'Photography by Arbizen: a quiet, everyday moment worth keeping.',
       images: [src],
       url: process.env.NEXT_PUBLIC_API_URL + `/images/${id}`,
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: firstImage.alt || 'Images — Scenes that I stumbled upon',
+      title: firstImage.alt || 'Photography',
       description:
-        'Scenes that attracted my soul and pinned my eyes to them. I love to capture the moments that I find beautiful.',
+        'Photography by Arbizen: a quiet, everyday moment worth keeping.',
       creator: '@arbizzen',
       images: [src], // Must be an absolute URL
     },

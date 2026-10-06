@@ -22,9 +22,9 @@ import PageAnimation from '@/components/page-animation';
 
 export const metadata = {
   title: 'Blog',
-  description: 'Posts by Arb Rahim Badsa (Arbizen) on React, Next.js, Supabase, building products, and the occasional bit of life.',
+  description: 'Articles on React, Next.js, Supabase and building web products, from practical tutorials to lessons learned shipping real projects.',
   alternates: { canonical: '/blogs' },
-  openGraph: { title: 'Blog', description: 'Posts by Arb Rahim Badsa (Arbizen) on React, Next.js, Supabase, building products, and the occasional bit of life.', url: '/blogs', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'Blog', description: 'Articles on React, Next.js, Supabase and building web products, from practical tutorials to lessons learned shipping real projects.', url: '/blogs', images: ['/opengraph-image.png'] },
 };
 
 

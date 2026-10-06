@@ -10,10 +10,10 @@ import SupabaseBadge from '@/components/shared/supabase-badge';
 import UpworkBadge from '@/components/shared/upwork-badge';
 
 export const metadata = {
-  title: { absolute: 'Arbizen · Arb Rahim Badsa, developer and poem writer' },
-  description: 'I build small, sweet things for the internet, like Kitty Messages, and write about code, poems and life. The home of Arb Rahim Badsa (Arbizen).',
+  title: { absolute: 'Arbizen · Full-Stack Developer and Product Builder' },
+  description: 'Full-stack developer building thoughtful web products with Next.js, React and TypeScript. Creator of Kitty Messages and a two-time Supabase hackathon winner.',
   alternates: { canonical: '/' },
-  openGraph: { title: 'Arbizen · Arb Rahim Badsa, developer and poem writer', description: 'I build small, sweet things for the internet, like Kitty Messages, and write about code, poems and life. The home of Arb Rahim Badsa (Arbizen).', url: '/', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'Arbizen · Full-Stack Developer and Product Builder', description: 'Full-stack developer building thoughtful web products with Next.js, React and TypeScript. Creator of Kitty Messages and a two-time Supabase hackathon winner.', url: '/', images: ['/opengraph-image.png'] },
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -25,12 +25,11 @@ const siteJsonLd = {
     {
       '@type': 'Person',
       '@id': `${SITE_URL}/#person`,
-      name: 'Arb Rahim Badsa',
-      alternateName: ['Arbizen', 'Arb'],
+      name: 'Arbizen',
       url: `${SITE_URL}`,
       image: `${SITE_URL}/arb.png`,
       jobTitle: 'Full-stack developer',
-      description: 'Self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems.',
+      description: 'Full-stack developer building web products with Next.js, React and TypeScript. Creator of Kitty Messages.',
       sameAs: ['https://github.com/arbizen', 'https://x.com/arbizzen'],
       knowsAbout: ['JavaScript', 'TypeScript', 'React', 'Next.js', 'Supabase', 'PostgreSQL', 'Web development'],
     },
@@ -38,7 +37,6 @@ const siteJsonLd = {
       '@type': 'WebSite',
       '@id': `${SITE_URL}/#website`,
       name: 'Arbizen',
-      alternateName: ['Arb Rahim Badsa'],
       url: `${SITE_URL}`,
       publisher: { '@id': `${SITE_URL}/#person` },
     },

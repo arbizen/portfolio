@@ -8,18 +8,18 @@ import { cn } from '@/lib/utils';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const SITE_DESCRIPTION =
-  'Arbizen is Arb Rahim Badsa, a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes about code, poems and life.';
+  'Arbizen is a full-stack developer building thoughtful web products with Next.js, React and TypeScript, and the creator of Kitty Messages.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL!),
   // Every page reads "Page · Arbizen" in search results and tabs.
-  title: { default: 'Arbizen · Arb Rahim Badsa', template: '%s · Arbizen' },
+  title: { default: 'Arbizen · Full-Stack Developer', template: '%s · Arbizen' },
   description: SITE_DESCRIPTION,
   applicationName: 'Arbizen',
-  creator: 'Arb Rahim Badsa',
-  authors: [{ name: 'Arb Rahim Badsa', url: process.env.NEXT_PUBLIC_API_URL! }],
+  creator: 'Arbizen',
+  authors: [{ name: 'Arbizen', url: process.env.NEXT_PUBLIC_API_URL! }],
   category: 'technology',
-  keywords: ['Arbizen', 'Arb Rahim Badsa', 'Arb', 'full-stack developer', 'Next.js', 'React', 'Kitty Messages', 'blog', 'poems'],
+  keywords: ['Arbizen', 'full-stack developer', 'web developer', 'product engineer', 'Next.js', 'React', 'TypeScript', 'Supabase', 'Kitty Messages'],
   openGraph: {
     type: 'website',
     siteName: 'Arbizen',

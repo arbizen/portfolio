@@ -203,7 +203,7 @@ export default async function BlogPage({
             description,
             author: {
               '@type': 'Person',
-              name: 'Arb Rahim Badsa',
+              name: 'Arbizen',
             },
             publisher: {
               '@type': 'Organization',

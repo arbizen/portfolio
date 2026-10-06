@@ -14,9 +14,9 @@ import PageAnimation from '@/components/page-animation';
 
 export const metadata = {
   title: 'Bookmarks',
-  description: 'Links, tools and websites Arbizen keeps coming back to.',
+  description: 'A curated list of tools, resources and websites Arbizen relies on for development and design.',
   alternates: { canonical: '/bookmarks' },
-  openGraph: { title: 'Bookmarks', description: 'Links, tools and websites Arbizen keeps coming back to.', url: '/bookmarks', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'Bookmarks', description: 'A curated list of tools, resources and websites Arbizen relies on for development and design.', url: '/bookmarks', images: ['/opengraph-image.png'] },
 };
 
 

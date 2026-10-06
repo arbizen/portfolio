@@ -18,9 +18,9 @@ type pageProps = {
 
 export const metadata = {
   title: 'Images',
-  description: 'Photos Arbizen took of everyday scenes: nature, cities, villages and quiet moments.',
+  description: 'Photography by Arbizen: everyday scenes of nature, cities, villages and quiet moments.',
   alternates: { canonical: '/images' },
-  openGraph: { title: 'Images', description: 'Photos Arbizen took of everyday scenes: nature, cities, villages and quiet moments.', url: '/images', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'Images', description: 'Photography by Arbizen: everyday scenes of nature, cities, villages and quiet moments.', url: '/images', images: ['/opengraph-image.png'] },
 };
 
 export default async function Images({ params }: pageProps) {

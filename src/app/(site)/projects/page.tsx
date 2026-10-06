@@ -21,9 +21,9 @@ import PageAnimation from '@/components/page-animation';
 
 export const metadata = {
   title: 'Projects',
-  description: 'Things Arbizen has built: Kitty Messages, Blank Board, Supabase hackathon winners Wordbuzz and Supadraw, and more.',
+  description: 'Selected work by Arbizen, including Kitty Messages, Blank Board, and the Supabase hackathon winners Wordbuzz and Supadraw.',
   alternates: { canonical: '/projects' },
-  openGraph: { title: 'Projects', description: 'Things Arbizen has built: Kitty Messages, Blank Board, Supabase hackathon winners Wordbuzz and Supadraw, and more.', url: '/projects', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'Projects', description: 'Selected work by Arbizen, including Kitty Messages, Blank Board, and the Supabase hackathon winners Wordbuzz and Supadraw.', url: '/projects', images: ['/opengraph-image.png'] },
 };
 
 /** One project: its name and what it is, the year, and what it is built with. */

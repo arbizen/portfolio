@@ -8,9 +8,9 @@ import PDFViewer from '@/components/pdf-viewer';
 
 export const metadata = {
   title: 'Resume',
-  description: 'The resume of Arb Rahim Badsa (Arbizen): full-stack JavaScript, React, Next.js, TypeScript and more.',
+  description: 'Resume of Arbizen, full-stack developer: JavaScript, TypeScript, React, Next.js and more, with 5+ years of client work.',
   alternates: { canonical: '/resume' },
-  openGraph: { title: 'Resume', description: 'The resume of Arb Rahim Badsa (Arbizen): full-stack JavaScript, React, Next.js, TypeScript and more.', url: '/resume', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'Resume', description: 'Resume of Arbizen, full-stack developer: JavaScript, TypeScript, React, Next.js and more, with 5+ years of client work.', url: '/resume', images: ['/opengraph-image.png'] },
 };
 
 export default async function ResumePage() {
@@ -52,7 +52,7 @@ export default async function ResumePage() {
       </div>
 
       <div>
-        <PDFViewer src={resumeUrl} title="Arb Rahim Badsa Resume" />
+        <PDFViewer src={resumeUrl} title="Arbizen Resume" />
       </div>
     </PageAnimation>
   );

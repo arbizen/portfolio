@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'About',
-  description: 'Arb Rahim Badsa (Arbizen): a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems on the side.',
+  description: 'About Arbizen: a self-taught full-stack developer with 5+ years of client work, Top Rated Plus on Upwork, and the creator of Kitty Messages.',
   alternates: { canonical: '/about' },
-  openGraph: { title: 'About', description: 'Arb Rahim Badsa (Arbizen): a self-taught full-stack developer who builds small, sweet products like Kitty Messages, and writes poems on the side.', url: '/about', images: ['/opengraph-image.png'] },
+  openGraph: { title: 'About', description: 'About Arbizen: a self-taught full-stack developer with 5+ years of client work, Top Rated Plus on Upwork, and the creator of Kitty Messages.', url: '/about', images: ['/opengraph-image.png'] },
 };
 
 const link = 'text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-900';
@@ -15,7 +15,7 @@ export default function About() {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center gap-4">
-        <Image unoptimized src={'/arb.png'} alt="Arb Rahim Badsa" width={56} height={56} className="rounded-full" />
+        <Image unoptimized src={'/arb.png'} alt="Arbizen" width={56} height={56} className="rounded-full" />
         <div className="flex flex-col gap-0.5">
           <h1 className="text-xl font-medium tracking-tight text-neutral-900">Arbizen</h1>
           <p className="text-sm text-neutral-500">A self-taught full-stack JavaScript engineer</p>
